@@ -5,7 +5,7 @@ title: Registration
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxABhnR5ECvG6h3bEGfL7bBMW_jo-3bMPjIaoLIOFD9iE2_598kBnyW-tnIeRi7-IBH/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydCteT3pBhhTvomKF-GKod2stQnLnzxjRr00_KREKHfwNtuSKdePey6UItp_navUTp/exec';
     
     document.getElementById('registrationForm').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -47,16 +47,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     recaptchaToken: token
                 };
                 
-                // Submit
+                // Submit without Content-Type to avoid CORS preflight
                 fetch(SCRIPT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
                     body: JSON.stringify(formData)
                 })
-                .then(response => response.json())
-                .then(data => {
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.text();
+                })
+                .then(text => {
+                    console.log('Response text:', text);
+                    const data = JSON.parse(text);
+                    console.log('Parsed data:', data);
                     if (data.result === 'success') {
                         window.location.href = 'success.html';
                     } else {
@@ -64,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 })
                 .catch(function(error) {
+                    console.error('Full error:', error);
                     errorMessage.style.display = 'block';
-                    console.error('Error:', error);
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Submit Registration';
                 });
@@ -83,12 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script src="https://www.google.com/recaptcha/api.js?render=6Ld7gCcsAAAAAFgmvwijHhrD3avqOOSuAwjVn_A3"></script>
 
-
-
 <div class="registration-container">
     <h1>Class Registration</h1>
-
-
 
     <div id="errorMessage" class="error">
         Something went wrong. Please try again.
