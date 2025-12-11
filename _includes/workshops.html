@@ -1,0 +1,28 @@
+{% if site.data.workshops.size > 0 %}
+<h3>Upcoming workshops</h3>
+
+<div class="schedule-table">
+  <div class="schedule-header">
+    <span>Workshop</span>
+    <span>Time</span>
+    <span>Info</span>
+  </div>
+
+  {% for workshop in site.data.workshops %}
+  <div class="schedule-row {{ workshop.level }}">
+    <span>{{ workshop.title }}</span>
+    <span>{{ workshop.date }}</span>
+    <span>
+      {% if workshop.url and workshop.url != "" %}
+        <a href="{{ workshop.url }}" target="_blank">Info</a>
+      {% else %}
+        <span class="no-link">Coming soon</span>
+      {% endif %}
+    </span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+
+

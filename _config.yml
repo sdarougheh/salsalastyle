@@ -1,0 +1,36 @@
+# Site settings
+title: "Salsa LA style"
+description: "Teaching LA-style Salsa in Copenhagen"
+
+# Build settings
+markdown: kramdown
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Resume settings
+
+resume_name:                    "Salsa LA Style"
+
+repository: sdarougheh/salsalastyle
+
+
+
+
+
+
+# Design settings
+resume_theme:                   default
+
+# Note: when editing locally, remember to restart
+# your Jekyll server when you edit this file. Changes
+# to _config.yml are only recognized when the server starts
+
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      pdf: true
