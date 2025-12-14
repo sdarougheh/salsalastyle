@@ -1,13 +1,11 @@
-{% if site.data.workshops.size > 0 %}
-<h3>Upcoming workshops</h3>
-
 <div class="schedule-table">
   <div class="schedule-header">
     <span>Workshop</span>
     <span>Time</span>
     <span>Info</span>
+    <span>Register</span>
   </div>
-
+  
   {% for workshop in site.data.workshops %}
   <div class="schedule-row {{ workshop.level }}">
     <span>{{ workshop.title }}</span>
@@ -19,10 +17,9 @@
         <span class="no-link">Coming soon</span>
       {% endif %}
     </span>
+    <span>
+      <a href="/registration_workshop">Register</a>
+    </span>
   </div>
   {% endfor %}
 </div>
-{% endif %}
-
-
-

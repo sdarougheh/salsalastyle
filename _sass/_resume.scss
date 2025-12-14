@@ -408,11 +408,9 @@ figure:hover figcaption {
 
 .schedule-header {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+  grid-template-columns: 1fr 150px 100px 100px;
   gap: 15px;
   padding: 12px 20px;
-    margin-bottom: 8px;
-
   background-color: #555;
   color: white;
   font-weight: 600;
@@ -421,7 +419,7 @@ figure:hover figcaption {
 
 .schedule-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
+  grid-template-columns: 1fr 200px 100px 100px;
   gap: 15px;
   padding: 12px 20px;
   margin-bottom: 8px;
@@ -431,7 +429,6 @@ figure:hover figcaption {
 
 .schedule-row a {
   color: white;
-  text-decoration: underline;
 }
 
 .no-link {
