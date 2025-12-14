@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <label for="comments">Comments or questions</label>
             <textarea id="comments" name="comments"></textarea>
         </div>
+        <p>By registering, you accept our <a href="/terms" target="_blank">Terms and Conditions</a>.</p>
         
         <button type="submit" id="submitBtn">Submit Registration</button>
     </form>

@@ -2,55 +2,40 @@
 <html>
 
   {% include head.html %}
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NN0DM0BM2J"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-WY30GQ2D40');
+<body class="theme-{% if site.resume_theme %}{{ site.resume_theme }}{% endif %}">
+
+<!-- Facebook Pixel Code -->
+<script type="text/plain" data-cookiecategory="marketing">
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '887668880505989');
+  fbq('track', 'PageView');
 </script>
+<noscript>
+  <img height="1" width="1" src="https://www.facebook.com/tr?id=887668880505989&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
 
-  <!-- Facebook Pixel Code --><script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '887668880505989'); fbq('track', 'PageView');</script><noscript> <img height="1" width="1" src="https://www.facebook.com/tr?id=887668880505989&ev=PageView&noscript=1"/></noscript><!-- End Facebook Pixel Code -->
-
-  <body class="theme-{% if site.resume_theme %}{{ site.resume_theme }}{% endif %}">
-
-    <div class="wrapper">
-
-<div class="hero-text">
-    <h1>Salsa LA-Style</h1>
-</div>
-        <div class="hero-banner"></div>
-      <header class="page-header" style="border: 1px red;">
-
-
-        <!-- Your name is defined in the _config.yml file -->
-        
-
-
-        <div class="title-bar no-print">
-
-          <!-- Your title is also defined in the _config.yml file -->
-<!--          <h2 class="header-title" itemprop="jobTitle">{{ site.resume_name }}</h2>-->
-
-          <!-- This is the markup for the icon links; moved out to an include because it's very verbose, and you shouldn't ever need to edit the markup (unless you want to re-order the icons); if you want to customize which links appear, define them in the _config.yml file -->
-          {% include icon-links.html %}
-        </div>
-
-
-
-      </header>
-
-	    {{ content }}
-
-
-      <footer class="page-footer">
-
-      </footer>
-
+  <div class="wrapper">
+    <div class="hero-text">
+      <h1>Salsa LA-Style</h1>
     </div>
+    <div class="hero-banner"></div>
 
-  </body>
+    <header class="page-header" style="border: 1px red;">
+      <div class="title-bar no-print">
+        {% include icon-links.html %}
+      </div>
+    </header>
 
+    {{ content }}
+
+    <footer class="page-footer">
+    </footer>
+  </div>
+
+  <!-- Cookie Consent Configuration -->
+        <script type="module" src="assets/cookieconsent-config.js"></script>
+
+</body>
 </html>
