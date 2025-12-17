@@ -7,7 +7,6 @@
 This website is operated by:
 
 **Salsa LA Style**
-Saman Darougheh  
 
 Email: salsalastyledk@gmail.com  
 CVR: 46104986
