@@ -85,6 +85,29 @@
   border-bottom: 2px solid #444;
 }
 
+@media (max-width: 768px) {
+    .icon-links {
+        flex-wrap: wrap;  /* Allow items to wrap */
+        padding: 10px 15px;  /* Reduce padding */
+        justify-content: center;  /* Center items */
+    }
+
+    .icon-link-item {
+        margin-right: 15px;  /* Reduce spacing */
+        margin-bottom: 8px;  /* Add bottom margin for wrapped items */
+    }
+
+    /* Cancel the auto-margin on mobile */
+    .icon-link-item:nth-child(4) {
+        margin-left: 0;
+        margin-right: 15px;
+    }
+
+    .social-link {
+        font-size: 1em;  /* Slightly smaller icons */
+    }
+}
+
 .icon-link-item {
   margin-right: 25px;
 }
@@ -435,6 +458,44 @@ figure:hover figcaption {
   color: #666;
   font-style: italic;
 }
+
+/* Mobile fix for workshop/schedule tables */
+@media (max-width: 768px) {
+    .schedule-header {
+        display: none;  /* Hide header on mobile */
+    }
+
+    .schedule-row {
+        display: block;  /* Stack vertically */
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .schedule-row span {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .schedule-row span:first-child {
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 12px;
+    }
+
+    /* Add labels for clarity on mobile */
+    .schedule-row span:nth-child(2)::before {
+        content: "📅 ";
+    }
+
+    .schedule-row span:nth-child(3)::before {
+        content: "ℹ️ ";
+    }
+
+    .schedule-row span:nth-child(4)::before {
+        content: "✏️ ";
+    }
+}
+
 
 /* Colors */
 .beginner { background-color: #03a9f4; }
