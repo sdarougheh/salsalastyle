@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <div class="form-group">
-            <label>Which classes? (select all that apply) *</label>
+            <label>Which classes? ((you can select multiple, but don't need to register again for classes you already registered for earlier.) *</label>
             <div class="checkbox-list">
                 <label><input type="checkbox" name="class" value="Intermediate 1"> Intermediate 1 - Wednesday 19:00</label>
                 <label><input type="checkbox" name="class" value="Intermediate 2"> Intermediate 2 - Wednesday 20:00</label>
