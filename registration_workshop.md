@@ -117,7 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   {% for workshop in site.data.workshops %}
-                <label><input type="checkbox" name="class" value="{{ workshop.title}}"> {{ workshop.title}} ({{ workshop.date}})</label>
+                <label><input type="checkbox" name="class" value="{{ workshop.title}}"> {{ workshop.title}} ({{ workshop.date}} 
+                {% if workshop.note %} - {{ workshop.note }}{% endif %}
+                )</label>
   {% endfor %}
 
             </div>
