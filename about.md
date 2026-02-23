@@ -11,6 +11,7 @@ This website is operated by:
 Email: salsalastyledk@gmail.com  
 CVR: 46104986
 
+
 Further information:
 <ul>
 <li><a href="/terms">Terms and Conditions of our classes</a></li>
