@@ -1,0 +1,74 @@
+# Homepage copy. Edit here to change section text without touching JS.
+
+hero:
+  title_line_1: "Find the one"
+  title_line_2: "on the line"
+  lede: >
+    LA-style Salsa — also called <em>on1</em> — is a Salsa style that originated
+    in the North American ballrooms. Unlike Cuban Salsa, the couple dances in a
+    linear pattern rather than circular. Popular across Europe, quietly missing
+    from Copenhagen — we're here to change that.
+  photo: "assets/images/photo-class-1.png"
+  cta_primary:
+    label: "Register"
+    href: "/registration"
+  cta_secondary:
+    label: "See the schedule"
+    href: "#schedule"
+
+schedule_header:
+  eyebrow: "Schedule"
+  title: "Summer Season 2026"
+  subtitle_lead: "Season runs May 4 – June 26. Socials on selected Fridays — see"
+  subtitle_trail: "for the calendar."
+  location: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
+
+classes_intro:
+  title: "Which class is for you?"
+  lede: >
+    LA-style basics match Cuban Salsa. New to partner dancing? Try beginner
+    classes at <a href="https://4water.org/copenhagen/dance/" target="_blank" rel="noreferrer">4water</a>
+    or <a href="https://copenhagensalsaacademy.dk/" target="_blank" rel="noreferrer">CSA</a> first.
+
+pricing:
+  title: "Early bird until April 19th."
+  subtitle: >
+    Signing up for all three classes? <a href="#register">Reach out</a> — we'll sort a package.
+
+register:
+  kicker: "Ready when you are"
+  title_line_1: "Come"
+  title_line_2: "dance with us."
+  lede: "Pick a class, grab the early bird price, and we'll see you on Monday."
+  photo: "assets/images/photo-class-1.png"
+  cta_primary:
+    label: "Register now"
+    href: "/registration"
+  cta_secondary:
+    label: "Payments"
+    href: "/payments"
+
+workshop_strip:
+  eyebrow: "Upcoming Workshop"
+  headline: "Upcoming Workshops"
+
+footer:
+  brand_main: "Salsa LA-Style"
+  brand_sub: "Copenhagen"
+  copyright: "© 2026 Salsa LA-Style Copenhagen"
+  social:
+    instagram: "https://instagram.com/salsalastyle"
+    facebook: "https://www.facebook.com/profile.php?id=61572834536280"
+  columns:
+    - title: "Classes"
+      links:
+        - { label: "Schedule", href: "#schedule" }
+        - { label: "Levels",   href: "#classes"  }
+        - { label: "Pricing",  href: "#pricing"  }
+        - { label: "Register", href: "/registration" }
+    - title: "Info"
+      links:
+        - { label: "About",    href: "/about"    }
+        - { label: "Payments", href: "/payments" }
+        - { label: "Terms",    href: "/terms"    }
+        - { label: "Privacy",  href: "/privacy"  }
