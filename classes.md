@@ -1,7 +1,6 @@
 ---
-layout: resume
-title: Classes
+layout: redirect
+permalink: /classes/
+redirect_to: /#schedule
+sitemap: false
 ---
-
-
-{% include classes.html %}

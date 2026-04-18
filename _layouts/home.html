@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    {% include facebook_pixel.html %}
+
+    <div id="root"></div>
+
+    <!-- React + Babel standalone from CDN (no build step required) -->
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+    <!-- Site data, rendered server-side by Jekyll from _data/ and _config.yml -->
+    <script src="{{ '/assets/js/data.js' | relative_url }}"></script>
+
+    <!-- React components -->
+    <script type="text/babel" src="{{ '/assets/js/theme.jsx'    | relative_url }}"></script>
+    <script type="text/babel" src="{{ '/assets/js/nav.jsx'      | relative_url }}"></script>
+    <script type="text/babel" src="{{ '/assets/js/hero.jsx'     | relative_url }}"></script>
+    <script type="text/babel" src="{{ '/assets/js/sections.jsx' | relative_url }}"></script>
+    <script type="text/babel" src="{{ '/assets/js/tweaks.jsx'   | relative_url }}"></script>
+    <script type="text/babel" src="{{ '/assets/js/app.jsx'      | relative_url }}"></script>
+  </body>
+</html>

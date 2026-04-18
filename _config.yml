@@ -1,36 +1,33 @@
 # Site settings
-title: "Salsa LA style"
+title: "Salsa LA-Style"
 description: "Teaching LA-style Salsa in Copenhagen"
+url: "https://www.salsalastyle.dk"
 
 # Build settings
 markdown: kramdown
-sass:
-  sass_dir: _sass
-  style: compressed
 
-# Resume settings
+# Exclude legacy / working files from the build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - Dockerfile
+  - .dockerignore
+  - .travis.yml
+  - README.md
+  - uploads
+  - "Salsa LA-Style Home.html"
+  - _vendor
 
-resume_name:                    "Salsa LA Style"
-
-repository: sdarougheh/salsalastyle
-
-
-
-
-
-
-# Design settings
-resume_theme:                   default
-
-# Note: when editing locally, remember to restart
-# your Jekyll server when you edit this file. Changes
-# to _config.yml are only recognized when the server starts
-
-
+# Default front matter
 defaults:
-  -
-    scope:
+  - scope:
       path: ""
-      type: "posts"
+      type: "pages"
     values:
-      pdf: true
+      layout: "page"
+
+# Season info (edit in one place)
+season:
+  name: "Summer 2026"
+  dates: "May 4 – June 26"
+  early_bird_until: "April 19th"

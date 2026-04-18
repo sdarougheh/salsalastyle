@@ -1,9 +1,14 @@
-<h2>Pricing: Intermediate 1 & 2 (May-June 2026)</h2>
+{%- comment -%}
+Renders a pricing table from _data/pricing.yml. Used on the success page.
+{%- endcomment -%}
+<h2>Pricing: Intermediate 1 &amp; 2 ({{ site.season.name }})</h2>
 
-<p><strong>Early bird discount prices until April 19th!</strong> Reach out to us if you want to sign up for all three classes.</p>
+{% if site.season.early_bird_until %}
+<p><strong>Early bird discount prices until {{ site.season.early_bird_until }}!</strong>
+Reach out to us if you want to sign up for all three classes.</p>
+{% endif %}
 
 <div class="pricing-container">
-
   <table class="pricing-table">
     <thead>
       <tr>
@@ -13,46 +18,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><strong>Drop-in</strong><br><small>One hour</small></td>
-        <td>110 DKK</td>
-        <td>100 DKK</td>
+      {% for p in site.data.pricing %}
+      <tr{% if p.save_regular or p.save_student %} class="highlight"{% endif %}>
+        <td><strong>{{ p.pkg }}</strong><br><small>{{ p.meta }}</small></td>
+        <td>{{ p.regular }}{% if p.save_regular %}<br><span class="savings">Save {{ p.save_regular }}</span>{% endif %}</td>
+        <td>{{ p.student }}{% if p.save_student %}<br><span class="savings">Save {{ p.save_student }}</span>{% endif %}</td>
       </tr>
-      <tr class="highlight">
-        <td><strong>Single Class</strong><br><small>8 weeks, 1 hour/week</small></td>
-        <td>735 DKK<br><span class="savings">Save 16%</span></td>
-        <td>595 DKK<br><span class="savings">Save 26%</span></td>
-      </tr>
-      <tr class="highlight">
-        <td><strong>Two Classes</strong><br><small>8 weeks, 2 hours/week</small></td>
-        <td>1260 DKK<br><span class="savings">Save 28%</span></td>
-        <td>980 DKK<br><span class="savings">Save 39%</span></td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
-
-<!-- Improver pricing removed for Summer 2026
-<h2>Pricing: Improver (March 2026, with Cph4water)</h2>
-
-<div class="pricing-container">
-
-  <table class="pricing-table">
-    <thead>
-      <tr>
-        <th>Package</th>
-        <th>Regular Price</th>
-        <th>Student Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Drop-in</strong><br><small>One hour</small></td>
-        <td>90 DKK</td>
-        <td>75 DKK</td>
-      </tr>
-
-    </tbody>
-  </table>
-</div>
--->

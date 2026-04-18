@@ -1,0 +1,27 @@
+# Color coding for class kinds. Referenced by `kind` in schedule.yml,
+# classes.yml, levels.yml, and workshops.yml.
+improver:
+  label: "Improvers"
+  bg: "#D8E9D3"
+  fg: "#2A4A2A"
+  dot: "#6FA38F"
+practica:
+  label: "Guided Practica"
+  bg: "#CFE0EE"
+  fg: "#1E3A55"
+  dot: "#3A7CA5"
+inter1:
+  label: "Intermediate 1"
+  bg: "#FBC7A8"
+  fg: "#7A1F22"
+  dot: "#E05A2B"
+inter2:
+  label: "Intermediate 2"
+  bg: "#E63946"
+  fg: "#FFFFFF"
+  dot: "#E63946"
+social:
+  label: "Social"
+  bg: "#E6E1D7"
+  fg: "#2A241C"
+  dot: "#8A8277"

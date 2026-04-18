@@ -1,14 +1,27 @@
-
-
+# Upcoming workshops shown on the homepage strip.
+# `month` / `day` / `year` drive the big date block.
+# `kind` must match a key in _data/kinds.yml (controls color).
+# Set `hidden: true` to hide without deleting.
 
 - title: "LA-Style Crash Course"
-  date: "May 2nd, 2PM-4PM"
-  level: "improver"
-  url: "https://fb.me/e/4oKutt0CF"
-  note: ""
+  kind: "improver"
+  month: "MAY"
+  day: "02"
+  year: "2026"
+  time: "14:00 – 16:00"
+  location: "Inflow Studio, Heimdalsgade 35"
+  lede: "A two-hour crash course to LA-Style. We cover the key elements from the improver level, with some room for practice. You can also use the course to learn the other role, or to find out whether Improver or Intermediate 1 suits you better."
+  info_url: "https://fb.me/e/4oKutt0CF"
+  register_url: "/registration_workshop"
 
+# Example (commented out):
 #- title: "Basics of Chacha"
-#  date: "February 22nd, 12-12:50PM"
-#  level: "open"
-#  url: "https://fb.me/e/42Wwh6NnC"
-#  note: ""
+#  kind: "social"
+#  month: "FEB"
+#  day: "22"
+#  year: "2026"
+#  time: "12:00 – 12:50"
+#  location: "TBD"
+#  lede: ""
+#  info_url: "https://fb.me/e/42Wwh6NnC"
+#  register_url: "/registration_workshop"
