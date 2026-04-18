@@ -46,7 +46,7 @@
       level: "Social"
       kind: "social"
       note: "Selected Fridays"
-      blurb: "Early-evening LA-style social. All levels welcome."
+      blurb: "Early-evening crossbody salsa social to start the weekend."
     - time: "20:00"
       end: "23:00"
       name: "100% Crossbody"
@@ -55,7 +55,7 @@
       level: "Social"
       kind: "social"
       note: "Selected Fridays"
-      blurb: "Late social featuring LA on1 and NY on2. All levels welcome."
+      blurb: "Our big social, featuring both on1 and on2 salsa, with the occasional cha-cha-cha."
 - day: Saturday
   slots: []
 - day: Sunday
