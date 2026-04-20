@@ -30,4 +30,4 @@ defaults:
 season:
   name: "Summer 2026"
   dates: "May 4 – June 26"
-  early_bird_until: "April 19th"
+  # early_bird_until: "April 19th"   # uncomment to show early bird banner

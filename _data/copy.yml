@@ -31,15 +31,15 @@ classes_intro:
     or <a href="https://copenhagensalsaacademy.dk/" target="_blank" rel="noreferrer">CSA</a> first.
 
 pricing:
-  title: "Early bird until April 19th."
+  title: "Summer 2026 pricing."
   subtitle: >
-    Signing up for all three classes? <a href="#register">Reach out</a> — we'll sort a package.
+    Signing up for all three classes? <a href="/registration">Reach out</a> — we'll sort a package.
 
 register:
   kicker: "Ready when you are"
   title_line_1: "Come"
   title_line_2: "dance with us."
-  lede: "Pick a class, grab the early bird price, and we'll see you on Monday."
+  lede: "Pick a class, and we'll see you on Monday."
   photo: "assets/images/photo-class-1.png"
   cta_primary:
     label: "Register now"
