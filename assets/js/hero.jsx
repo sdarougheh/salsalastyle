@@ -12,8 +12,8 @@ function HeroFullbleed() {
       <Nav />
       <div className="hero-fullbleed-body">
         <h1 className="hero-title">
-          <span className="hero-title-line">{c.title_line_1}</span>
-          <span className="hero-title-line hero-title-accent">{c.title_line_2}</span>
+          <span className="hero-title-line" dangerouslySetInnerHTML={{ __html: c.title_line_1 || "" }} />
+          <span className="hero-title-line hero-title-accent" dangerouslySetInnerHTML={{ __html: c.title_line_2 || "" }} />
         </h1>
         <p className="hero-lede" dangerouslySetInnerHTML={{ __html: c.lede || "" }} />
         <div className="hero-cta-row">
