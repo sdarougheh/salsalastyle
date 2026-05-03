@@ -26,8 +26,8 @@ const PRICING = ({{ site.data.pricing | jsonify }}).map(function (p) {
 
 const LEVELS = {{ site.data.levels | jsonify }};
 
-// Workshops: filter out `hidden: true` entries.
-const WORKSHOPS = ({{ site.data.workshops | jsonify }}).filter(function (w) {
+// Workshops: filter out `hidden: true` entries. Empty/null when no workshops.
+const WORKSHOPS = ({{ site.data.workshops | jsonify }} || []).filter(function (w) {
   return !w.hidden;
 });
 

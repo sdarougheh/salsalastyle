@@ -31,3 +31,15 @@ season:
   name: "Summer 2026"
   dates: "May 4 – June 26"
   # early_bird_until: "April 19th"   # uncomment to show early bird banner
+
+# MobilePay payment boxes. Edit here whenever the box changes.
+# `classes` is used by /payments and the class success page;
+# `workshops` is used by the workshop success page. They can point at the
+# same box (current default) or be split if needed.
+mobilepay:
+  classes:
+    box: "7681ZK"
+    url: "https://qr.mobilepay.dk/box/5f19d580-4664-4ff7-bb8a-7b3349d245c0/pay-in"
+  workshops:
+    box: "7681ZK"
+    url: "https://qr.mobilepay.dk/box/5f19d580-4664-4ff7-bb8a-7b3349d245c0/pay-in"
