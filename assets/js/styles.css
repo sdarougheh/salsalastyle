@@ -892,7 +892,8 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 }
 
 /* ---------- schedule v3: cards ---------- */
-.sc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* Days stacked vertically; each day's cards laid out horizontally. */
+.sc { display: flex; flex-direction: column; gap: 32px; }
 .sc-day {
   display: flex;
   flex-direction: column;
@@ -907,10 +908,20 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
   border-bottom: 1px solid var(--line);
   padding-bottom: 8px;
 }
-.sc-cards { display: flex; flex-direction: column; gap: 10px; }
+.sc-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: stretch;
+}
+.sc-cards > .sc-card { flex: 1 1 0; min-width: 0; }
+@media (max-width: 760px) {
+  .sc-cards { flex-direction: column; }
+}
 
 /* ---------- KIND color utility classes ---------- */
 /* Each kind sets 3 vars; consumers apply them. */
+.kind-beginner { --k-bg: #D8E9D3; --k-fg: #2A4A2A; --k-dot: #6FA38F; }
 .kind-improver { --k-bg: #D8E9D3; --k-fg: #2A4A2A; --k-dot: #6FA38F; }
 .kind-practica { --k-bg: #CFE0EE; --k-fg: #1E3A55; --k-dot: #3A7CA5; }
 .kind-inter1   { --k-bg: #FBC7A8; --k-fg: #7A1F22; --k-dot: #E05A2B; }
@@ -920,6 +931,7 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 /* Cards that fill with kind color */
 .sc-card,
 .class-card,
+.workshop-card.kind-beginner,
 .workshop-card.kind-improver,
 .workshop-card.kind-practica,
 .workshop-card.kind-inter1,

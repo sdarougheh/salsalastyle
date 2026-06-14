@@ -1,25 +1,18 @@
 # Weekly schedule. Empty `slots` means no classes that day.
 # `kind` must match one of the keys in _data/kinds.yml
 - day: Monday
-  slots:
-    - time: "20:00"
-      end: "21:00"
-      name: "LA-Style fundamentals"
-      where: "Inflow Studio"
-      level: ""
-      kind: "improver"
-      blurb: "LA-Style fundamentals and technique: stepping, emphasis, turns, dancing on and off the line. We build fun and clear patterns around the basic turns, cross-body leads and similar."
-    - time: "21:00"
-      end: "22:00"
-      name: "Guided Practica"
-      where: "Inflow Studio"
-      level: "Free · Students only"
-      kind: "practica"
-      blurb: "Free for our students. Slow-to-medium tempo songs with clear rhythm — practice what you learned. Teachers around for feedback."
+  slots: []
 - day: Tuesday
   slots: []
 - day: Wednesday
   slots:
+    - time: "18:00"
+      end: "19:00"
+      name: "Beginners"
+      where: "Inflow Studio"
+      level: ""
+      kind: "beginner"
+      blurb: "For complete beginners — no dance background needed. We start from the very basics: rhythm, timing, the basic step, and the partner connection."
     - time: "19:00"
       end: "20:00"
       name: "Intermediate 1"

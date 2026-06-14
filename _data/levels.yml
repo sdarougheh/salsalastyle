@@ -1,7 +1,7 @@
 # "Which class is for you?" requirements strip on the homepage.
-- name: "Open level"
-  kind: "social"
-  blurb: "Minimum: Improver. Technique-focused workshops benefit all levels."
+- name: "Beginner"
+  kind: "beginner"
+  blurb: "No experience required — come as you are."
 - name: "Improver"
   kind: "improver"
   blurb: "3–6 months Cuban Salsa. Comfortable with the beat and lead/follow basic turns."
@@ -11,3 +11,6 @@
 - name: "Advanced"
   kind: "inter2"
   blurb: "Inside turns, outside turns, single fast spins — all comfortable."
+- name: "Open level"
+  kind: "social"
+  blurb: "Minimum: Improver. Technique-focused workshops benefit all levels."

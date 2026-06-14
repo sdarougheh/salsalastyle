@@ -28,8 +28,8 @@ defaults:
 
 # Season info (edit in one place)
 season:
-  name: "Summer 2026"
-  dates: "May 4 – June 26"
+  name: "Autumn 2026"
+  dates: "September 2 – October 28"
   # early_bird_until: "April 19th"   # uncomment to show early bird banner
 
 # MobilePay payment boxes. Edit here whenever the box changes.
