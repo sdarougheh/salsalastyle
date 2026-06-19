@@ -13,8 +13,8 @@ function Nav() {
       </a>
       <div className="nav-links">
         <a href="#schedule">Schedule</a>
-        <a href="#classes">Classes</a>
         <a href="#pricing">Pricing</a>
+        <a href="/faq">FAQ</a>
         <a href="/payments">Payments</a>
         <a href="/about">About</a>
         <a href="/registration" className="nav-link-register">Register</a>

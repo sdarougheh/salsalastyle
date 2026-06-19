@@ -50,8 +50,10 @@ function WorkshopStrip() {
 function About() { return null; }
 
 // ---------- Schedule ----------
-function ScheduleCards() {
-  const activeDays = SCHEDULE.filter((d) => d.slots && d.slots.length > 0);
+function ScheduleCards({ days }) {
+  const activeDays = days
+    ? SCHEDULE.filter((d) => days.indexOf(d.day) !== -1 && d.slots && d.slots.length > 0)
+    : SCHEDULE.filter((d) => d.slots && d.slots.length > 0);
   return (
     <div className="sc sc-with-blurbs">
       {activeDays.map((day) => (
@@ -79,37 +81,72 @@ function ScheduleCards() {
 }
 
 function ScheduleGrid() {
-  const c  = (window.COPY && window.COPY.schedule_header) || {};
-  const fb = ((window.COPY || {}).footer || {}).social && window.COPY.footer.social.facebook;
+  // Kept for backwards compat; new layout uses WednesdayClasses + FridaySocials below.
+  return null;
+}
+
+function WednesdayClasses() {
+  const c = (window.COPY && window.COPY.wednesday_classes) || {};
   return (
     <section className="schedule" id="schedule">
       <div className="schedule-head">
-        <SectionLabel num="02">{c.eyebrow || "Schedule & Classes"}</SectionLabel>
+        <SectionLabel num="01">{c.eyebrow || "Schedule"}</SectionLabel>
         <h2 className="section-title section-title-xl">
-          {c.title || ((window.SEASON || {}).name)}
+          {c.title || "Wednesday classes"}
         </h2>
-        <p className="schedule-sub schedule-sub-small">
-          {c.subtitle_lead || ""}{" "}
-          <a className="sch-fb-link" href={fb} target="_blank" rel="noreferrer">
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true">
-              <path d="M13.5 21v-8H16l.5-3H13.5V8.2c0-.9.3-1.5 1.6-1.5H17V4.1C16.5 4 15.5 4 14.5 4c-2.3 0-3.8 1.4-3.8 3.9V10H8v3h2.7v8h2.8z"/>
-            </svg>
-            Facebook
-          </a>{" "}
-          {c.subtitle_trail || ""}
-        </p>
+        {c.subtitle && (
+          <p className="schedule-sub schedule-sub-small">{c.subtitle}</p>
+        )}
       </div>
-
       <div className="schedule-body schedule-merged">
-        <ScheduleCards />
+        <ScheduleCards days={["Wednesday"]} />
       </div>
+    </section>
+  );
+}
 
+function FridaySocials() {
+  const c  = (window.COPY && window.COPY.friday_socials) || {};
+  const fb = ((window.COPY || {}).footer || {}).social && window.COPY.footer.social.facebook;
+  return (
+    <section className="schedule" id="socials">
+      <div className="schedule-head">
+        <SectionLabel num="03">{c.eyebrow || "Socials"}</SectionLabel>
+        <h2 className="section-title section-title-xl">
+          {c.title || "Friday socials"}
+        </h2>
+        {(c.subtitle_lead || c.subtitle_trail) && (
+          <p className="schedule-sub schedule-sub-small">
+            {c.subtitle_lead || ""}{" "}
+            <a className="sch-fb-link" href={fb} target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true">
+                <path d="M13.5 21v-8H16l.5-3H13.5V8.2c0-.9.3-1.5 1.6-1.5H17V4.1C16.5 4 15.5 4 14.5 4c-2.3 0-3.8 1.4-3.8 3.9V10H8v3h2.7v8h2.8z"/>
+              </svg>
+              Facebook
+            </a>{" "}
+            {c.subtitle_trail || ""}
+          </p>
+        )}
+      </div>
+      <div className="schedule-body schedule-merged">
+        <ScheduleCards days={["Friday"]} />
+      </div>
+    </section>
+  );
+}
+
+function Location() {
+  const c = (window.COPY && window.COPY.location) || {};
+  return (
+    <section className="schedule schedule-location">
       <div className="schedule-footer">
         <div className="schedule-loc">
-          <span className="schedule-loc-label">Classes at</span>
-          <span className="schedule-loc-addr">{c.location}</span>
+          <span className="schedule-loc-label">{c.label || "Classes at"}</span>
+          <span className="schedule-loc-addr">{c.address}</span>
         </div>
-        <Button href="/registration">Register for the season</Button>
+        <Button href={c.cta_href || "/registration"}>
+          {c.cta_label || "Register for the season"}
+        </Button>
       </div>
     </section>
   );
@@ -150,9 +187,12 @@ function Pricing() {
   return (
     <section className="pricing" id="pricing">
       <div className="pricing-head">
-        <SectionLabel num="04">Pricing</SectionLabel>
+        <SectionLabel num="02">Pricing</SectionLabel>
         <h2 className="section-title">{c.title}</h2>
         <p className="pricing-sub" dangerouslySetInnerHTML={{ __html: c.subtitle || "" }} />
+        {c.dropin_callout && (
+          <p className="pricing-dropin" dangerouslySetInnerHTML={{ __html: c.dropin_callout }} />
+        )}
       </div>
       <div className="pricing-grid">
         {PRICING.map((p) => (
@@ -248,4 +288,7 @@ function Footer() {
   );
 }
 
-Object.assign(window, { WorkshopStrip, About, ScheduleGrid, Classes, Pricing, Requirements, Register, Footer });
+Object.assign(window, {
+  WorkshopStrip, About, ScheduleGrid, WednesdayClasses, FridaySocials, Location,
+  Classes, Pricing, Requirements, Register, Footer,
+});
