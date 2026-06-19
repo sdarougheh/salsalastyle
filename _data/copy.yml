@@ -1,45 +1,54 @@
 # Homepage copy. Edit here to change section text without touching JS.
 
 hero:
-  title_line_1: "Find the <em>one</em>"
-  title_line_2: "on the <em>line</em>"
+  title_line_1: "Learn Salsa"
+  title_line_2: "in Copenhagen"
   lede: >
-    LA-style Salsa — also called <em>on1</em> — is a Salsa style that originated
-    in the North American ballrooms. Unlike Cuban Salsa, the couple dances in a
-    linear pattern rather than circular. Popular across Europe, quietly missing
-    from Copenhagen — we're here to change that.
+    Salsa is a fun and fast couple dance wildly popular in Copenhagen.
+    LA-Style Salsa (on1) is a style of salsa known for its energy and elegance.
+    Learn salsa with us — no experience or partner needed, and you can
+    start this week!
   photo: "assets/images/photo-class-1.png"
   cta_primary:
+    label: "See the classes"
+    href: "#schedule"
+  cta_secondary:
     label: "Register"
     href: "/registration"
-  cta_secondary:
-    label: "See the schedule"
-    href: "#schedule"
 
-schedule_header:
+wednesday_classes:
   eyebrow: "Schedule"
-  title: "Autumn Season 2026"
-  subtitle_lead: "Season runs September 2 – October 28 (9 Wednesdays). Socials on selected Fridays — see"
-  subtitle_trail: "for the calendar."
-  location: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
+  title: "Wednesday classes"
+  subtitle: "Season runs September 2 – October 28 — 9 Wednesdays."
+
+friday_socials:
+  eyebrow: "Socials"
+  title: "Friday socials"
+  subtitle_lead: "Open social dance evenings on selected Fridays — see"
+  subtitle_trail: "for upcoming dates. All welcome (yes, beginners too)."
+
+location:
+  label: "All classes at"
+  address: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
+  cta_label: "Register for the season"
+  cta_href: "/registration"
 
 classes_intro:
   title: "Which class is for you?"
   lede: >
-    LA-style basics match Cuban Salsa. New to partner dancing? Try beginner
-    classes at <a href="https://4water.org/copenhagen/dance/" target="_blank" rel="noreferrer">4water</a>
-    or <a href="https://copenhagensalsaacademy.dk/" target="_blank" rel="noreferrer">CSA</a> first.
+    Are you unsure about your level, or have no experience but would like to try out?
+    <a href="/contact">Reach out to us</a> — we'll help you pick.
 
 pricing:
-  title: "Summer 2026 pricing."
-  subtitle: >
-    Signing up for all three classes? <a href="/registration">Reach out</a> — we'll sort a package.
+  title: "Autumn 2026 pricing."
+  dropin_callout: >
+    Drop in for a single class — 100 DKK student / 110 DKK regular.
 
 register:
   kicker: "Ready when you are"
   title_line_1: "Come"
   title_line_2: "dance with us."
-  lede: "Pick a class, and we'll see you on Monday."
+  lede: "Pick a class, and we'll see you on Wednesday."
   photo: "assets/images/photo-class-1.png"
   cta_primary:
     label: "Register now"
@@ -63,12 +72,13 @@ footer:
     - title: "Classes"
       links:
         - { label: "Schedule", href: "#schedule" }
-        - { label: "Levels",   href: "#classes"  }
         - { label: "Pricing",  href: "#pricing"  }
         - { label: "Register", href: "/registration" }
     - title: "Info"
       links:
         - { label: "About",    href: "/about"    }
+        - { label: "FAQ",      href: "/faq"      }
+        - { label: "Contact",  href: "/contact"  }
         - { label: "Payments", href: "/payments" }
         - { label: "Terms",    href: "/terms"    }
         - { label: "Privacy",  href: "/privacy"  }

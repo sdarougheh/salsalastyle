@@ -46,9 +46,11 @@ function App() {
               <div className="mobile-frame-notch" />
               <HeroFullbleed />
               <WorkshopStrip />
-              <ScheduleGrid />
+              <WednesdayClasses />
               <Classes />
+              <Location />
               <Pricing />
+              <FridaySocials />
               <Register />
               <Footer />
             </div>
@@ -58,9 +60,11 @@ function App() {
         <>
           <HeroFullbleed />
           <WorkshopStrip />
-          <ScheduleGrid />
+          <WednesdayClasses />
           <Classes />
+          <Location />
           <Pricing />
+          <FridaySocials />
           <Register />
           <Footer />
         </>
