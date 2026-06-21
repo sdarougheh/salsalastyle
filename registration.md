@@ -61,6 +61,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const data = JSON.parse(text);
                     console.log('Parsed data:', data);
                     if (data.result === 'success') {
+                        // Fire GTM event on confirmed success (non-PII payload only).
+                        try {
+                            window.dataLayer = window.dataLayer || [];
+                            window.dataLayer.push({
+                                event: 'registration_submit',
+                                classes: selectedClasses,
+                                role: document.getElementById('role').value,
+                                young_student: document.getElementById('young').checked
+                            });
+                        } catch (e) { /* analytics push must not block redirect */ }
                         window.location.href = 'success.html';
                     } else {
                         throw new Error(data.error || 'Submission failed');
