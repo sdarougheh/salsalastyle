@@ -19,17 +19,19 @@ hero:
 wednesday_classes:
   eyebrow: "Schedule"
   title: "Wednesday classes"
-  subtitle: "Season runs September 2 – October 28 — 9 Wednesdays."
+  subtitle: "Season runs September 2 – October 28 — 8 Wednesdays. No class in week 42 (autumn holidays)."
 
 friday_socials:
   eyebrow: "Socials"
   title: "Friday socials"
   subtitle_lead: "Open social dance evenings on selected Fridays — see"
   subtitle_trail: "for upcoming dates. All welcome (yes, beginners too)."
+  location_label: "All socials at"
+  location_address: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
 
 location:
   label: "All classes at"
-  address: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
+  address: "Union · Nørre Allé 7, room Aula (first floor), 2200 København"
   cta_label: "Register for the season"
   cta_href: "/registration"
 

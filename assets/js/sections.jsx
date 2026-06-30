@@ -131,6 +131,14 @@ function FridaySocials() {
       <div className="schedule-body schedule-merged">
         <ScheduleCards days={["Friday"]} />
       </div>
+      {c.location_address && (
+        <div className="schedule-footer">
+          <div className="schedule-loc">
+            <span className="schedule-loc-label">{c.location_label || "All socials at"}</span>
+            <span className="schedule-loc-addr">{c.location_address}</span>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

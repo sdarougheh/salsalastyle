@@ -8,8 +8,7 @@ This website is operated by:
 
 **Salsa LA Style**
 
-Email: salsalastyledk@gmail.com  
-CVR: 46104986
+Email: salsalastyledk@gmail.com
 
 
 Further information:
