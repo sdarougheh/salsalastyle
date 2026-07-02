@@ -12,8 +12,8 @@ function Nav() {
         </span>
       </a>
       <div className="nav-links">
-        <a href="#schedule">Schedule</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#schedule">Classes</a>
+        <a href="#events">Events</a>
         <a href="/faq">FAQ</a>
         <a href="/payments">Payments</a>
         <a href="/about">About</a>

@@ -31,6 +31,11 @@ season:
   name: "Autumn 2026"
   dates: "September 2 – October 28"
   # early_bird_until: "April 19th"   # uncomment to show early bird banner
+  # --- used to generate the recurring "Add to calendar" invites for classes ---
+  first_class: "2026-09-02"          # date of the first Wednesday (ISO)
+  weeks: 9                           # total occurrences including any holiday
+  exdates:                           # dates to skip (no class)
+    - "2026-10-14"                   # week 42, autumn holidays
 
 # MobilePay payment boxes. Edit here whenever the box changes.
 # `classes` is used by /payments and the class success page;

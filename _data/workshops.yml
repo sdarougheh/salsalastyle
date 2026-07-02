@@ -1,28 +1,24 @@
-# Upcoming workshops shown on the homepage strip.
-# `month` / `day` / `year` drive the big date block.
-# `kind` must match a key in _data/kinds.yml (controls color).
-# Set `hidden: true` to hide without deleting.
-
-# Past — uncomment / adapt if we run it again
+# Upcoming workshops. Combined with socials into "Events" on the homepage.
+# Same schema as _data/socials.yml.
+#
+# Fields:
+#   title         (required)
+#   date          (required) ISO format "YYYY-MM-DD" — drives the date block,
+#                            sorting, and the calendar invite
+#   start / end   optional "HH:MM" 24h — shown as the time and used for the invite
+#   location      optional — shown on the card and put in the calendar invite
+#   lede          optional — short description
+#   info_url      optional — e.g. the Facebook event (opens "Event info")
+#   register_url  optional — if set, shows a "Register" button
+#   kind          optional — color key from _data/kinds.yml (default: improver)
+#   hidden        optional — set true to hide without deleting
+#
+# Past — uncomment / adapt if we run it again:
 #- title: "LA-Style Crash Course"
-#  kind: "improver"
-#  month: "MAY"
-#  day: "02"
-#  year: "2026"
-#  time: "14:00 – 16:00"
-#  location: "Inflow Studio, Heimdalsgade 35"
-#  lede: "A two-hour crash course to LA-Style. We cover the key elements from the improver level, with some room for practice. You can also use the course to learn the other role, or to find out whether Improver or Intermediate 1 suits you better."
+#  date: "2026-05-02"
+#  start: "14:00"
+#  end: "16:00"
+#  location: "Inflow Studio · Heimdalsgade 35, 2200 København"
+#  lede: "A two-hour crash course to LA-Style. We cover the key elements from the improver level, with some room for practice."
 #  info_url: "https://fb.me/e/4oKutt0CF"
-#  register_url: "/registration_workshop"
-
-# Example (commented out):
-#- title: "Basics of Chacha"
-#  kind: "social"
-#  month: "FEB"
-#  day: "22"
-#  year: "2026"
-#  time: "12:00 – 12:50"
-#  location: "TBD"
-#  lede: ""
-#  info_url: "https://fb.me/e/42Wwh6NnC"
 #  register_url: "/registration_workshop"

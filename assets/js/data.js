@@ -26,17 +26,46 @@ const PRICING = ({{ site.data.pricing | jsonify }}).map(function (p) {
 
 const LEVELS = {{ site.data.levels | jsonify }};
 
-// Workshops: filter out `hidden: true` entries. Empty/null when no workshops.
-const WORKSHOPS = ({{ site.data.workshops | jsonify }} || []).filter(function (w) {
-  return !w.hidden;
-});
+// Events = workshops + socials, combined and sorted by date.
+// Each source file (workshops.yml / socials.yml) shares the same schema;
+// we tag them by type and derive display fields from the ISO `date`.
+const MONTHS_ABBR = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+function decorateEvent(e, type) {
+  const out = Object.assign({ type: type }, e);
+  if (e.date) {
+    const p = String(e.date).split("-"); // [YYYY, MM, DD]
+    out._year = p[0];
+    out._month = MONTHS_ABBR[parseInt(p[1], 10) - 1] || "";
+    out._day = p[2];
+  }
+  out._time = (e.start && e.end) ? (e.start + " – " + e.end) : (e.start || "");
+  out.kind = e.kind || (type === "workshop" ? "improver" : "social");
+  return out;
+}
+
+const RAW_WORKSHOPS = ({{ site.data.workshops | jsonify }} || []);
+const RAW_SOCIALS   = ({{ site.data.socials   | jsonify }} || []);
+
+const EVENTS = RAW_WORKSHOPS.map(function (e) { return decorateEvent(e, "workshop"); })
+  .concat(RAW_SOCIALS.map(function (e) { return decorateEvent(e, "social"); }))
+  .filter(function (e) { return !e.hidden; })
+  .sort(function (a, b) {
+    const ka = (a.date || "") + (a.start || "");
+    const kb = (b.date || "") + (b.start || "");
+    return ka < kb ? -1 : (ka > kb ? 1 : 0);
+  });
+
+// Kept for backwards compatibility.
+const WORKSHOPS = EVENTS.filter(function (e) { return e.type === "workshop"; });
 
 const COPY = {{ site.data.copy | jsonify }};
 const SEASON = {{ site.season | jsonify }};
+const SITE_URL = {{ site.url | jsonify }};
 
 // Derive hour range from schedule (kept for any legacy grid view).
 const HOURS = ["18:00", "19:00", "20:00", "21:00", "22:00"];
 
 Object.assign(window, {
-  SCHEDULE, HOURS, KIND_COLORS, CLASSES, PRICING, LEVELS, WORKSHOPS, COPY, SEASON,
+  SCHEDULE, HOURS, KIND_COLORS, CLASSES, PRICING, LEVELS, WORKSHOPS, EVENTS, COPY, SEASON, SITE_URL,
 });

@@ -1,44 +1,92 @@
 // Body sections — content comes from window.COPY / window.WORKSHOPS / etc.,
 // populated by assets/js/data.js (rendered server-side from _data/*.yml).
 
-// ---------- Workshop strip (loops over _data/workshops.yml) ----------
-function WorkshopStrip() {
-  const ws = window.WORKSHOPS || [];
-  if (!ws.length) return null;
-  const c = (window.COPY && window.COPY.workshop_strip) || {};
+// ---------- Calendar icon button (shared) ----------
+function CalendarIcon() {
+  return <span className="cal-emoji" role="img" aria-hidden="true">📅</span>;
+}
+
+function CalendarButton({ onClick, className }) {
+  const label = "Add to calendar";
   return (
-    <section className="workshop-strip">
+    <button
+      type="button"
+      className={"cal-btn " + (className || "")}
+      onClick={onClick}
+      aria-label={label}
+    >
+      <span className="cal-btn-label">{label}</span>
+      <CalendarIcon />
+    </button>
+  );
+}
+
+// ---------- Events (workshops + socials, combined via _data + data.js) ----------
+function addToCalendar(e) {
+  if (window.SLSCalendar) window.SLSCalendar.downloadEvent(e);
+}
+
+function EventsPlaceholder({ c }) {
+  const cards = c.placeholders || [];
+  if (!cards.length) return null;
+  return (
+    <>
+      {c.empty_note && <p className="events-empty-note">{c.empty_note}</p>}
+      <div className="events-placeholder-grid">
+        {cards.map((p, i) => (
+          <div key={i} className={`event-placeholder-card kind-${p.kind || "social"}`}>
+            <div className="event-placeholder-title">{p.title}</div>
+            {p.text && <p className="event-placeholder-text">{p.text}</p>}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function Events() {
+  const events = window.EVENTS || [];
+  const c = (window.COPY && window.COPY.events) || {};
+  const hasEvents = events.length > 0;
+  return (
+    <section className="workshop-strip" id="events">
       <div className="workshop-inner">
         <div className="workshop-head">
           <div className="workshop-eyebrow">
-            <span className="workshop-dot" /> {c.eyebrow || "Upcoming Workshop"}
+            <span className="workshop-dot" /> {c.eyebrow || "Events"}
           </div>
-          <h2 className="workshop-headline">{c.headline || "Upcoming Workshops"}</h2>
+          <h2 className="workshop-headline">{c.headline || "Upcoming events"}</h2>
         </div>
-        {ws.map((w, i) => (
-          <div key={i} className={`workshop-card kind-${w.kind || "social"}`}>
+        {!hasEvents && <EventsPlaceholder c={c} />}
+        {hasEvents && events.map((e, i) => (
+          <div key={i} className={`workshop-card kind-${e.kind}`}>
             <div className="workshop-card-date">
-              <div className="workshop-card-month">{w.month}</div>
-              <div className="workshop-card-day">{w.day}</div>
-              <div className="workshop-card-year">{w.year}</div>
+              <div className="workshop-card-month">{e._month}</div>
+              <div className="workshop-card-day">{e._day}</div>
+              <div className="workshop-card-year">{e._year}</div>
             </div>
             <div className="workshop-card-body">
-              <div className="workshop-card-title">{w.title}</div>
+              <div className="workshop-card-title">{e.title}</div>
               <div className="workshop-card-meta">
-                {w.time}{w.time && w.location ? " · " : ""}{w.location}
+                {e._time}{e._time && e.location ? " · " : ""}{e.location}
               </div>
-              {w.lede && <p className="workshop-card-lede">{w.lede}</p>}
+              {e.lede && <p className="workshop-card-lede">{e.lede}</p>}
             </div>
             <div className="workshop-card-cta">
-              {w.info_url && (
-                <a className="workshop-card-btn" href={w.info_url} target="_blank" rel="noreferrer">
+              {e.info_url && (
+                <a className="workshop-card-btn" href={e.info_url} target="_blank" rel="noreferrer">
                   Event info ↗
                 </a>
               )}
-              <a className="workshop-card-btn workshop-card-btn-primary"
-                 href={w.register_url || "/registration_workshop"}>
-                Register →
-              </a>
+              <CalendarButton
+                className="cal-btn-onlight"
+                onClick={() => addToCalendar(e)}
+              />
+              {e.register_url && (
+                <a className="workshop-card-btn workshop-card-btn-primary" href={e.register_url}>
+                  Register →
+                </a>
+              )}
             </div>
           </div>
         ))}
@@ -46,6 +94,9 @@ function WorkshopStrip() {
     </section>
   );
 }
+
+// Backwards-compatible alias (app.jsx may still reference WorkshopStrip).
+const WorkshopStrip = Events;
 
 function About() { return null; }
 
@@ -71,6 +122,12 @@ function ScheduleCards({ days }) {
                 </div>
                 {s.blurb && <p className="sc-card-blurb">{s.blurb}</p>}
                 {s.note && <div className="sc-card-note">{s.note}</div>}
+                {s.kind !== "social" && (window.SEASON && window.SEASON.first_class) && (
+                  <CalendarButton
+                    className="cal-btn-block"
+                    onClick={() => window.SLSCalendar && window.SLSCalendar.downloadClass(s)}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -297,6 +354,6 @@ function Footer() {
 }
 
 Object.assign(window, {
-  WorkshopStrip, About, ScheduleGrid, WednesdayClasses, FridaySocials, Location,
+  Events, WorkshopStrip, About, ScheduleGrid, WednesdayClasses, FridaySocials, Location,
   Classes, Pricing, Requirements, Register, Footer,
 });

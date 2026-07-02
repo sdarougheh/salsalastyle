@@ -21,13 +21,23 @@ wednesday_classes:
   title: "Wednesday classes"
   subtitle: "Season runs September 2 – October 28 — 8 Wednesdays. No class in week 42 (autumn holidays)."
 
-friday_socials:
-  eyebrow: "Socials"
-  title: "Friday socials"
-  subtitle_lead: "Open social dance evenings on selected Fridays — see"
-  subtitle_trail: "for upcoming dates. All welcome (yes, beginners too)."
-  location_label: "All socials at"
-  location_address: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
+# Header for the combined Events section (workshops + socials).
+# When there are no events in _data/workshops.yml or _data/socials.yml,
+# the placeholder cards below are shown instead.
+events:
+  eyebrow: "Events"
+  headline: "Upcoming events"
+  empty_note: "Nothing on the calendar right now — but we run these regularly. Follow us on Facebook for dates."
+  placeholders:
+    - title: "Salsa at Six"
+      kind: "social"
+      text: "Early-evening crossbody social on selected Fridays — a relaxed way to start the weekend."
+    - title: "NY meets LA"
+      kind: "social"
+      text: "Our big social evening, featuring both on1 and on2 salsa, with the occasional cha-cha-cha."
+    - title: "Workshops"
+      kind: "improver"
+      text: "Occasional deep-dive workshops on specific topics — turns, styling, musicality, and more."
 
 location:
   label: "All classes at"
@@ -58,10 +68,6 @@ register:
   cta_secondary:
     label: "Payments"
     href: "/payments"
-
-workshop_strip:
-  eyebrow: "Upcoming Workshop"
-  headline: "Upcoming Workshops"
 
 footer:
   brand_main: "Salsa LA-Style"
