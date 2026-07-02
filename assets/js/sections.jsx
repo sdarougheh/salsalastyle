@@ -26,6 +26,27 @@ function addToCalendar(e) {
   if (window.SLSCalendar) window.SLSCalendar.downloadEvent(e);
 }
 
+// Prefers a real hosted .ics link (copyable / shareable, works on phones);
+// falls back to client-side generation for events without a hosted file.
+function AddToCalendar({ event, className }) {
+  const label = "Add to calendar";
+  const cls = "cal-btn " + (className || "");
+  if (event.ics) {
+    return (
+      <a className={cls} href={event.ics} download aria-label={label}>
+        <span className="cal-btn-label">{label}</span>
+        <CalendarIcon />
+      </a>
+    );
+  }
+  return (
+    <button type="button" className={cls} onClick={() => addToCalendar(event)} aria-label={label}>
+      <span className="cal-btn-label">{label}</span>
+      <CalendarIcon />
+    </button>
+  );
+}
+
 function EventsPlaceholder({ c }) {
   const cards = c.placeholders || [];
   if (!cards.length) return null;
@@ -78,10 +99,7 @@ function Events() {
                   Event info ↗
                 </a>
               )}
-              <CalendarButton
-                className="cal-btn-onlight"
-                onClick={() => addToCalendar(e)}
-              />
+              <AddToCalendar event={e} className="cal-btn-onlight" />
               {e.register_url && (
                 <a className="workshop-card-btn workshop-card-btn-primary" href={e.register_url}>
                   Register →

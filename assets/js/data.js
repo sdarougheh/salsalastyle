@@ -41,6 +41,8 @@ function decorateEvent(e, type) {
   }
   out._time = (e.start && e.end) ? (e.start + " – " + e.end) : (e.start || "");
   out.kind = e.kind || (type === "workshop" ? "improver" : "social");
+  // Hosted .ics URL (real, shareable link) when the event has an id.
+  out.ics = e.id ? ("/events/" + e.id + ".ics") : null;
   return out;
 }
 

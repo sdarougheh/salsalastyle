@@ -1,0 +1,50 @@
+{%- comment -%}
+Renders a full iCalendar (.ics) document for a single event object passed as
+`include.event`. Used by the per-event source files under /events/.
+Escapes text per RFC 5545 (backslash, semicolon, comma, newline).
+{%- endcomment -%}
+{%- assign ev = include.event -%}
+{%- assign summary = ev.calendar_title | default: ev.title -%}
+{%- assign descsrc = ev.calendar_description | default: ev.lede | default: "" -%}
+{%- assign NL = "
+" -%}
+{%- assign summary_e = summary | replace: "\", "\\" | replace: ";", "\;" | replace: ",", "\," -%}
+{%- assign loc_e = ev.location | default: "" | replace: "\", "\\" | replace: ";", "\;" | replace: ",", "\," -%}
+{%- capture descfull -%}{{ descsrc }}{%- if ev.info_url %}{{ NL }}{{ NL }}{{ ev.info_url }}{%- endif -%}{%- endcapture -%}
+{%- assign desc_e = descfull | replace: "\", "\\" | replace: ";", "\;" | replace: ",", "\," | replace: NL, "\n" -%}
+{%- assign d = ev.date | replace: "-", "" -%}
+{%- assign ts = ev.start | default: "00:00" | replace: ":", "" -%}
+{%- assign te = ev.end | default: ev.start | default: "00:00" | replace: ":", "" -%}
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Salsa LA-Style//Website//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VTIMEZONE
+TZID:Europe/Copenhagen
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:{{ ev.id }}@salsalastyle.dk
+DTSTAMP:20260101T000000Z
+DTSTART;TZID=Europe/Copenhagen:{{ d }}T{{ ts }}00
+DTEND;TZID=Europe/Copenhagen:{{ d }}T{{ te }}00
+SUMMARY:{{ summary_e }}
+{% if ev.location %}LOCATION:{{ loc_e }}
+{% endif %}{% if desc_e != "" %}DESCRIPTION:{{ desc_e }}
+{% endif %}{% if ev.info_url %}URL:{{ ev.info_url }}
+{% endif %}END:VEVENT
+END:VCALENDAR

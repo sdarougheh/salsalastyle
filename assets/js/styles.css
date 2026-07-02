@@ -1934,6 +1934,8 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 .mobile-frame-screen .workshop-card-date { justify-self: start; padding: 10px 14px; }
 .mobile-frame-screen .workshop-card-day { font-size: 48px; }
 .mobile-frame-screen .workshop-card-cta { flex-direction: row; flex-wrap: wrap; }
+.mobile-frame-screen .workshop-card-cta > .workshop-card-btn { flex: 1 1 auto; }
+.mobile-frame-screen .workshop-card-cta > .cal-btn { order: 1; flex-basis: 100%; justify-content: center; }
 .mobile-frame-screen .workshop-card-btn { font-size: 12px; padding: 11px 18px; letter-spacing: 0.06em; }
 .mobile-frame-screen .section-title-xl { font-size: clamp(40px, 14vw, 64px); }
 .mobile-frame-screen .sc { grid-template-columns: 1fr; gap: 20px; }
@@ -1970,7 +1972,10 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
   .workshop-card { grid-template-columns: 1fr; gap: 20px; padding: 28px; }
   .workshop-card-date { justify-self: start; padding: 12px 16px; }
   .workshop-card-day { font-size: 56px; }
-  .workshop-card-cta { flex-direction: row; }
+  /* Event info + Register on row 1, Add to calendar full-width on row 2 */
+  .workshop-card-cta { flex-direction: row; flex-wrap: wrap; }
+  .workshop-card-cta > .workshop-card-btn { flex: 1 1 auto; }
+  .workshop-card-cta > .cal-btn { order: 1; flex-basis: 100%; justify-content: center; }
   .levels-strip { grid-template-columns: 1fr; gap: 20px; }
   .levels-strip-row { grid-template-columns: repeat(2, 1fr); }
   .hero-split-grid { grid-template-columns: 1fr; gap: 36px; }

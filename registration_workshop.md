@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
   {% for workshop in site.data.workshops %}{% unless workshop.hidden %}
                 <div class="ws-option">
                   <label><input type="checkbox" name="class" value="{{ workshop.title }}"> {{ workshop.title }} ({{ workshop.date }}{% if workshop.note %} - {{ workshop.note }}{% endif %})</label>
-                  <button type="button" class="cal-btn ws-cal" data-ws="{{ forloop.index0 }}" aria-label="Add {{ workshop.title }} to calendar"><span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span></button>
+                  {% if workshop.id %}<a class="cal-btn ws-cal" href="/events/{{ workshop.id }}.ics" download aria-label="Add {{ workshop.title }} to calendar"><span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span></a>{% else %}<button type="button" class="cal-btn ws-cal" data-ws="{{ forloop.index0 }}" aria-label="Add {{ workshop.title }} to calendar"><span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span></button>{% endif %}
                 </div>
   {% endunless %}{% endfor %}
             </div>

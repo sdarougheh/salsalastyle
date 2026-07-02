@@ -13,9 +13,9 @@
 #   kind          optional — color key from _data/kinds.yml (default: social)
 #   hidden        optional — set true to hide without deleting
 #
-- title: "Salsa Social"
-  calendar_title: "100% Crossbody -- NY meets LA"
-  date: "2026-04-27"
+- title: "100% Crossbody -- NY meets LA"
+  id: "crossbody-ny-meets-la-2026-07-03"
+  date: "2026-07-03"
   start: "20:00"
   end: "23:00"
   location: "Inflow Studio · Heimdalsgade 35, 2200 København"

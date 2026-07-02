@@ -234,6 +234,8 @@ button[type="submit"]:disabled {
 }
 .ws-cal:hover { background: rgba(0,0,0,0.06); border-color: currentColor; }
 .ws-cal .cal-emoji { font-size: 16px; line-height: 1; }
+/* When rendered as a link, keep the button look (no accent color / underline) */
+.page-main a.ws-cal { color: var(--ink, #1F1410); text-decoration: none; }
 @media (max-width: 480px) {
   .ws-cal-text { display: none; }
 }
