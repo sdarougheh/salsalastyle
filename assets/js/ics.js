@@ -88,7 +88,7 @@
       "DTSTAMP:" + nowStamp(),
       "DTSTART;TZID=" + TZID + ":" + dtLocal(e.date, start),
       "DTEND;TZID=" + TZID + ":" + dtLocal(e.date, end),
-      "SUMMARY:" + escapeText(e.title)
+      "SUMMARY:" + escapeText(e.calendar_title || e.title)
     ];
     if (e.location) lines.push("LOCATION:" + escapeText(e.location));
     // Prefer a calendar-specific description; fall back to the website lede.

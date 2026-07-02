@@ -14,6 +14,7 @@
 #   hidden        optional — set true to hide without deleting
 #
 - title: "Salsa Social"
+  calendar_title: "100% Crossbody -- NY meets LA"
   date: "2026-04-27"
   start: "20:00"
   end: "23:00"

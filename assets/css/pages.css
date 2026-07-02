@@ -202,6 +202,42 @@ button[type="submit"]:disabled {
 
 .back-link { margin-top: 24px; font-size: 14px; }
 
+/* Workshop option row with an inline "Add to calendar" button */
+.ws-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ws-option label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  margin: 0;
+}
+.ws-cal {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #E8DDCB);
+  background: transparent;
+  color: var(--ink, #1F1410);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ws-cal:hover { background: rgba(0,0,0,0.06); border-color: currentColor; }
+.ws-cal .cal-emoji { font-size: 16px; line-height: 1; }
+@media (max-width: 480px) {
+  .ws-cal-text { display: none; }
+}
+
 /* Pricing table used on the success page */
 .pricing-container { overflow-x: auto; }
 .pricing-table tr.highlight { background: var(--chip, #E1ECE6); }

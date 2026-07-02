@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.google.com/recaptcha/api.js?render=6Ld7gCcsAAAAAFgmvwijHhrD3avqOOSuAwjVn_A3"></script>
 
 <div class="registration-container">
-    <h1>Class Registration</h1>
+    <h1>Workshop Registration</h1>
 
     <div id="errorMessage" class="error">
         Something went wrong. Please try again.
@@ -124,14 +124,12 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="form-group">
             <label>Which classes? (select all that apply) *</label>
             <div class="checkbox-list">
-
-
-  {% for workshop in site.data.workshops %}
-                <label><input type="checkbox" name="class" value="{{ workshop.title}}"> {{ workshop.title}} ({{ workshop.date}} 
-                {% if workshop.note %} - {{ workshop.note }}{% endif %}
-                )</label>
-  {% endfor %}
-
+  {% for workshop in site.data.workshops %}{% unless workshop.hidden %}
+                <div class="ws-option">
+                  <label><input type="checkbox" name="class" value="{{ workshop.title }}"> {{ workshop.title }} ({{ workshop.date }}{% if workshop.note %} - {{ workshop.note }}{% endif %})</label>
+                  <button type="button" class="cal-btn ws-cal" data-ws="{{ forloop.index0 }}" aria-label="Add {{ workshop.title }} to calendar"><span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span></button>
+                </div>
+  {% endunless %}{% endfor %}
             </div>
             <div id="classError" class="field-error">Please select at least one class</div>
         </div>
@@ -156,6 +154,20 @@ document.addEventListener('DOMContentLoaded', function() {
     </form>
     
     <div class="back-link">
-        <a href="index.html">← Back to schedule</a>
+        <a href="/#events">← Back to events</a>
     </div>
 </div>
+
+<!-- Calendar (.ics) generator, reused from the homepage -->
+<script src="/assets/js/ics.js"></script>
+<script>
+(function () {
+  var workshops = {{ site.data.workshops | jsonify }} || [];
+  document.querySelectorAll('.ws-cal').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var w = workshops[parseInt(btn.getAttribute('data-ws'), 10)];
+      if (w && window.SLSCalendar) window.SLSCalendar.downloadEvent(w);
+    });
+  });
+})();
+</script>
