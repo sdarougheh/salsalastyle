@@ -30,3 +30,8 @@ social:
   bg: "#E6E1D7"
   fg: "#2A241C"
   dot: "#8A8277"
+open:
+  label: "Open level"
+  bg: "#E4E2DE"
+  fg: "#33302B"
+  dot: "#8A8277"

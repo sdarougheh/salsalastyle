@@ -15,6 +15,7 @@
 #
 - title: "LA-Style Afternoon"
   id: "la-style-afternoon-2026-07-11"
+  kind: "open"
   date: "2026-07-11"
   start: "15:00"
   end: "17:00"
@@ -55,6 +56,7 @@
 
 - title: "LA-Style Salsa Crash Course"
   id: "la-style-crash-course-2026-08-30"
+  kind: "improver"
   date: "2026-08-30"
   start: "15:00"
   end: "17:00"

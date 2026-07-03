@@ -967,6 +967,7 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 .kind-inter1   { --k-bg: #FBC7A8; --k-fg: #7A1F22; --k-dot: #E05A2B; }
 .kind-inter2   { --k-bg: #E63946; --k-fg: #FFFFFF; --k-dot: #E63946; }
 .kind-social   { --k-bg: #E6E1D7; --k-fg: #2A241C; --k-dot: #8A8277; }
+.kind-open     { --k-bg: #E4E2DE; --k-fg: #33302B; --k-dot: #8A8277; }
 
 /* Cards that fill with kind color */
 .sc-card,
@@ -976,7 +977,8 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 .workshop-card.kind-practica,
 .workshop-card.kind-inter1,
 .workshop-card.kind-inter2,
-.workshop-card.kind-social {
+.workshop-card.kind-social,
+.workshop-card.kind-open {
   background: var(--k-bg, var(--bg));
   color: var(--k-fg, var(--ink));
 }
