@@ -1,7 +1,7 @@
 ---
 ref: "crossbody-ny-meets-la-2026-07-03"
 type: social
-title: "100% Crossbody -- NY meets LA"
+title: "100% Crossbody — NY meets LA"
 date: 2026-07-03
 start: "20:00"
 end: "23:00"
