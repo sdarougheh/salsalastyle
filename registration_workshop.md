@@ -182,13 +182,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 (function () {
+  var ua = navigator.userAgent || "";
+  var isiOS = /iPhone|iPad|iPod/i.test(ua)
+    || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
   document.querySelectorAll('.ws-option').forEach(function (row) {
     var btn = row.querySelector('[data-atcb]');
     var cfgEl = row.querySelector('.atcb-config');
     if (!btn || !cfgEl) return;
     var cfg = JSON.parse(cfgEl.textContent);
+    cfg.hideBranding = true;
     btn.addEventListener('click', function () {
-      if (window.atcb_action) window.atcb_action(cfg, btn);
+      var c = Object.assign({}, cfg);
+      if (isiOS) c.options = ["Apple"]; // go straight to Apple Calendar on iOS
+      if (window.atcb_action) window.atcb_action(c, btn);
     });
   });
 })();

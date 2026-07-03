@@ -69,8 +69,15 @@
           var cfgEl = document.querySelector('.atcb-config');
           if (!btn || !cfgEl) return;
           var cfg = JSON.parse(cfgEl.textContent);
+          cfg.hideBranding = true;
+          var ua = navigator.userAgent || "";
+          var isiOS = /iPhone|iPad|iPod/i.test(ua)
+            || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
           btn.addEventListener('click', function () {
-            if (window.atcb_action) window.atcb_action(cfg, btn);
+            // On iOS, go straight to Apple Calendar; elsewhere show the chooser.
+            var c = Object.assign({}, cfg);
+            if (isiOS) c.options = ["Apple"];
+            if (window.atcb_action) window.atcb_action(c, btn);
           });
         })();
       </script>
