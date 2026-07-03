@@ -26,13 +26,13 @@ const PRICING = ({{ site.data.pricing | jsonify }}).map(function (p) {
 
 const LEVELS = {{ site.data.levels | jsonify }};
 
-// Events = workshops + socials, combined and sorted by date.
-// Each source file (workshops.yml / socials.yml) shares the same schema;
-// we tag them by type and derive display fields from the ISO `date`.
+// Events come from the `_events/` collection (one file per event). We only
+// pull the light fields needed for the homepage cards here; the full
+// description lives on each event's own page (/events/<id>/).
 const MONTHS_ABBR = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
-function decorateEvent(e, type) {
-  const out = Object.assign({ type: type }, e);
+function decorateEvent(e) {
+  const out = Object.assign({}, e);
   if (e.date) {
     const p = String(e.date).split("-"); // [YYYY, MM, DD]
     out._year = p[0];
@@ -40,18 +40,32 @@ function decorateEvent(e, type) {
     out._day = p[2];
   }
   out._time = (e.start && e.end) ? (e.start + " – " + e.end) : (e.start || "");
-  out.kind = e.kind || (type === "workshop" ? "improver" : "social");
-  // Hosted .ics URL (real, shareable link) when the event has an id.
-  out.ics = e.id ? ("/events/" + e.id + ".ics") : null;
+  out.kind = e.kind || (e.type === "workshop" ? "improver" : "social");
+  // Hosted .ics URL (real, shareable link) when the event has a ref.
+  out.ics = e.ref ? ("/events/" + e.ref + ".ics") : null;
   return out;
 }
 
-const RAW_WORKSHOPS = ({{ site.data.workshops | jsonify }} || []);
-const RAW_SOCIALS   = ({{ site.data.socials   | jsonify }} || []);
+const RAW_EVENTS = [
+{% for e in site.events %}{% unless e.hidden %}  {
+    "type": {{ e.type | default: "workshop" | jsonify }},
+    "ref": {{ e.ref | jsonify }},
+    "title": {{ e.title | jsonify }},
+    "calendar_title": {{ e.calendar_title | jsonify }},
+    "date": {{ e.date | date: "%Y-%m-%d" | jsonify }},
+    "start": {{ e.start | jsonify }},
+    "end": {{ e.end | jsonify }},
+    "location": {{ e.location | jsonify }},
+    "lede": {{ e.lede | jsonify }},
+    "kind": {{ e.kind | jsonify }},
+    "info_url": {{ e.info_url | jsonify }},
+    "register_url": {{ e.register_url | jsonify }},
+    "page_url": {{ e.url | jsonify }}
+  },
+{% endunless %}{% endfor %}];
 
-const EVENTS = RAW_WORKSHOPS.map(function (e) { return decorateEvent(e, "workshop"); })
-  .concat(RAW_SOCIALS.map(function (e) { return decorateEvent(e, "social"); }))
-  .filter(function (e) { return !e.hidden; })
+const EVENTS = RAW_EVENTS
+  .map(decorateEvent)
   .sort(function (a, b) {
     const ka = (a.date || "") + (a.start || "");
     const kb = (b.date || "") + (b.start || "");

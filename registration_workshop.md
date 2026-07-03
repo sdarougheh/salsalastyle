@@ -124,10 +124,32 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="form-group">
             <label>Which classes? (select all that apply) *</label>
             <div class="checkbox-list">
-  {% for workshop in site.data.workshops %}{% unless workshop.hidden %}
+  {%- assign NL = "
+" -%}
+  {% assign workshops = site.events | where: "type", "workshop" | sort: "date" %}
+  {% for workshop in workshops %}{% unless workshop.hidden %}
+                {%- capture wsdesc -%}{{ workshop.calendar_description | default: workshop.lede }}{%- endcapture -%}
+                {%- assign wsdesc = wsdesc | replace: NL, "[br]" -%}
                 <div class="ws-option">
-                  <label><input type="checkbox" name="class" value="{{ workshop.title }}"> {{ workshop.title }} ({{ workshop.date }}{% if workshop.note %} - {{ workshop.note }}{% endif %})</label>
-                  {% if workshop.id %}<a class="cal-btn ws-cal" href="/events/{{ workshop.id }}.ics" download aria-label="Add {{ workshop.title }} to calendar"><span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span></a>{% else %}<button type="button" class="cal-btn ws-cal" data-ws="{{ forloop.index0 }}" aria-label="Add {{ workshop.title }} to calendar"><span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span></button>{% endif %}
+                  <label><input type="checkbox" name="class" value="{{ workshop.title }}"> {{ workshop.title }} ({{ workshop.date | date: "%Y-%m-%d" }}){% if workshop.register_url %} — <a href="{{ workshop.url }}">details</a>{% endif %}</label>
+                  <button type="button" class="cal-btn ws-cal" data-atcb aria-label="Add {{ workshop.title }} to calendar">
+                    <span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span>
+                  </button>
+                  <script type="application/json" class="atcb-config">
+                  {
+                    "name": {{ workshop.calendar_title | default: workshop.title | jsonify }},
+                    "description": {{ wsdesc | jsonify }},
+                    "startDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
+                    "startTime": "{{ workshop.start }}",
+                    "endDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
+                    "endTime": "{{ workshop.end }}",
+                    "timeZone": "Europe/Copenhagen",
+                    "location": {{ workshop.location | jsonify }},
+                    "options": ["Apple","Google","iCal","Outlook.com","Microsoft365","Yahoo"],
+                    {% if workshop.ref %}"icsFile": "{{ site.url }}/events/{{ workshop.ref }}.ics",{% endif %}
+                    "listStyle": "overlay"
+                  }
+                  </script>
                 </div>
   {% endunless %}{% endfor %}
             </div>
@@ -158,15 +180,15 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-<!-- Calendar (.ics) generator, reused from the homepage -->
-<script src="/assets/js/ics.js"></script>
 <script>
 (function () {
-  var workshops = {{ site.data.workshops | jsonify }} || [];
-  document.querySelectorAll('.ws-cal').forEach(function (btn) {
+  document.querySelectorAll('.ws-option').forEach(function (row) {
+    var btn = row.querySelector('[data-atcb]');
+    var cfgEl = row.querySelector('.atcb-config');
+    if (!btn || !cfgEl) return;
+    var cfg = JSON.parse(cfgEl.textContent);
     btn.addEventListener('click', function () {
-      var w = workshops[parseInt(btn.getAttribute('data-ws'), 10)];
-      if (w && window.SLSCalendar) window.SLSCalendar.downloadEvent(w);
+      if (window.atcb_action) window.atcb_action(cfg, btn);
     });
   });
 })();

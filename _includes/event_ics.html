@@ -12,7 +12,7 @@ Escapes text per RFC 5545 (backslash, semicolon, comma, newline).
 {%- assign loc_e = ev.location | default: "" | replace: "\", "\\" | replace: ";", "\;" | replace: ",", "\," -%}
 {%- capture descfull -%}{{ descsrc }}{%- if ev.info_url %}{{ NL }}{{ NL }}{{ ev.info_url }}{%- endif -%}{%- endcapture -%}
 {%- assign desc_e = descfull | replace: "\", "\\" | replace: ";", "\;" | replace: ",", "\," | replace: NL, "\n" -%}
-{%- assign d = ev.date | replace: "-", "" -%}
+{%- assign d = ev.date | date: "%Y%m%d" -%}
 {%- assign ts = ev.start | default: "00:00" | replace: ":", "" -%}
 {%- assign te = ev.end | default: ev.start | default: "00:00" | replace: ":", "" -%}
 BEGIN:VCALENDAR

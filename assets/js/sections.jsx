@@ -26,24 +26,31 @@ function addToCalendar(e) {
   if (window.SLSCalendar) window.SLSCalendar.downloadEvent(e);
 }
 
-// Prefers a real hosted .ics link (copyable / shareable, works on phones);
-// falls back to client-side generation for events without a hosted file.
-function AddToCalendar({ event, className }) {
-  const label = "Add to calendar";
-  const cls = "cal-btn " + (className || "");
-  if (event.ics) {
-    return (
-      <a className={cls} href={event.ics} download aria-label={label}>
-        <span className="cal-btn-label">{label}</span>
-        <CalendarIcon />
-      </a>
-    );
-  }
+// Multi-provider "Add to calendar" (Apple/Google/Outlook/Yahoo). Uses the
+// add-to-calendar-button web component so it also works inside in-app browsers
+// (Instagram/Facebook). Apple/iCal uses our hosted .ics via icsFile.
+function AddToCalendar({ event }) {
+  const name = event.calendar_title || event.title;
+  const descr = (event.calendar_description || event.lede || "").replace(/\n/g, "[br]");
+  const ics = event.ics ? ((window.SITE_URL || "") + event.ics) : undefined;
   return (
-    <button type="button" className={cls} onClick={() => addToCalendar(event)} aria-label={label}>
-      <span className="cal-btn-label">{label}</span>
-      <CalendarIcon />
-    </button>
+    <add-to-calendar-button
+      name={name}
+      description={descr}
+      startdate={event.date}
+      starttime={event.start}
+      enddate={event.date}
+      endtime={event.end}
+      timezone="Europe/Copenhagen"
+      location={event.location}
+      options="'Apple','Google','iCal','Outlook.com','Microsoft365','Yahoo'"
+      icsfile={ics}
+      label="Add to calendar"
+      size="2"
+      lightmode="light"
+      buttonstyle="round"
+      hideBranding="true"
+    ></add-to-calendar-button>
   );
 }
 
@@ -87,22 +94,20 @@ function Events() {
               <div className="workshop-card-year">{e._year}</div>
             </div>
             <div className="workshop-card-body">
-              <div className="workshop-card-title">{e.title}</div>
+              <div className="workshop-card-title">
+                {e.page_url
+                  ? <a className="workshop-card-title-link" href={e.page_url}>{e.title}</a>
+                  : e.title}
+              </div>
               <div className="workshop-card-meta">
                 {e._time}{e._time && e.location ? " · " : ""}{e.location}
               </div>
               {e.lede && <p className="workshop-card-lede">{e.lede}</p>}
             </div>
             <div className="workshop-card-cta">
-              {e.info_url && (
-                <a className="workshop-card-btn" href={e.info_url} target="_blank" rel="noreferrer">
-                  Event info ↗
-                </a>
-              )}
-              <AddToCalendar event={e} className="cal-btn-onlight" />
-              {e.register_url && (
-                <a className="workshop-card-btn workshop-card-btn-primary" href={e.register_url}>
-                  Register →
+              {e.page_url && (
+                <a className="workshop-card-btn workshop-card-btn-primary" href={e.page_url}>
+                  See event →
                 </a>
               )}
             </div>

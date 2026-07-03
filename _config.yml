@@ -5,6 +5,18 @@ url: "https://www.salsalastyle.dk"
 
 # Build settings
 markdown: kramdown
+timezone: Europe/Copenhagen
+future: true   # publish future-dated event pages
+
+# Events collection — one file per event under _events/, auto-published to
+# /events/<name>/ with its own page. See _layouts/event.html.
+collections:
+  events:
+    output: true
+    permalink: /events/:name/
+
+# Default social-share image for pages that don't set their own.
+og_image: "/assets/images/photo-class-2.png"
 
 # Exclude legacy / working files from the build
 exclude:
@@ -25,6 +37,11 @@ defaults:
       type: "pages"
     values:
       layout: "page"
+  - scope:
+      path: ""
+      type: "events"
+    values:
+      layout: "event"
 
 # Season info (edit in one place)
 season:

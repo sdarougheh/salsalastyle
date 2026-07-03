@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  {% include head.html %}
+  <body class="page-body event-page">
+    {% include facebook_pixel.html %}
+
+    <header class="page-nav">
+      <a class="page-nav-brand" href="{{ '/' | relative_url }}">
+        <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="">
+        <span>Salsa LA-Style</span>
+      </a>
+      <nav class="page-nav-links">
+        <a href="{{ '/' | relative_url }}">Home</a>
+        <a href="{{ '/#events' | relative_url }}">Events</a>
+        <a href="{{ '/about' | relative_url }}">About</a>
+        <a href="{{ '/registration' | relative_url }}">Register</a>
+      </nav>
+    </header>
+
+    <main class="page-main event-main">
+      {% assign k = site.data.kinds[page.kind] %}
+      <div class="event-eyebrow" {% if k %}style="color: {{ k.dot }}"{% endif %}>
+        {% if page.type == 'social' %}Social{% else %}Workshop{% endif %}
+      </div>
+      <h1 class="page-title">{{ page.title }}</h1>
+
+      <div class="event-meta">
+        <span>{{ page.date | date: "%A %-d %B %Y" }}</span>
+        {% if page.start %}<span>· {{ page.start }}{% if page.end %}–{{ page.end }}{% endif %}</span>{% endif %}
+        {% if page.location %}<span>· {{ page.location }}</span>{% endif %}
+      </div>
+
+      <div class="event-cta">
+        {% if page.register_url %}
+        <a class="btn-primary" href="{{ page.register_url }}">Register →</a>
+        {% endif %}
+
+        {%- assign NL = "
+" -%}
+        {%- capture edesc -%}{{ page.calendar_description | default: page.lede }}{%- endcapture -%}
+        {%- assign edesc = edesc | replace: NL, "[br]" -%}
+        <button type="button" class="btn-secondary btn-cal" data-atcb>
+          Add to calendar <span class="cal-emoji" role="img" aria-hidden="true">📅</span>
+        </button>
+        <script type="application/json" class="atcb-config">
+        {
+          "name": {{ page.calendar_title | default: page.title | jsonify }},
+          "description": {{ edesc | jsonify }},
+          "startDate": "{{ page.date | date: '%Y-%m-%d' }}",
+          "startTime": "{{ page.start }}",
+          "endDate": "{{ page.date | date: '%Y-%m-%d' }}",
+          "endTime": "{{ page.end }}",
+          "timeZone": "Europe/Copenhagen",
+          "location": {{ page.location | jsonify }},
+          "options": ["Apple","Google","iCal","Outlook.com","Microsoft365","Yahoo"],
+          {% if page.ref %}"icsFile": "{{ site.url }}/events/{{ page.ref }}.ics",{% endif %}
+          "listStyle": "overlay"
+        }
+        </script>
+
+        {% if page.info_url %}
+        <a class="btn-secondary" href="{{ page.info_url }}" target="_blank" rel="noreferrer">Event on Facebook ↗</a>
+        {% endif %}
+      </div>
+
+      <script>
+        (function () {
+          var btn = document.querySelector('[data-atcb]');
+          var cfgEl = document.querySelector('.atcb-config');
+          if (!btn || !cfgEl) return;
+          var cfg = JSON.parse(cfgEl.textContent);
+          btn.addEventListener('click', function () {
+            if (window.atcb_action) window.atcb_action(cfg, btn);
+          });
+        })();
+      </script>
+
+      <article class="event-description">
+        {{ content }}
+      </article>
+
+      <div class="back-link">
+        <a href="{{ '/#events' | relative_url }}">← All events</a>
+      </div>
+    </main>
+
+    <footer class="page-footer-simple">
+      <div>
+        <a href="{{ '/terms' | relative_url }}">Terms</a> ·
+        <a href="{{ '/privacy' | relative_url }}">Privacy</a> ·
+        <a href="{{ '/about' | relative_url }}">About</a>
+      </div>
+      <div>© 2026 Salsa LA-Style Copenhagen</div>
+    </footer>
+
+    <!-- Add to Calendar Button (multi-provider, works in in-app browsers) -->
+    <script src="https://cdn.jsdelivr.net/npm/add-to-calendar-button@2.14.0/dist/atcb.min.js" async defer></script>
+  </body>
+</html>

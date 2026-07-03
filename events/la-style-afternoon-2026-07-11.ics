@@ -3,5 +3,5 @@ layout: null
 permalink: /events/la-style-afternoon-2026-07-11.ics
 sitemap: false
 ---
-{%- assign ev = site.data.workshops | where: "id", "la-style-afternoon-2026-07-11" | first -%}
+{%- assign ev = site.events | where: "ref", "la-style-afternoon-2026-07-11" | first -%}
 {% include event_ics.html event=ev %}

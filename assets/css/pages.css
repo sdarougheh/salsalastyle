@@ -67,6 +67,64 @@ body.page-body {
   color: var(--ink, #1B2420);
 }
 
+/* ---------- event detail page ---------- */
+.event-main .page-title { margin-bottom: 12px; }
+.event-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--ink-soft, #5B4A42);
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+.event-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0 28px;
+  border-top: 1px solid var(--line, #E8DDCB);
+  border-bottom: 1px solid var(--line, #E8DDCB);
+  margin-bottom: 32px;
+}
+.event-cta .btn-primary,
+.event-cta .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+}
+.event-cta .btn-primary {
+  background: var(--accent, #E63946);
+  color: #fff;
+}
+.event-cta .btn-primary:hover { filter: brightness(0.94); }
+.event-cta .btn-secondary {
+  border: 1px solid var(--ink, #1F1410);
+  color: var(--ink, #1F1410);
+}
+.event-cta .btn-secondary:hover { background: var(--ink, #1F1410); color: var(--bg, #FBF6EE); }
+.event-cta .btn-cal { background: transparent; cursor: pointer; font-family: inherit; }
+.event-cta .btn-cal .cal-emoji { font-size: 16px; line-height: 1; }
+.event-description { line-height: 1.65; }
+.event-description h2 {
+  font-size: 20px;
+  margin: 28px 0 10px;
+}
+.event-description ul { padding-left: 20px; }
+.event-description li { margin-bottom: 4px; }
+
 .page-main h2 {
   font-family: var(--font-display, "Bricolage Grotesque", sans-serif);
   font-weight: 600;
