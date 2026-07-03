@@ -39,10 +39,10 @@
 " -%}
         {%- capture edesc -%}{{ page.calendar_description | default: page.lede }}{%- endcapture -%}
         {%- assign edesc = edesc | replace: NL, "[br]" -%}
-        <button type="button" class="btn-secondary btn-cal" data-atcb>
+        <button type="button" class="btn-secondary btn-cal" data-addcal>
           Add to calendar <span class="cal-emoji" role="img" aria-hidden="true">📅</span>
         </button>
-        <script type="application/json" class="atcb-config">
+        <script type="application/json" class="addcal-config">
         {
           "name": {{ page.calendar_title | default: page.title | jsonify }},
           "description": {{ edesc | jsonify }},
@@ -51,10 +51,8 @@
           "endDate": "{{ page.date | date: '%Y-%m-%d' }}",
           "endTime": "{{ page.end }}",
           "timeZone": "Europe/Copenhagen",
-          "location": {{ page.location | jsonify }},
-          "options": ["Apple","Google","iCal","Outlook.com","Microsoft365","Yahoo"],
-          {% if page.ref %}"icsFile": "{{ site.url }}/events/{{ page.ref }}.ics",{% endif %}
-          "listStyle": "overlay"
+          "location": {{ page.location | jsonify }}{% if page.ref %},
+          "icsFile": "{{ site.url }}/events/{{ page.ref }}.ics"{% endif %}
         }
         </script>
 
@@ -63,46 +61,14 @@
         {% endif %}
       </div>
 
-      <p class="cal-inapp-hint" hidden>
-        Using the Instagram/Facebook browser? Apple Calendar won't work here.
-        Tap the <strong>•••</strong> menu (top right) → <strong>Open in browser</strong> —
-        or pick Google/Outlook.
-      </p>
-
       <script>
         (function () {
-          var btn = document.querySelector('[data-atcb]');
-          var cfgEl = document.querySelector('.atcb-config');
+          var btn = document.querySelector('[data-addcal]');
+          var cfgEl = document.querySelector('.addcal-config');
           if (!btn || !cfgEl) return;
           var cfg = JSON.parse(cfgEl.textContent);
-          cfg.hideBranding = true;
-          var ua = navigator.userAgent || "";
-          var isiOS = /iPhone|iPad|iPod/i.test(ua)
-            || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
-          var isAndroid = /Android/i.test(ua);
-          // Instagram / Facebook in-app browsers block .ics downloads.
-          var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
-          // Only show the "open in browser" hint for in-app browsers that
-          // can't use the webcal fallback (i.e. not iOS).
-          if (isInApp && !isiOS) {
-            var hint = document.querySelector('.cal-inapp-hint');
-            if (hint) hint.hidden = false;
-          }
           btn.addEventListener('click', function () {
-            // iOS in an in-app browser (Instagram/Facebook): .ics downloads are
-            // blocked, so hand off via the webcal:// URL scheme, which opens
-            // the Calendar app directly.
-            if (isiOS && isInApp && cfg.icsFile) {
-              window.location.href = cfg.icsFile.replace(/^https?:\/\//i, 'webcal://');
-              return;
-            }
-            var c = Object.assign({}, cfg);
-            // In a real browser, jump straight to the native calendar.
-            if (!isInApp) {
-              if (isiOS) c.options = ["Apple"];
-              else if (isAndroid) c.options = ["Google"];
-            }
-            if (window.atcb_action) window.atcb_action(c, btn);
+            if (window.SLSAddCal) window.SLSAddCal.open(cfg);
           });
         })();
       </script>
@@ -125,7 +91,7 @@
       <div>© 2026 Salsa LA-Style Copenhagen</div>
     </footer>
 
-    <!-- Add to Calendar Button (multi-provider, works in in-app browsers) -->
-    <script src="https://cdn.jsdelivr.net/npm/add-to-calendar-button@2.14.0/dist/atcb.min.js" async defer></script>
+    <!-- Add-to-calendar routing (platform-aware, no dependency) -->
+    <script src="{{ '/assets/js/addcal.js' | relative_url }}"></script>
   </body>
 </html>

@@ -1,0 +1,58 @@
+// Add-to-calendar routing — one button, best method per platform. No library,
+// no picker, no branding. Reads a config object of the shape:
+//   { name, description, startDate, startTime, endDate, endTime,
+//     timeZone, location, icsFile }  (description may contain "[br]")
+(function () {
+  "use strict";
+
+  function pad(s) { return String(s || "").replace(/[-:]/g, ""); }
+
+  // "2026-08-30" + "15:00" -> "20260830T150000"
+  function stamp(date, time) {
+    return pad(date) + "T" + pad(time || "00:00") + "00";
+  }
+
+  function googleUrl(c) {
+    var dates = stamp(c.startDate, c.startTime) + "/" +
+                stamp(c.endDate || c.startDate, c.endTime || c.startTime);
+    var params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: c.name || "",
+      dates: dates,
+      details: (c.description || "").replace(/\[br\]/g, "\n"),
+      location: c.location || "",
+      ctz: c.timeZone || "Europe/Copenhagen"
+    });
+    return "https://calendar.google.com/calendar/render?" + params.toString();
+  }
+
+  var ua = navigator.userAgent || "";
+  var isiOS = /iPhone|iPad|iPod/i.test(ua)
+    || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
+  var isAndroid = /Android/i.test(ua);
+  // Instagram / Facebook in-app browsers block .ics file downloads.
+  var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
+
+  window.SLSAddCal = {
+    isiOS: isiOS,
+    isAndroid: isAndroid,
+    isInApp: isInApp,
+    open: function (cfg) {
+      if (isiOS) {
+        if (isInApp && cfg.icsFile) {
+          // URL-scheme handoff — opens Calendar without a file download.
+          window.location.href = cfg.icsFile.replace(/^https?:\/\//i, "webcal://");
+        } else if (cfg.icsFile) {
+          window.location.href = cfg.icsFile; // Safari opens the Add Event sheet
+        }
+        return;
+      }
+      if (isAndroid) {
+        window.open(googleUrl(cfg), "_blank", "noopener"); // one-tap web add
+        return;
+      }
+      // Desktop: download the .ics (opens Apple Calendar / Outlook).
+      if (cfg.icsFile) window.location.href = cfg.icsFile;
+    }
+  };
+})();

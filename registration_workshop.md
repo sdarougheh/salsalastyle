@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         <div class="form-group">
             <label>Which classes? (select all that apply) *</label>
-            <p class="cal-inapp-hint" hidden>Using the Instagram/Facebook browser? Apple Calendar won't work here. Tap the <strong>•••</strong> menu (top right) → <strong>Open in browser</strong> — or pick Google/Outlook.</p>
             <div class="checkbox-list">
   {%- assign NL = "
 " -%}
@@ -133,10 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 {%- assign wsdesc = wsdesc | replace: NL, "[br]" -%}
                 <div class="ws-option">
                   <label><input type="checkbox" name="class" value="{{ workshop.title }}"> {{ workshop.title }} ({{ workshop.date | date: "%Y-%m-%d" }}){% if workshop.register_url %} — <a href="{{ workshop.url }}">details</a>{% endif %}</label>
-                  <button type="button" class="cal-btn ws-cal" data-atcb aria-label="Add {{ workshop.title }} to calendar">
+                  <button type="button" class="cal-btn ws-cal" data-addcal aria-label="Add {{ workshop.title }} to calendar">
                     <span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span>
                   </button>
-                  <script type="application/json" class="atcb-config">
+                  <script type="application/json" class="addcal-config">
                   {
                     "name": {{ workshop.calendar_title | default: workshop.title | jsonify }},
                     "description": {{ wsdesc | jsonify }},
@@ -145,10 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     "endDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
                     "endTime": "{{ workshop.end }}",
                     "timeZone": "Europe/Copenhagen",
-                    "location": {{ workshop.location | jsonify }},
-                    "options": ["Apple","Google","iCal","Outlook.com","Microsoft365","Yahoo"],
-                    {% if workshop.ref %}"icsFile": "{{ site.url }}/events/{{ workshop.ref }}.ics",{% endif %}
-                    "listStyle": "overlay"
+                    "location": {{ workshop.location | jsonify }}{% if workshop.ref %},
+                    "icsFile": "{{ site.url }}/events/{{ workshop.ref }}.ics"{% endif %}
                   }
                   </script>
                 </div>
@@ -183,34 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 (function () {
-  var ua = navigator.userAgent || "";
-  var isiOS = /iPhone|iPad|iPod/i.test(ua)
-    || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
-  var isAndroid = /Android/i.test(ua);
-  // Instagram / Facebook in-app browsers block .ics downloads.
-  var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
-  if (isInApp && !isiOS) {
-    var hint = document.querySelector('.cal-inapp-hint');
-    if (hint) hint.hidden = false;
-  }
   document.querySelectorAll('.ws-option').forEach(function (row) {
-    var btn = row.querySelector('[data-atcb]');
-    var cfgEl = row.querySelector('.atcb-config');
+    var btn = row.querySelector('[data-addcal]');
+    var cfgEl = row.querySelector('.addcal-config');
     if (!btn || !cfgEl) return;
     var cfg = JSON.parse(cfgEl.textContent);
-    cfg.hideBranding = true;
     btn.addEventListener('click', function () {
-      // iOS in-app browser: hand off via webcal:// (URL scheme, no download).
-      if (isiOS && isInApp && cfg.icsFile) {
-        window.location.href = cfg.icsFile.replace(/^https?:\/\//i, 'webcal://');
-        return;
-      }
-      var c = Object.assign({}, cfg);
-      if (!isInApp) {
-        if (isiOS) c.options = ["Apple"];        // straight to Apple Calendar
-        else if (isAndroid) c.options = ["Google"]; // straight to Google Calendar
-      }
-      if (window.atcb_action) window.atcb_action(c, btn);
+      if (window.SLSAddCal) window.SLSAddCal.open(cfg);
     });
   });
 })();

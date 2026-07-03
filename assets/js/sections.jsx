@@ -22,37 +22,6 @@ function CalendarButton({ onClick, className }) {
 }
 
 // ---------- Events (workshops + socials, combined via _data + data.js) ----------
-function addToCalendar(e) {
-  if (window.SLSCalendar) window.SLSCalendar.downloadEvent(e);
-}
-
-// Multi-provider "Add to calendar" (Apple/Google/Outlook/Yahoo). Uses the
-// add-to-calendar-button web component so it also works inside in-app browsers
-// (Instagram/Facebook). Apple/iCal uses our hosted .ics via icsFile.
-function AddToCalendar({ event }) {
-  const name = event.calendar_title || event.title;
-  const descr = (event.calendar_description || event.lede || "").replace(/\n/g, "[br]");
-  const ics = event.ics ? ((window.SITE_URL || "") + event.ics) : undefined;
-  return (
-    <add-to-calendar-button
-      name={name}
-      description={descr}
-      startdate={event.date}
-      starttime={event.start}
-      enddate={event.date}
-      endtime={event.end}
-      timezone="Europe/Copenhagen"
-      location={event.location}
-      options="'Apple','Google','iCal','Outlook.com','Microsoft365','Yahoo'"
-      icsfile={ics}
-      label="Add to calendar"
-      size="2"
-      lightmode="light"
-      buttonstyle="round"
-      hideBranding="true"
-    ></add-to-calendar-button>
-  );
-}
 
 function EventsPlaceholder({ c }) {
   const cards = c.placeholders || [];
