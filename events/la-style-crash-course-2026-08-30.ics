@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /events/la-style-crash-course-2026-08-30.ics
+sitemap: false
+---
+{%- assign ev = site.data.workshops | where: "id", "la-style-crash-course-2026-08-30" | first -%}
+{% include event_ics.html event=ev %}
