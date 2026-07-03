@@ -1,7 +1,11 @@
 source "https://rubygems.org"
 
-gem "github-pages", "~> 231", group: :jekyll_plugins
-gem "webrick", "~> 1.8"
+# Build with modern Jekyll (not the pinned github-pages gem), so we control
+# the versions. The site is deployed via .github/workflows/jekyll.yml.
+gem "jekyll", "~> 4.3"
 
-# Windows regeneration support
-gem "wdm", ">= 0.1.0" if Gem.win_platform?
+# Ruby 3.4+ no longer ships these as default gems; Jekyll needs them.
+gem "webrick", "~> 1.8"
+gem "csv"
+gem "base64"
+gem "bigdecimal"
