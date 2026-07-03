@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         <div class="form-group">
             <label>Which classes? (select all that apply) *</label>
+            <p class="cal-inapp-hint" hidden>Using the Instagram/Facebook browser? Apple Calendar won't work here. Tap the <strong>•••</strong> menu (top right) → <strong>Open in browser</strong> — or pick Google/Outlook.</p>
             <div class="checkbox-list">
   {%- assign NL = "
 " -%}
@@ -188,6 +189,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var isAndroid = /Android/i.test(ua);
   // Instagram / Facebook in-app browsers block .ics downloads.
   var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
+  if (isInApp) {
+    var hint = document.querySelector('.cal-inapp-hint');
+    if (hint) hint.hidden = false;
+  }
   document.querySelectorAll('.ws-option').forEach(function (row) {
     var btn = row.querySelector('[data-atcb]');
     var cfgEl = row.querySelector('.atcb-config');

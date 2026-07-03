@@ -63,6 +63,12 @@
         {% endif %}
       </div>
 
+      <p class="cal-inapp-hint" hidden>
+        Using the Instagram/Facebook browser? Apple Calendar won't work here.
+        Tap the <strong>•••</strong> menu (top right) → <strong>Open in browser</strong> —
+        or pick Google/Outlook.
+      </p>
+
       <script>
         (function () {
           var btn = document.querySelector('[data-atcb]');
@@ -76,6 +82,10 @@
           var isAndroid = /Android/i.test(ua);
           // Instagram / Facebook in-app browsers block .ics downloads.
           var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
+          if (isInApp) {
+            var hint = document.querySelector('.cal-inapp-hint');
+            if (hint) hint.hidden = false;
+          }
           btn.addEventListener('click', function () {
             var c = Object.assign({}, cfg);
             // In a real browser, jump straight to the native calendar.

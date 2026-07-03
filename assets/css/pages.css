@@ -117,6 +117,15 @@ body.page-body {
 .event-cta .btn-secondary:hover { background: var(--ink, #1F1410); color: var(--bg, #FBF6EE); }
 .event-cta .btn-cal { background: transparent; cursor: pointer; font-family: inherit; }
 .event-cta .btn-cal .cal-emoji { font-size: 16px; line-height: 1; }
+.cal-inapp-hint {
+  margin: 0 0 28px;
+  padding: 12px 16px;
+  background: var(--chip, #FFE8D6);
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink, #1F1410);
+}
 .event-description { line-height: 1.65; }
 .event-description h2 {
   font-size: 20px;
