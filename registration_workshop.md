@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var isAndroid = /Android/i.test(ua);
   // Instagram / Facebook in-app browsers block .ics downloads.
   var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
-  if (isInApp) {
+  if (isInApp && !isiOS) {
     var hint = document.querySelector('.cal-inapp-hint');
     if (hint) hint.hidden = false;
   }
@@ -200,6 +200,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var cfg = JSON.parse(cfgEl.textContent);
     cfg.hideBranding = true;
     btn.addEventListener('click', function () {
+      // iOS in-app browser: hand off via webcal:// (URL scheme, no download).
+      if (isiOS && isInApp && cfg.icsFile) {
+        window.location.href = cfg.icsFile.replace(/^https?:\/\//i, 'webcal://');
+        return;
+      }
       var c = Object.assign({}, cfg);
       if (!isInApp) {
         if (isiOS) c.options = ["Apple"];        // straight to Apple Calendar

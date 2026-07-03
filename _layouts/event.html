@@ -82,14 +82,22 @@
           var isAndroid = /Android/i.test(ua);
           // Instagram / Facebook in-app browsers block .ics downloads.
           var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
-          if (isInApp) {
+          // Only show the "open in browser" hint for in-app browsers that
+          // can't use the webcal fallback (i.e. not iOS).
+          if (isInApp && !isiOS) {
             var hint = document.querySelector('.cal-inapp-hint');
             if (hint) hint.hidden = false;
           }
           btn.addEventListener('click', function () {
+            // iOS in an in-app browser (Instagram/Facebook): .ics downloads are
+            // blocked, so hand off via the webcal:// URL scheme, which opens
+            // the Calendar app directly.
+            if (isiOS && isInApp && cfg.icsFile) {
+              window.location.href = cfg.icsFile.replace(/^https?:\/\//i, 'webcal://');
+              return;
+            }
             var c = Object.assign({}, cfg);
             // In a real browser, jump straight to the native calendar.
-            // In an in-app browser, keep the full list (web links still work).
             if (!isInApp) {
               if (isiOS) c.options = ["Apple"];
               else if (isAndroid) c.options = ["Google"];
