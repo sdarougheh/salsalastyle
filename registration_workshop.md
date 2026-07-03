@@ -185,6 +185,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var ua = navigator.userAgent || "";
   var isiOS = /iPhone|iPad|iPod/i.test(ua)
     || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
+  var isAndroid = /Android/i.test(ua);
+  // Instagram / Facebook in-app browsers block .ics downloads.
+  var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
   document.querySelectorAll('.ws-option').forEach(function (row) {
     var btn = row.querySelector('[data-atcb]');
     var cfgEl = row.querySelector('.atcb-config');
@@ -193,7 +196,10 @@ document.addEventListener('DOMContentLoaded', function() {
     cfg.hideBranding = true;
     btn.addEventListener('click', function () {
       var c = Object.assign({}, cfg);
-      if (isiOS) c.options = ["Apple"]; // go straight to Apple Calendar on iOS
+      if (!isInApp) {
+        if (isiOS) c.options = ["Apple"];        // straight to Apple Calendar
+        else if (isAndroid) c.options = ["Google"]; // straight to Google Calendar
+      }
       if (window.atcb_action) window.atcb_action(c, btn);
     });
   });

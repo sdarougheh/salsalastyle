@@ -73,10 +73,17 @@
           var ua = navigator.userAgent || "";
           var isiOS = /iPhone|iPad|iPod/i.test(ua)
             || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS
+          var isAndroid = /Android/i.test(ua);
+          // Instagram / Facebook in-app browsers block .ics downloads.
+          var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
           btn.addEventListener('click', function () {
-            // On iOS, go straight to Apple Calendar; elsewhere show the chooser.
             var c = Object.assign({}, cfg);
-            if (isiOS) c.options = ["Apple"];
+            // In a real browser, jump straight to the native calendar.
+            // In an in-app browser, keep the full list (web links still work).
+            if (!isInApp) {
+              if (isiOS) c.options = ["Apple"];
+              else if (isAndroid) c.options = ["Google"];
+            }
             if (window.atcb_action) window.atcb_action(c, btn);
           });
         })();
