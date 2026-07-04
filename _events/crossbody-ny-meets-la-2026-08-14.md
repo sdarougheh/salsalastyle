@@ -7,6 +7,7 @@ start: "20:00"
 end: "23:00"
 location: "Inflow Studio · Studio A, Heimdalsgade 35, 2200 København"
 lede: "An evening of crossbody salsa social dancing. All welcome."
+info_url: "https://fb.me/e/7k9UjYjGz"
 # Plain-text version used for the downloadable calendar invite (.ics):
 calendar_description: |
   100% Crossbody Salsa — Los Angeles meets New York
