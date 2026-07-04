@@ -1,13 +1,12 @@
 ---
-ref: "crossbody-ny-meets-la-2026-07-03"
+ref: "crossbody-ny-meets-la-2026-08-14"
 type: social
 title: "100% Crossbody — NY meets LA"
-date: 2026-07-03
+date: 2026-08-14
 start: "20:00"
 end: "23:00"
-location: "Inflow Studio · Heimdalsgade 35, 2200 København"
+location: "Inflow Studio · Studio A, Heimdalsgade 35, 2200 København"
 lede: "An evening of crossbody salsa social dancing. All welcome."
-info_url: "https://www.facebook.com/events/1330308059207251"
 # Plain-text version used for the downloadable calendar invite (.ics):
 calendar_description: |
   100% Crossbody Salsa — Los Angeles meets New York
