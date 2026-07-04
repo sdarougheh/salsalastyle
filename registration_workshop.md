@@ -131,23 +131,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 {%- capture wsdesc -%}{{ workshop.calendar_description | default: workshop.lede }}{%- endcapture -%}
                 {%- assign wsdesc = wsdesc | replace: NL, "[br]" -%}
                 <div class="ws-option">
-                  <label><input type="checkbox" name="class" value="{{ workshop.title }}"> {{ workshop.title }} ({{ workshop.date | date: "%Y-%m-%d" }}){% if workshop.register_url %} — <a href="{{ workshop.url }}">details</a>{% endif %}</label>
-                  <button type="button" class="cal-btn ws-cal" data-addcal aria-label="Add {{ workshop.title }} to calendar">
-                    <span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span>
-                  </button>
-                  <script type="application/json" class="addcal-config">
-                  {
-                    "name": {{ workshop.calendar_title | default: workshop.title | jsonify }},
-                    "description": {{ wsdesc | jsonify }},
-                    "startDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
-                    "startTime": "{{ workshop.start }}",
-                    "endDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
-                    "endTime": "{{ workshop.end }}",
-                    "timeZone": "Europe/Copenhagen",
-                    "location": {{ workshop.location | jsonify }}{% if workshop.ref %},
-                    "icsFile": "{{ site.url }}/events/{{ workshop.ref }}.ics"{% endif %}
-                  }
-                  </script>
+                  <div class="ws-option-head">
+                    <span class="ws-option-title">{{ workshop.title }} ({{ workshop.date | date: "%Y-%m-%d" }}){% if workshop.register_url %} — <a href="{{ workshop.url }}">details</a>{% endif %}</span>
+                    <button type="button" class="cal-btn ws-cal" data-addcal aria-label="Add {{ workshop.title }} to calendar">
+                      <span class="ws-cal-text">Add to calendar</span><span class="cal-emoji" role="img" aria-hidden="true">📅</span>
+                    </button>
+                    <script type="application/json" class="addcal-config">
+                    {
+                      "name": {{ workshop.calendar_title | default: workshop.title | jsonify }},
+                      "description": {{ wsdesc | jsonify }},
+                      "startDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
+                      "startTime": "{{ workshop.start }}",
+                      "endDate": "{{ workshop.date | date: '%Y-%m-%d' }}",
+                      "endTime": "{{ workshop.end }}",
+                      "timeZone": "Europe/Copenhagen",
+                      "location": {{ workshop.location | jsonify }}{% if workshop.ref %},
+                      "icsFile": "{{ site.url }}/events/{{ workshop.ref }}.ics"{% endif %}
+                    }
+                    </script>
+                  </div>
+                  <div class="ws-option-choices">
+                    {% if workshop.signup_options %}{% for opt in workshop.signup_options %}
+                    <label><input type="checkbox" name="class" value="{{ opt.value }}"> {{ opt.label }}</label>
+                    {% endfor %}{% else %}
+                    <label><input type="checkbox" name="class" value="{{ workshop.title }}"> Sign me up</label>
+                    {% endif %}
+                  </div>
                 </div>
   {% endunless %}{% endfor %}
             </div>

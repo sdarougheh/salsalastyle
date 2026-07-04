@@ -10,6 +10,12 @@ location: "Inflow Studio · Heimdalsgade 35, 2200 København"
 lede: "An intensive LA-style Salsa afternoon — workshops and free practice time at Inflow Studio."
 info_url: "https://fb.me/e/7TocP1vwF"
 register_url: "/registration_workshop"
+# Sign-up choices shown on the registration form (value = what's recorded).
+signup_options:
+  - label: "One workshop + practice time — 100 DKK"
+    value: "LA-Style Afternoon (one workshop)"
+  - label: "Two workshops + practice time — 150 DKK"
+    value: "LA-Style Afternoon (two workshops)"
 # Plain-text version used for the downloadable calendar invite (.ics):
 calendar_description: |
   Join us for an intensive LA-style Salsa afternoon with workshop and practica at Inflow Studio - a super central location with great air conditioning and wooden dance floor!
