@@ -18,7 +18,8 @@
   <meta property="og:description" content="{{ meta_desc | strip_html | strip_newlines | truncate: 200 }}">
   <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.url }}">
   {% if og_img %}<meta property="og:image" content="{{ og_img | prepend: site.url }}">{% endif %}
-  <meta name="twitter:card" content="summary_large_image">
+  {% comment %}Large banner when a page sets its own image; small thumbnail for the default logo.{% endcomment %}
+  <meta name="twitter:card" content="{% if page.image %}summary_large_image{% else %}summary{% endif %}">
   <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
   <meta name="twitter:description" content="{{ meta_desc | strip_html | strip_newlines | truncate: 200 }}">
   {% if og_img %}<meta name="twitter:image" content="{{ og_img | prepend: site.url }}">{% endif %}
