@@ -16,7 +16,7 @@ collections:
     permalink: /events/:name/
 
 # Default social-share image for pages that don't set their own.
-og_image: "/assets/images/photo-class-2.png"
+og_image: "/assets/images/photo-studio.jpg"
 
 # Exclude legacy / working files from the build
 exclude:
