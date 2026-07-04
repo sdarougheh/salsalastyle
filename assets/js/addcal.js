@@ -53,6 +53,21 @@
       }
       // Desktop: download the .ics (opens Apple Calendar / Outlook).
       if (cfg.icsFile) window.location.href = cfg.icsFile;
+    },
+    // Subscribe to a live .ics feed (auto-updates with future events).
+    // `httpsUrl` is the https://…/all.ics feed URL.
+    subscribe: function (httpsUrl) {
+      var webcal = httpsUrl.replace(/^https?:\/\//i, "webcal://");
+      if (isAndroid) {
+        // Google Calendar "add by URL" (subscription).
+        window.open(
+          "https://calendar.google.com/calendar/render?cid=" + encodeURIComponent(webcal),
+          "_blank", "noopener"
+        );
+        return;
+      }
+      // Apple / iOS / Outlook desktop all handle the webcal scheme.
+      window.location.href = webcal;
     }
   };
 })();

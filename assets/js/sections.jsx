@@ -54,6 +54,16 @@ function Events() {
           </div>
           <h2 className="workshop-headline">{c.headline || "Upcoming events"}</h2>
         </div>
+        <p className="events-subscribe">
+          <button
+            type="button"
+            className="events-subscribe-btn"
+            onClick={() => window.SLSAddCal && window.SLSAddCal.subscribe((window.SITE_URL || "") + "/events/all.ics")}
+          >
+            🔔 Subscribe to all events
+          </button>
+          <span className="events-subscribe-note">— get every workshop &amp; social in your calendar, automatically.</span>
+        </p>
         {!hasEvents && <EventsPlaceholder c={c} />}
         {hasEvents && events.map((e, i) => (
           <div key={i} className={`workshop-card kind-${e.kind}`}>

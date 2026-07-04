@@ -1,13 +1,18 @@
-{%- comment -%}
-Full iCalendar document for a single event (`include.event`).
-Used by the per-event source files under /events/.
-{%- endcomment -%}
-{%- assign ev = include.event -%}
+---
+layout: null
+permalink: /events/all.ics
+sitemap: false
+---
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Salsa LA-Style//Website//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
+X-WR-CALNAME:Salsa LA-Style — Events
+X-WR-CALDESC:Workshops and socials from Salsa LA-Style Copenhagen
+X-WR-TIMEZONE:Europe/Copenhagen
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
 BEGIN:VTIMEZONE
 TZID:Europe/Copenhagen
 BEGIN:DAYLIGHT
@@ -25,5 +30,9 @@ DTSTART:19701025T030000
 RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
 END:STANDARD
 END:VTIMEZONE
-{% include event_vevent.html event=ev -%}
+{% assign evs = site.events | sort: "date" -%}
+{% for e in evs -%}
+{% unless e.hidden %}{% include event_vevent.html event=e -%}
+{% endunless -%}
+{% endfor -%}
 END:VCALENDAR
