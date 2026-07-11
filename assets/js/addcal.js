@@ -33,11 +33,20 @@
   // Instagram / Facebook in-app browsers block .ics file downloads.
   var isInApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(ua);
 
+  var platform = isiOS ? "ios" : (isAndroid ? "android" : "desktop");
+  if (isInApp) platform += "-inapp";
+
+  // Fire a Google Analytics (GA4) event, guarded so it never throws.
+  function track(name, params) {
+    try { if (window.gtag) window.gtag("event", name, params || {}); } catch (e) {}
+  }
+
   window.SLSAddCal = {
     isiOS: isiOS,
     isAndroid: isAndroid,
     isInApp: isInApp,
     open: function (cfg) {
+      track("add_to_calendar", { method: platform, event_name: (cfg && cfg.name) || "" });
       if (isiOS) {
         if (isInApp && cfg.icsFile) {
           // URL-scheme handoff — opens Calendar without a file download.
@@ -57,6 +66,7 @@
     // Subscribe to a live .ics feed (auto-updates with future events).
     // `httpsUrl` is the https://…/all.ics feed URL.
     subscribe: function (httpsUrl) {
+      track("subscribe_calendar", { method: platform });
       var webcal = httpsUrl.replace(/^https?:\/\//i, "webcal://");
       if (isAndroid) {
         // Google Calendar "add by URL" (subscription).

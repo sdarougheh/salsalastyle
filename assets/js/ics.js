@@ -137,17 +137,23 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
 
+  function track(name, params) {
+    try { if (window.gtag) window.gtag("event", name, params || {}); } catch (e) {}
+  }
+
   // Public API.
   window.SLSCalendar = {
     // Download a one-off event (workshop / social).
     downloadEvent: function (e) {
       if (!e || !e.date) return;
+      track("add_to_calendar", { method: "download", event_name: e.title || "" });
       download(slug(e.title) + ".ics", wrapCalendar(eventVEVENT(e)));
     },
     // Download a recurring class. `slot` is a schedule.yml slot; pulls season
     // info from window.SEASON and the class location from window.COPY.
     downloadClass: function (slot) {
       var season = window.SEASON || {};
+      track("add_to_calendar", { method: "download", event_name: (slot && slot.name) || "class" });
       var loc = ((window.COPY || {}).location || {}).address || slot.where || "";
       if (!season.first_class) return;
       var text = wrapCalendar(classVEVENT({
