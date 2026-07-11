@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 young_student: document.getElementById('young').checked
                             });
                         } catch (e) { /* analytics push must not block redirect */ }
-                        window.location.href = 'success.html';
+                        window.location.href = 'success_workshop.html';
                     } else {
                         throw new Error(data.error || 'Submission failed');
                     }
