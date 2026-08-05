@@ -326,3 +326,78 @@ button[type="submit"]:disabled {
 .pricing-container { overflow-x: auto; }
 .pricing-table tr.highlight { background: var(--chip, #E1ECE6); }
 .pricing-table .savings { color: var(--accent, #E05A2B); font-weight: 600; font-size: 13px; }
+
+/* ---------- /beginner landing page ---------- */
+.landing-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.landing { text-align: center; }
+.landing-logo { width: 96px; height: 96px; margin: 0 auto 20px; }
+.landing-title {
+  font-family: var(--font-display, "Bricolage Grotesque", sans-serif);
+  font-size: clamp(32px, 7vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+.landing-lede {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--ink-soft, #5B4A42);
+  margin: 0 auto 28px;
+  max-width: 46ch;
+}
+.landing-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #E8DDCB);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin: 0 0 28px;
+}
+.landing-fact { display: flex; gap: 12px; align-items: baseline; }
+.landing-fact-label {
+  flex: 0 0 64px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--ink-soft, #5B4A42);
+}
+.landing-fact-value { font-size: 15px; }
+.landing-cta { margin: 0 0 24px; }
+.landing-btn {
+  display: inline-block;
+  padding: 15px 26px;
+  border-radius: 999px;
+  background: var(--accent, #E63946);
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  text-decoration: none;
+}
+.landing-btn:hover { filter: brightness(0.95); }
+.landing-points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  text-align: left;
+  display: inline-block;
+  color: var(--ink, #1F1410);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.landing-points li { margin: 6px 0; padding-left: 22px; position: relative; }
+.landing-points li::before { content: "✓"; position: absolute; left: 0; color: var(--accent, #E63946); font-weight: 700; }
+.landing-links { font-size: 14px; color: var(--ink-soft, #5B4A42); }
+.landing-links a { color: var(--accent, #E63946); }

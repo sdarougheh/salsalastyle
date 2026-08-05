@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     classes: selectedClasses,
                     role: document.getElementById('role').value,
                     comments: document.getElementById('comments').value,
+                    referral: window.SLSReferral || '',
                     recaptchaToken: token
                 };
                 
@@ -61,14 +62,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const data = JSON.parse(text);
                     console.log('Parsed data:', data);
                     if (data.result === 'success') {
-                        // Fire GTM event on confirmed success (non-PII payload only).
+                        // Fire analytics events on confirmed success (non-PII only).
                         try {
                             window.dataLayer = window.dataLayer || [];
                             window.dataLayer.push({
                                 event: 'registration_submit',
                                 classes: selectedClasses,
                                 role: document.getElementById('role').value,
-                                young_student: document.getElementById('young').checked
+                                young_student: document.getElementById('young').checked,
+                                referral: window.SLSReferral || ''
+                            });
+                            if (window.gtag) window.gtag('event', 'sign_up', {
+                                method: 'class',
+                                referral: window.SLSReferral || ''
                             });
                         } catch (e) { /* analytics push must not block redirect */ }
                         window.location.href = 'success.html';
