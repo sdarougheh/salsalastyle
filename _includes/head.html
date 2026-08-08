@@ -24,6 +24,28 @@
   <meta name="twitter:description" content="{{ meta_desc | strip_html | strip_newlines | truncate: 200 }}">
   {% if og_img %}<meta name="twitter:image" content="{{ og_img | prepend: site.url }}">{% endif %}
 
+  {% if page.url == '/' %}
+  <!-- Organization structured data (name + logo + profiles) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Salsa LA-Style",
+    "alternateName": "Salsa LA-Style Copenhagen",
+    "description": "LA-style Salsa classes, workshops and socials in Copenhagen.",
+    "url": "{{ site.url }}",
+    "logo": "{{ '/assets/images/logo.png' | prepend: site.url }}",
+    "image": "{{ '/assets/images/logo.png' | prepend: site.url }}",
+    "email": "salsalastyledk@gmail.com",
+    "areaServed": "Copenhagen, Denmark",
+    "sameAs": [
+      "{{ site.data.copy.footer.social.instagram }}",
+      "{{ site.data.copy.footer.social.facebook }}"
+    ]
+  }
+  </script>
+  {% endif %}
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
