@@ -37,6 +37,11 @@ function App() {
     return () => window.removeEventListener("message", handler);
   }, []);
 
+  // Dedicated beginner landing page (same layout, different content).
+  if (/\/beginner\/?$/.test(window.location.pathname)) {
+    return <BeginnerLanding />;
+  }
+
   return (
     <div className={`app ${state.mobile ? "app-mobile-preview" : ""}`}>
       {state.mobile ? (

@@ -4,7 +4,7 @@ const { useState, useEffect } = React;
 function Nav() {
   return (
     <nav className="nav">
-      <a className="nav-logo" href="#top">
+      <a className="nav-logo" href="/">
         <img src="/assets/images/logo.png" alt="Salsa LA-Style Copenhagen" />
         <span className="nav-logo-text">
           <span className="nav-logo-main">Salsa LA-Style</span>
@@ -12,8 +12,8 @@ function Nav() {
         </span>
       </a>
       <div className="nav-links">
-        <a href="#schedule">Classes</a>
-        <a href="#events">Events</a>
+        <a href="/#schedule">Classes</a>
+        <a href="/#events">Events</a>
         <a href="/faq">FAQ</a>
         <a href="/payments">Payments</a>
         <a href="/about">About</a>
