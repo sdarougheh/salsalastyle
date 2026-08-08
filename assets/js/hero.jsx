@@ -32,9 +32,9 @@ function HeroFullbleed() {
 // Dedicated landing hero for /beginner — same full-bleed look + nav + footer.
 function BeginnerLanding() {
   const photo = "/assets/images/photo-class-1.png";
-  const season = window.SEASON || {};
-  const prices = (window.PRICING || []).filter(function (p) { return !/drop/i.test(p.pkg); });
-  const priceLabel = { "Single Class": "One class", "Two Classes": "Two classes" };
+  const location = ((window.COPY || {}).location || {}).address || "";
+  const single = (window.PRICING || []).filter(function (p) { return /single/i.test(p.pkg); })[0];
+  const priceText = single ? (single.regular + " (" + single.student + " students)") : "";
 
   return (
     <div className="app">
@@ -47,11 +47,12 @@ function BeginnerLanding() {
         <div className="hero-fullbleed-body">
           <h1 className="hero-title">
             <span className="hero-title-line">Salsa for</span>
-            <span className="hero-title-line hero-title-accent">total beginners</span>
+            <span className="hero-title-line hero-title-accent">beginners</span>
           </h1>
           <p className="hero-lede">
-            Our Beginners class is built for absolute first-timers. No experience needed.
-            No partner needed. Come as you are and start dancing with us!
+            Our Beginners class is built for absolute first-timers.{" "}
+            <strong>No experience needed. No partner needed.</strong>{" "}
+            Come as you are and start dancing with us!
           </p>
 
           <ul className="hero-facts">
@@ -60,17 +61,16 @@ function BeginnerLanding() {
               <span>Wednesdays, 19:00–20:00</span>
             </li>
             <li>
+              <span className="hero-facts-label">Where</span>
+              <span>{location}</span>
+            </li>
+            <li>
               <span className="hero-facts-label">Dates</span>
               <span>8 weeks from September 2nd — with a holiday break in week 42</span>
             </li>
             <li>
               <span className="hero-facts-label">Price</span>
-              <span>
-                {prices.map(function (p, i) {
-                  return (priceLabel[p.pkg] || p.pkg) + ": " + p.regular +
-                    " (" + p.student + " students)";
-                }).join(" · ")}
-              </span>
+              <span>{priceText}</span>
             </li>
           </ul>
 
