@@ -38,7 +38,7 @@ function BeginnerLanding() {
 
   return (
     <div className="app">
-      <header className="hero hero-fullbleed" id="top">
+      <header className="hero hero-fullbleed hero-beginner" id="top">
         <div className="hero-photo">
           <img src={photo} alt="Salsa class in Copenhagen" />
           <div className="hero-photo-veil" />
