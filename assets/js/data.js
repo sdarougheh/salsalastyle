@@ -64,8 +64,21 @@ const RAW_EVENTS = [
   },
 {% endunless %}{% endfor %}];
 
+// Local "today" as YYYY-MM-DD, so we can hide events whose day has already
+// passed. Done client-side (not at build time) so past events drop off the
+// homepage automatically each day, with no site rebuild needed.
+const _todayStr = (function () {
+  const d = new Date();
+  return d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+})();
+
 const EVENTS = RAW_EVENTS
   .map(decorateEvent)
+  // Keep only events on or after today (an event stays visible through the
+  // end of its own day). Undated entries are kept defensively.
+  .filter(function (e) { return !e.date || e.date >= _todayStr; })
   .sort(function (a, b) {
     const ka = (a.date || "") + (a.start || "");
     const kb = (b.date || "") + (b.start || "");
