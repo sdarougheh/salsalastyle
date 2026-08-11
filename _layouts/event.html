@@ -4,6 +4,37 @@
   <body class="page-body event-page">
     {% include facebook_pixel.html %}
 
+    <!-- Event structured data (generated from front matter) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": {{ page.title | jsonify }},
+      "startDate": "{{ page.date | date: '%Y-%m-%d' }}{% if page.start %}T{{ page.start }}{% endif %}",
+      {% if page.end %}"endDate": "{{ page.date | date: '%Y-%m-%d' }}T{{ page.end }}",{% endif %}
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "description": {{ page.lede | default: page.calendar_description | strip_newlines | jsonify }},
+      "image": "{{ site.og_image | prepend: site.url }}",
+      "url": "{{ page.url | prepend: site.url }}",
+      "location": {
+        "@type": "Place",
+        "name": "Inflow Studio",
+        "address": {{ page.location | jsonify }}
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Salsa LA-Style",
+        "url": "{{ site.url }}"
+      }{% if page.register_url %},
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ page.register_url | prepend: site.url }}",
+        "availability": "https://schema.org/InStock"
+      }{% endif %}
+    }
+    </script>
+
     <header class="page-nav">
       <a class="page-nav-brand" href="{{ '/' | relative_url }}">
         <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="">

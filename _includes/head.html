@@ -25,23 +25,74 @@
   {% if og_img %}<meta name="twitter:image" content="{{ og_img | prepend: site.url }}">{% endif %}
 
   {% if page.url == '/' %}
-  <!-- Organization structured data (name + logo + profiles) -->
+  <!-- LocalBusiness / DanceSchool structured data (name, address, profiles) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["DanceSchool", "LocalBusiness"],
     "name": "Salsa LA-Style",
     "alternateName": "Salsa LA-Style Copenhagen",
-    "description": "LA-style Salsa classes, workshops and socials in Copenhagen.",
+    "description": "LA-style (crossbody) Salsa classes, workshops and socials in Copenhagen. Beginner-friendly, taught in English, no partner needed.",
     "url": "{{ site.url }}",
     "logo": "{{ '/assets/images/logo.png' | prepend: site.url }}",
     "image": "{{ '/assets/images/logo.png' | prepend: site.url }}",
     "email": "salsalastyledk@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Heimdalsgade 35, 2nd Floor",
+      "addressLocality": "Copenhagen",
+      "postalCode": "2200",
+      "addressCountry": "DK"
+    },
     "areaServed": "Copenhagen, Denmark",
+    "knowsLanguage": ["en", "da"],
+    "priceRange": "100–1440 DKK",
     "sameAs": [
       "{{ site.data.copy.footer.social.instagram }}",
       "{{ site.data.copy.footer.social.facebook }}"
     ]
+  }
+  </script>
+  {% endif %}
+
+  {% if page.url == '/beginner/' %}
+  <!-- Course structured data for the beginners class -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Beginner Salsa (LA-Style) — Copenhagen",
+    "description": "A friendly beginners salsa course for absolute first-timers. No experience or partner needed. Taught in English.",
+    "inLanguage": "en",
+    "provider": {
+      "@type": "DanceSchool",
+      "name": "Salsa LA-Style",
+      "url": "{{ site.url }}"
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "onsite",
+      "courseWorkload": "PT1H",
+      "startDate": "{{ site.season.first_class }}",
+      "location": {
+        "@type": "Place",
+        "name": "Inflow Studio",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Heimdalsgade 35, 2nd Floor",
+          "addressLocality": "Copenhagen",
+          "postalCode": "2200",
+          "addressCountry": "DK"
+        }
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "800",
+        "priceCurrency": "DKK",
+        "url": "{{ '/registration' | prepend: site.url }}",
+        "availability": "https://schema.org/InStock"
+      }
+    }
   }
   </script>
   {% endif %}
