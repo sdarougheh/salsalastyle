@@ -4,10 +4,10 @@ title: "Subscribe to our events"
 permalink: /subscribe/
 noindex: true
 sitemap: false
-lede: "Add every Salsa LA-Style workshop and social to your calendar — it updates automatically as we add new dates."
+lede: "Add all of our events to your calendar — it updates automatically as we add new dates."
 ---
 
-<p class="sub-lede">Add every Salsa LA-Style workshop and social to your calendar. It updates automatically whenever we add a new date — no need to check back.</p>
+<p class="sub-lede">Add all of our events to your calendar. It updates automatically whenever we add a new date — no need to check back.</p>
 
 <div class="sub-actions">
   <button type="button" id="subAll" class="btn-primary sub-btn">🔔 Subscribe to all events</button>
