@@ -9,6 +9,7 @@
 
   <link rel="icon" type="image/png" href="{{ '/favicon.png' | relative_url }}">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
+  {% if page.noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 
   <!-- Open Graph / social share preview -->
   {% assign og_img = page.image | default: site.og_image %}
