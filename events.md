@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Subscribe to our events"
-permalink: /subscribe/
+permalink: /events/
 noindex: true
 sitemap: false
 lede: "Add all of our events to your calendar — it updates automatically as we add new dates."
