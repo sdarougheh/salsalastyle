@@ -1,0 +1,7 @@
+---
+layout: null
+permalink: /events/crossbody-ny-meets-la-2026-09-25.ics
+sitemap: false
+---
+{%- assign ev = site.events | where: "ref", "crossbody-ny-meets-la-2026-09-25" | first -%}
+{% include event_ics.html event=ev %}
