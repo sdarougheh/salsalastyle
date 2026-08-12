@@ -19,6 +19,8 @@ lede: "Add all of our events to your calendar — it updates automatically as we
   </p>
 </div>
 
+<p class="sub-inapp" id="subInApp" hidden>⚠️ The link above might not work inside Instagram — try opening this page in a new browser (Safari or Chrome).</p>
+
 <h2 class="sub-heading">Upcoming events</h2>
 
 {%- assign today = site.time | date: '%Y-%m-%d' -%}
@@ -51,6 +53,7 @@ lede: "Add all of our events to your calendar — it updates automatically as we
   .sub-btn { font-size: 1.05rem; cursor: pointer; border: none; }
   .sub-alt { font-size: .9rem; opacity: .8; margin: .9rem 0 0; }
   .sub-alt a { text-decoration: underline; }
+  .sub-inapp { margin: 1rem 0 0; padding: .7rem .9rem; border-radius: 8px; background: rgba(200,120,0,.12); border: 1px solid rgba(200,120,0,.4); font-size: .9rem; line-height: 1.4; }
   .sub-heading { margin: 0 0 1rem; }
   .sub-events { list-style: none; padding: 0; margin: 0; }
   .sub-event { border-top: 1px solid rgba(128,128,128,.25); }
@@ -66,6 +69,13 @@ lede: "Add all of our events to your calendar — it updates automatically as we
 
 <script>
   (function () {
+    // Instagram / Facebook in-app browsers block .ics/webcal handoffs — warn
+    // only those users to reopen in a real browser.
+    if (/Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent || "")) {
+      var note = document.getElementById('subInApp');
+      if (note) note.hidden = false;
+    }
+
     var btn = document.getElementById('subAll');
     if (!btn) return;
     var feed = '{{ '/events/all.ics' | prepend: site.url }}';
