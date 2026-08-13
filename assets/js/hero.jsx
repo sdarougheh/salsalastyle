@@ -76,10 +76,27 @@ function BeginnerLanding() {
 
           <div className="hero-cta-row">
             <Button href="/registration" variant="primary">Register now</Button>
-            <Button href="/faq" variant="ghost-light">Questions?</Button>
           </div>
         </div>
       </header>
+
+      <section className="beginner-faq" id="faq">
+        <div className="beginner-faq-inner">
+          <h2 className="beginner-faq-title">Good to know</h2>
+          {(window.FAQ || []).map(function (item, i) {
+            return (
+              <details className="beginner-faq-item" key={i}>
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            );
+          })}
+          <p className="beginner-faq-more">
+            Still not sure? <a href="/contact">Get in touch</a> — we'll help you pick.
+          </p>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

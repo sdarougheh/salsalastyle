@@ -91,10 +91,11 @@ const WORKSHOPS = EVENTS.filter(function (e) { return e.type === "workshop"; });
 const COPY = {{ site.data.copy | jsonify }};
 const SEASON = {{ site.season | jsonify }};
 const SITE_URL = {{ site.url | jsonify }};
+const FAQ = {{ site.data.faq | jsonify }};
 
 // Derive hour range from schedule (kept for any legacy grid view).
 const HOURS = ["18:00", "19:00", "20:00", "21:00", "22:00"];
 
 Object.assign(window, {
-  SCHEDULE, HOURS, KIND_COLORS, CLASSES, PRICING, LEVELS, WORKSHOPS, EVENTS, COPY, SEASON, SITE_URL,
+  SCHEDULE, HOURS, KIND_COLORS, CLASSES, PRICING, LEVELS, WORKSHOPS, EVENTS, COPY, SEASON, SITE_URL, FAQ,
 });

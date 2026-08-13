@@ -54,6 +54,17 @@
     ]
   }
   </script>
+  <!-- WebSite schema — gives Google an explicit site name for search results
+       (otherwise it falls back to showing the bare domain). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Salsa LA-Style",
+    "alternateName": "Salsa LA-Style Copenhagen",
+    "url": "{{ site.url }}"
+  }
+  </script>
   {% endif %}
 
   {% if page.url == '/beginner/' %}

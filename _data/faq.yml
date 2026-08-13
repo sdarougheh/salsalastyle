@@ -1,0 +1,15 @@
+# Single source of truth for the FAQ — consumed by:
+#   - /faq page (visible list + FAQPage schema) in faq.md
+#   - the /beginner landing page (inline accordion) via data.js -> window.FAQ
+- q: "I'm worried I'll be terrible — what's the vibe?"
+  a: "Genuinely warm, no judgement. Everyone has a first class, including the teachers, and nobody walks in already great. Everyone will mess up steps, laugh about it, and try again. After two or three weeks you'll be surprised by how much you've picked up."
+- q: "Do I need a partner?"
+  a: "No. Come alone. We rotate partners regularly during class so everyone gets to dance with everyone — that's how you learn fastest, and it's how social dancing works in real life."
+- q: "Do I need any dance experience?"
+  a: "No. The Beginners class is built for complete beginners. If you've never danced before, this is the right class."
+- q: "What language are the classes in?"
+  a: "English, no Danish required."
+- q: "What should I wear?"
+  a: "Comfortable clothes you can move in. Clean sneakers are fine — don't go shopping for dance shoes just to try us out. A water bottle is a good idea."
+- q: "Can I try a single class before committing to the season?"
+  a: "Yes — drop-in is 100 DKK student / 110 DKK regular for a single Beginners class. Sign up via the registration form for the class you want to try."
