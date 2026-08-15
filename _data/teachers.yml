@@ -6,7 +6,7 @@
 # (one per teacher). `kind` must match a key in _data/kinds.yml.
 
 intro: >
-  We are three teachers that teach the Beginners and Intermediate classes
+  We are the three teachers that teach the Beginners and Intermediate classes
   at Salsa LA-Style.
 
 # One card per class slot. The photo is the pair who teaches it.
