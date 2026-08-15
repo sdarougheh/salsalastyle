@@ -1,0 +1,56 @@
+# The teaching team, rendered by /teachers (teachers.md).
+#
+# There are three of us but only two class photos, because Saman teaches every
+# Wednesday class and each photo is a *teaching pair*. So the page is split in
+# two: `pairs` are the photos (one per class slot) and `people` are the bios
+# (one per teacher). `kind` must match a key in _data/kinds.yml.
+
+intro: >
+  Three of us teach at Salsa LA-Style. Saman teaches all three Wednesday
+  classes — Nuria teaches Beginners alongside him, and Helena teaches
+  Intermediate 1 and 2.
+
+# One card per class slot. The photo is the pair who teaches it.
+pairs:
+  - names: "Saman & Nuria"
+    class_label: "Beginners"
+    kind: "beginner"
+    time: "Wednesdays 19:00 – 20:00"
+    photo: "assets/images/teachers/saman_nuria.webp"
+    alt: "Saman and Nuria, who teach the Beginners salsa class in Copenhagen"
+
+  - names: "Saman & Helena"
+    class_label: "Intermediate 1 & 2"
+    kind: "inter1"
+    time: "Wednesdays 20:00 – 22:00"
+    photo: "assets/images/teachers/saman_helena.webp"
+    alt: "Saman and Helena, who teach the Intermediate 1 and 2 salsa classes in Copenhagen"
+
+# One bio per teacher. `tags` say which classes they teach — Saman gets both.
+people:
+  - name: "Saman"
+    tags:
+      - { label: "Beginners", kind: "beginner" }
+      - { label: "Intermediate 1 & 2", kind: "inter1" }
+    bio: >
+      Has been dancing salsa for 9 years and teaching for two. Known for his
+      pedagogical approach and his love of technique and detail — he'll break a
+      move down into the small things that actually make it work, rather than
+      showing it once and moving on.
+
+  - name: "Helena"
+    tags:
+      - { label: "Intermediate 1 & 2", kind: "inter1" }
+    bio: >
+      Has been dancing salsa for 5 years and brings the latin flow — body
+      movement, styling, and the feel that turns correct steps into actual
+      dancing. She brightens the mood wherever she goes.
+
+  - name: "Nuria"
+    tags:
+      - { label: "Beginners", kind: "beginner" }
+    bio: >
+      Has been dancing salsa for 5 years and loves helping students find their
+      footing. She is patient and unhurried on the floor, and will happily
+      explain the same step five different ways until one of them clicks for
+      you — which is exactly what you want in your first salsa class.

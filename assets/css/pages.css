@@ -401,3 +401,120 @@ button[type="submit"]:disabled {
 .landing-points li::before { content: "✓"; position: absolute; left: 0; color: var(--accent, #E63946); font-weight: 700; }
 .landing-links { font-size: 14px; color: var(--ink-soft, #5B4A42); }
 .landing-links a { color: var(--accent, #E63946); }
+
+/* ---------- /teachers ----------
+   Two photos but three teachers: the photos are teaching *pairs* (one per
+   class slot), the bios below are people. Saman appears in both photos, so he
+   carries both class tags. Colours come from the .kind-* vars in styles.css. */
+.teachers-intro {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-soft, #5B4A42);
+  margin: -12px 0 36px;
+  max-width: 60ch;
+}
+
+.teachers-pairs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin: 0 0 48px;
+}
+
+.teacher-pair {
+  margin: 0;
+  border: 1px solid var(--line, #E8DDCB);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface, #fff);
+}
+
+/* Cutout PNGs on a tinted panel — bottom-aligned so they stand on the caption. */
+.teacher-pair-photo {
+  background: linear-gradient(180deg, #fff 0%, var(--k-bg, #E6E1D7) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px 12px 0;
+}
+.teacher-pair-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.teacher-pair-caption {
+  padding: 16px 18px 18px;
+  border-top: 3px solid var(--k-dot, #8A8277);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.teacher-pair-chip {
+  align-self: flex-start;
+  background: var(--k-bg, #E6E1D7);
+  color: var(--k-fg, #2A241C);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.teacher-pair-names {
+  font-family: var(--font-display, "Fraunces", Georgia, serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink, #1F1410);
+}
+.teacher-pair-time {
+  font-size: 14px;
+  color: var(--ink-soft, #5B4A42);
+}
+
+.teacher-bios {
+  display: grid;
+  gap: 28px;
+  margin: 0 0 40px;
+}
+.teacher-bio {
+  border-top: 1px solid var(--line, #E8DDCB);
+  padding-top: 22px;
+}
+.teacher-bio-name {
+  font-family: var(--font-display, "Fraunces", Georgia, serif);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 10px;
+  color: var(--ink, #1F1410);
+}
+.teacher-bio-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.teacher-tag {
+  background: var(--k-bg, #E6E1D7);
+  color: var(--k-fg, #2A241C);
+  border-radius: 999px;
+  padding: 3px 11px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.teacher-bio-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+.teachers-cta {
+  border-top: 1px solid var(--line, #E8DDCB);
+  padding-top: 24px;
+  font-size: 16px;
+  color: var(--ink-soft, #5B4A42);
+}
+.teachers-cta a { color: var(--accent, #E63946); font-weight: 600; }
