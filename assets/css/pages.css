@@ -403,22 +403,28 @@ button[type="submit"]:disabled {
 .landing-links a { color: var(--accent, #E63946); }
 
 /* ---------- /teachers ----------
+   --teachers-measure keeps the photo cards on the same measure as the body
+   text, so the two-up grid lines up with the paragraphs instead of overhanging
+   them.
    Two photos but three teachers: the photos are teaching *pairs* (one per
    class slot), the bios below are people. Saman appears in both photos, so he
    carries both class tags. Colours come from the .kind-* vars in styles.css. */
+:root { --teachers-measure: 660px; }
+
 .teachers-intro {
   font-size: 18px;
   line-height: 1.6;
   color: var(--ink-soft, #5B4A42);
   margin: -12px 0 36px;
-  max-width: 60ch;
+  max-width: var(--teachers-measure);
 }
 
 .teachers-pairs {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
   margin: 0 0 48px;
+  max-width: var(--teachers-measure);
 }
 
 .teacher-pair {
@@ -429,7 +435,7 @@ button[type="submit"]:disabled {
   background: var(--surface, #fff);
 }
 
-/* Cutout PNGs on a tinted panel — bottom-aligned so they stand on the caption. */
+/* Cutout PNGs on a tinted panel, bottom-aligned so they stand on the caption. */
 .teacher-pair-photo {
   background: linear-gradient(180deg, #fff 0%, var(--k-bg, #E6E1D7) 100%);
   display: flex;
@@ -477,6 +483,7 @@ button[type="submit"]:disabled {
   display: grid;
   gap: 28px;
   margin: 0 0 40px;
+  max-width: var(--teachers-measure);
 }
 .teacher-bio {
   border-top: 1px solid var(--line, #E8DDCB);
@@ -508,5 +515,5 @@ button[type="submit"]:disabled {
   margin: 0;
   font-size: 17px;
   line-height: 1.65;
-  max-width: 62ch;
+  max-width: var(--teachers-measure);
 }

@@ -6,9 +6,8 @@
 # (one per teacher). `kind` must match a key in _data/kinds.yml.
 
 intro: >
-  Three of us teach at Salsa LA-Style. Saman teaches all three Wednesday
-  classes — Nuria teaches Beginners alongside him, and Helena teaches
-  Intermediate 1 and 2.
+  We are three teachers that teach the Beginners and Intermediate classes
+  at Salsa LA-Style.
 
 # One card per class slot. The photo is the pair who teaches it.
 pairs:
@@ -26,7 +25,7 @@ pairs:
     photo: "assets/images/teachers/saman_helena.webp"
     alt: "Saman and Helena, who teach the Intermediate 1 and 2 salsa classes in Copenhagen"
 
-# One bio per teacher. `tags` say which classes they teach — Saman gets both.
+# One bio per teacher. `tags` say which classes they teach; Saman gets both.
 people:
   - name: "Saman"
     tags:
@@ -34,7 +33,7 @@ people:
       - { label: "Intermediate 1 & 2", kind: "inter1" }
     bio: >
       Has been dancing salsa for 9 years and teaching for two. Known for his
-      pedagogical approach and his love of technique and detail — he'll break a
+      pedagogical approach and his love of technique and detail. He'll break a
       move down into the small things that actually make it work, rather than
       showing it once and moving on.
 
@@ -42,7 +41,7 @@ people:
     tags:
       - { label: "Intermediate 1 & 2", kind: "inter1" }
     bio: >
-      Has been dancing salsa for 5 years and brings the latin flow — body
+      Has been dancing salsa for 6 years and brings the latin flow: body
       movement, styling, and the feel that turns correct steps into actual
       dancing. She brightens the mood wherever she goes.
 
@@ -53,4 +52,4 @@ people:
       Has been dancing salsa for 5 years and loves helping students find their
       footing. She is patient and unhurried on the floor, and will happily
       explain the same step five different ways until one of them clicks for
-      you — which is exactly what you want in your first salsa class.
+      you, which is exactly what you want in your first salsa class.
