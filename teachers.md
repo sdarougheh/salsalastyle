@@ -41,12 +41,6 @@ lede: "The three teachers behind Salsa LA-Style Copenhagen — Saman, Helena and
   {% endfor %}
 </div>
 
-<p class="teachers-cta">
-  All three classes run on Wednesdays at Inflow Studio.
-  <a href="/registration">Register for the season</a> or
-  <a href="/contact">get in touch</a> if you're not sure which class fits you.
-</p>
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

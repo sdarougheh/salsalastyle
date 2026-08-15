@@ -510,11 +510,3 @@ button[type="submit"]:disabled {
   line-height: 1.65;
   max-width: 62ch;
 }
-
-.teachers-cta {
-  border-top: 1px solid var(--line, #E8DDCB);
-  padding-top: 24px;
-  font-size: 16px;
-  color: var(--ink-soft, #5B4A42);
-}
-.teachers-cta a { color: var(--accent, #E63946); font-weight: 600; }
