@@ -23,15 +23,25 @@
   }
 
   // A card id can arrive as utm_source (preferred) or a short ?c= param.
-  var incoming = param("c") || param("utm_source");
+  var source = param("c") || param("utm_source");
+  var medium = param("utm_medium");
+  var campaign = param("utm_campaign");
+
+  // What to attribute this visit to:
+  //  - a specific card id (utm_source / ?c=) always wins, latest scan first;
+  //  - if only utm_medium survives (some QR apps and in-app browsers strip
+  //    utm_source before we ever see it), fall back to the medium (e.g. "qr")
+  //    so the visit is still tied to the print campaign — but never let that
+  //    generic fallback clobber a specific card id we already captured.
+  var incoming = source || (medium && !readStore() ? medium : null);
 
   if (incoming) {
-    writeStore(incoming);                 // latest scan wins
+    writeStore(incoming);                 // latest specific scan wins
     try {
       if (window.gtag) window.gtag("event", "referral_visit", {
         ref: incoming,
-        medium: param("utm_medium") || "",
-        campaign: param("utm_campaign") || ""
+        medium: medium || "",
+        campaign: campaign || ""
       });
     } catch (e) {}
   }
