@@ -14,6 +14,7 @@ function Nav() {
       <div className="nav-links">
         <a href="/#schedule">Classes</a>
         <a href="/#events">Events</a>
+        <a href="/teachers">Teachers</a>
         <a href="/faq">FAQ</a>
         <a href="/payments">Payments</a>
         <a href="/about">About</a>

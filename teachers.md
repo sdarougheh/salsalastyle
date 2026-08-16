@@ -2,9 +2,6 @@
 layout: page
 title: Meet your teachers
 seo_title: "Meet your teachers · Salsa LA-Style Copenhagen"
-# Unlisted for now: no nav/footer links anywhere, and noindex so it stays off
-# Google. Remove `noindex` and add the links back when you want it public.
-noindex: true
 lede: "The three teachers behind Salsa LA-Style Copenhagen: Saman, Helena and Nuria, and which Wednesday class each of them teaches."
 ---
 

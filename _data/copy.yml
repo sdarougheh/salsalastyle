@@ -85,6 +85,7 @@ footer:
     - title: "Info"
       links:
         - { label: "About",    href: "/about"    }
+        - { label: "Teachers", href: "/teachers" }
         - { label: "FAQ",      href: "/faq"      }
         - { label: "Contact",  href: "/contact"  }
         - { label: "Payments", href: "/payments" }
