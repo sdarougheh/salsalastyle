@@ -54,6 +54,17 @@ season:
   exdates:                           # dates to skip (no class)
     - "2026-10-14"                   # week 42, autumn holidays
 
+# "Bring a friend" discount — Beginners class only.
+# Shown as an option on /beginner and used by /registration_friend.html.
+# `base` is the regular Single Class price from _data/pricing.yml — keep the
+# two in sync if pricing changes. Set `enabled: false` to hide the option
+# everywhere (the page keeps working for anyone holding a direct link).
+friend_discount:
+  enabled: true
+  percent: 20
+  base: 800                    # DKK per person, before the discount
+  class: "Beginners Autumn"    # value written to the registrations sheet
+
 # MobilePay payment boxes. Edit here whenever the box changes.
 # `classes` is used by /payments and the class success page;
 # `workshops` is used by the workshop success page. They can point at the

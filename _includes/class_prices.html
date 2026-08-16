@@ -1,5 +1,7 @@
 {%- comment -%}
 Renders a pricing table from _data/pricing.yml. Used on the success page.
+Rows with a `flat` price (the bring-a-friend pair price) show one price across
+both columns, since that price is the same for everyone.
 {%- endcomment -%}
 <h2>Pricing ({{ site.season.name }})</h2>
 
@@ -19,11 +21,20 @@ Reach out to us if you want to sign up for all three classes.</p>
     </thead>
     <tbody>
       {% for p in site.data.pricing %}
-      <tr{% if p.save_regular or p.save_student %} class="highlight"{% endif %}>
+      <tr{% if p.save_regular or p.save_student or p.save_flat %} class="highlight"{% endif %}>
         <td><strong>{{ p.pkg }}</strong><br><small>{{ p.meta }}</small></td>
+        {% if p.flat %}
+        <td colspan="2">{{ p.flat }} <small>({{ p.flat_meta }})</small>{% if p.save_flat %}<br><span class="savings">Save {{ p.save_flat }}</span>{% endif %}</td>
+        {% else %}
         <td>{{ p.regular }}{% if p.save_regular %}<br><span class="savings">Save {{ p.save_regular }}</span>{% endif %}</td>
         <td>{{ p.student }}{% if p.save_student %}<br><span class="savings">Save {{ p.save_student }}</span>{% endif %}</td>
+        {% endif %}
       </tr>
+      {% if p.note %}
+      <tr class="pricing-note-row">
+        <td colspan="3"><small>{{ p.note }}</small></td>
+      </tr>
+      {% endif %}
       {% endfor %}
     </tbody>
   </table>

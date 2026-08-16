@@ -36,6 +36,13 @@ function BeginnerLanding() {
   const single = (window.PRICING || []).filter(function (p) { return /single/i.test(p.pkg); })[0];
   const priceText = single ? (single.regular + " (" + single.student + " students)") : "";
 
+  // Bring-a-friend discount — Beginners class only, so it is offered here and
+  // nowhere else. Config lives in _config.yml (friend_discount).
+  const fd = window.FRIEND_DISCOUNT || {};
+  const friendOn = !!(fd.enabled && fd.base && fd.percent);
+  const friendEach = friendOn ? Math.round((fd.base * (100 - fd.percent)) / 100) : 0;
+  const friendTotal = friendEach * 2;
+
   return (
     <div className="app">
       <header className="hero hero-fullbleed hero-beginner" id="top">
@@ -72,13 +79,55 @@ function BeginnerLanding() {
               <span className="hero-facts-label">Price</span>
               <span>{priceText}</span>
             </li>
+            {friendOn && (
+              <li>
+                <span className="hero-facts-label">With a friend</span>
+                <span>
+                  {friendEach} DKK each — {fd.percent}% off when two of you sign up together
+                </span>
+              </li>
+            )}
           </ul>
 
           <div className="hero-cta-row">
             <Button href="/registration" variant="primary">Register now</Button>
+            {friendOn && (
+              <Button href="/registration_friend" variant="ghost-light">
+                Sign up with a friend — {fd.percent}% off
+              </Button>
+            )}
           </div>
         </div>
       </header>
+
+      {friendOn && (
+        <section className="beginner-friend" id="bring-a-friend">
+          <div className="beginner-friend-inner">
+            <div className="beginner-friend-badge">−{fd.percent}%</div>
+            <div className="beginner-friend-body">
+              <h2 className="beginner-friend-title">Sign up with a friend, both save {fd.percent}%</h2>
+              <p>
+                Salsa is more fun with friends. Bring a friend, sign up together,
+                and you both get <strong>{fd.percent}% off</strong>.
+              </p>
+              <p>
+                That's <strong>{friendEach} DKK each</strong> instead of {fd.base} DKK —{" "}
+                <strong>{friendTotal} DKK</strong> for the two of you, in one payment.
+                Cheaper than the student price, whatever your age.
+              </p>
+              <p className="beginner-friend-fine">
+                Beginners class only. You don't need to dance with each other in class —
+                we rotate partners anyway.
+              </p>
+              <div className="hero-cta-row">
+                <Button href="/registration_friend" variant="primary">
+                  Sign up with a friend
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="beginner-faq" id="faq">
         <div className="beginner-faq-inner">

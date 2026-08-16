@@ -263,23 +263,40 @@ function Pricing() {
       </div>
       <div className="pricing-grid">
         {PRICING.map((p) => (
-          <article key={p.pkg} className="price-card">
+          <article key={p.pkg} className={`price-card${p.flat ? " price-card-flat" : ""}`}>
             <div className="price-head">
               <h3 className="price-name">{p.pkg}</h3>
               <div className="price-meta">{p.meta}</div>
             </div>
             <div className="price-rows">
-              <div className="price-row">
-                <span className="price-row-label">Regular</span>
-                <span className="price-row-value">{p.regular}</span>
-                <span className="price-row-save">{p.saveR ? `You save ${p.saveR.replace(/^Save\s*/,"")}` : ""}</span>
-              </div>
-              <div className="price-row">
-                <span className="price-row-label">Student</span>
-                <span className="price-row-value">{p.student}</span>
-                <span className="price-row-save">{p.saveS ? `You save ${p.saveS.replace(/^Save\s*/,"")}` : ""}</span>
-              </div>
+              {p.flat ? (
+                /* One price for everyone (bring-a-friend pair price). */
+                <div className="price-row">
+                  <span className="price-row-label">{p.flatLabel}</span>
+                  <span className="price-row-value">
+                    {p.flat}
+                    {p.flatMeta && <span className="price-row-sub">{p.flatMeta}</span>}
+                  </span>
+                  <span className="price-row-save">{p.saveFlat ? `You save ${p.saveFlat.replace(/^Save\s*/,"")}` : ""}</span>
+                </div>
+              ) : (
+                <>
+                  <div className="price-row">
+                    <span className="price-row-label">Regular</span>
+                    <span className="price-row-value">{p.regular}</span>
+                    <span className="price-row-save">{p.saveR ? `You save ${p.saveR.replace(/^Save\s*/,"")}` : ""}</span>
+                  </div>
+                  <div className="price-row">
+                    <span className="price-row-label">Student</span>
+                    <span className="price-row-value">{p.student}</span>
+                    <span className="price-row-save">{p.saveS ? `You save ${p.saveS.replace(/^Save\s*/,"")}` : ""}</span>
+                  </div>
+                </>
+              )}
             </div>
+            {p.note && (
+              <p className="price-note" dangerouslySetInnerHTML={{ __html: p.note }} />
+            )}
           </article>
         ))}
       </div>

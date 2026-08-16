@@ -21,6 +21,13 @@ const PRICING = ({{ site.data.pricing | jsonify }}).map(function (p) {
     student: p.student,
     saveR:   p.save_regular ? "Save " + p.save_regular : null,
     saveS:   p.save_student ? "Save " + p.save_student : null,
+    // `flat` rows (e.g. the bring-a-friend pair price) show one price for
+    // everyone instead of the regular/student split.
+    flat:      p.flat || null,
+    flatLabel: p.flat_label || "Two people",
+    flatMeta:  p.flat_meta || null,
+    saveFlat:  p.save_flat ? "Save " + p.save_flat : null,
+    note:      p.note || null,
   };
 });
 
@@ -92,10 +99,12 @@ const COPY = {{ site.data.copy | jsonify }};
 const SEASON = {{ site.season | jsonify }};
 const SITE_URL = {{ site.url | jsonify }};
 const FAQ = {{ site.data.faq | jsonify }};
+const FRIEND_DISCOUNT = {{ site.friend_discount | jsonify }};
 
 // Derive hour range from schedule (kept for any legacy grid view).
 const HOURS = ["18:00", "19:00", "20:00", "21:00", "22:00"];
 
 Object.assign(window, {
   SCHEDULE, HOURS, KIND_COLORS, CLASSES, PRICING, LEVELS, WORKSHOPS, EVENTS, COPY, SEASON, SITE_URL, FAQ,
+  FRIEND_DISCOUNT,
 });

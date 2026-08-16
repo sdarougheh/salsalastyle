@@ -13,3 +13,16 @@
   student: "1224 DKK"
   save_regular: "18%"
   save_student: "24%"
+# "Bring a friend" pair price — Beginners class only. `flat` rows show a single
+# price instead of the regular/student split (the pair price is the same for
+# everyone, and is lower than the student price). Keep these numbers in sync
+# with `friend_discount` in _config.yml.
+- pkg: "With a Friend"
+  meta: "Beginners only · 8 weeks · two people"
+  flat: "1280 DKK"
+  flat_label: "Two people"
+  flat_meta: "640 DKK each"
+  save_flat: "20%"
+  note: >
+    <strong>Beginners class only.</strong> You and your friend sign up together
+    in one go and pay 1280 DKK in a single payment — <a href="/registration_friend">register as a pair</a>.
