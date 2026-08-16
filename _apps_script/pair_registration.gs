@@ -131,6 +131,11 @@ function doPost(e) {
  * appended — so the sheet stays readable either way.
  */
 function handlePairRegistration_(data, sheet, timestamp) {
+  // Defaulted, so the row is stamped correctly no matter where in doPost the
+  // pair branch sits — passing doPost's own timestamp just keeps the two rows
+  // identical to the millisecond.
+  timestamp = timestamp || new Date();
+
   var people = data.people || [];
   if (people.length !== 2) {
     throw new Error('A pair registration needs exactly two people');
@@ -189,45 +194,3 @@ function ensurePairHeaders_(sheet) {
   }
 }
 
-
-/**
- * TEMPORARY TEST — run this from the Apps Script editor (Run ▶) to exercise the
- * pair path without reCAPTCHA, which is domain-locked to salsalastyle.dk and so
- * can't be satisfied from a local build or a curl.
- *
- * Writes two real rows to 'Registrations'. Delete them afterwards.
- * Sends no email; flip SEND_EMAIL to true to test that too.
- */
-function testPairRegistration() {
-  var SEND_EMAIL = false;
-
-  var data = {
-    type: 'pair',
-    classes: ['Beginners Autumn'],
-    discount: '20%',
-    amount: 1280,
-    currency: 'DKK',
-    people: [
-      { name: 'TEST Anna Nielsen', email: 'anna@example.com', role: 'Follow' },
-      { name: 'TEST Bo Jensen',    email: 'bo@example.com',   role: 'Lead'   }
-    ],
-    comments: 'test pair — delete me',
-    referral: 'test'
-  };
-
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Registrations');
-  var pairId = handlePairRegistration_(data, sheet, new Date());
-
-  if (SEND_EMAIL) {
-    data.people.forEach(function(person, i) {
-      sendConfirmationEmail({
-        name: person.name, email: person.email, classes: data.classes,
-        role: person.role, comments: data.comments, young: '',
-        pairId: pairId, pairPartner: data.people[1 - i].name, amountDue: data.amount
-      });
-    });
-  }
-
-  Logger.log('Pair ID: ' + pairId + ' — check the last two rows of the sheet, then delete them.');
-  return pairId;
-}
