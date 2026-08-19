@@ -117,6 +117,7 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
   color: #fff;
 }
 .btn-ghost-light:hover { background: #fff; color: var(--ink); }
+.btn-icon { flex: 0 0 auto; }
 .btn-arrow { display: inline-block; transition: transform 0.2s ease; }
 .btn:hover .btn-arrow { transform: translateX(3px); }
 
@@ -2053,7 +2054,10 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 .mobile-frame-screen .levels-strip-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .mobile-frame-screen .lvl-blurb { font-size: 12px; }
 .mobile-frame-screen .pricing-grid { grid-template-columns: 1fr; }
-.mobile-frame-screen .price-card-flat { flex-direction: column; align-items: stretch; }
+.mobile-frame-screen .price-card-flat { flex-direction: column; align-items: stretch; flex-wrap: nowrap; }
+.mobile-frame-screen .price-card-flat .price-head,
+.mobile-frame-screen .price-card-flat .price-rows,
+.mobile-frame-screen .price-card-flat .price-note { flex: 0 0 auto; }
 .mobile-frame-screen .price-card { padding: 24px; }
 .mobile-frame-screen .price-row-value { font-size: 20px; }
 .mobile-frame-screen .register-body {
@@ -2096,7 +2100,10 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
   .class-grid, .pricing-grid, .ps-grid, .footer-cols, .hero-split-stats, .hero-fullbleed-meta {
     grid-template-columns: 1fr;
   }
-  .price-card-flat { flex-direction: column; align-items: stretch; }
+  .price-card-flat { flex-direction: column; align-items: stretch; flex-wrap: nowrap; }
+  .price-card-flat .price-head,
+  .price-card-flat .price-rows,
+  .price-card-flat .price-note { flex: 0 0 auto; }
   .pt-head, .pt-row { grid-template-columns: 1fr; gap: 6px; padding: 16px 20px; }
   .pt-head { display: none; }
   .pt-save { flex-direction: row; flex-wrap: wrap; }

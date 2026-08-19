@@ -80,9 +80,14 @@ function SectionLabel({ num, children }) {
   );
 }
 
-function Button({ children, href, variant = "primary", arrow = true }) {
+function Button({ children, href, variant = "primary", arrow = true, target }) {
   return (
-    <a className={`btn btn-${variant}`} href={href}>
+    <a
+      className={`btn btn-${variant}`}
+      href={href}
+      target={target}
+      rel={target === "_blank" ? "noreferrer" : undefined}
+    >
       {children}
       {arrow && <span className="btn-arrow">→</span>}
     </a>

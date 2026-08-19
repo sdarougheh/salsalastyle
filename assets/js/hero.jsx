@@ -36,6 +36,10 @@ function BeginnerLanding() {
   const single = (window.PRICING || []).filter(function (p) { return /single/i.test(p.pkg); })[0];
   const priceText = single ? (single.regular + " (" + single.student + " students)") : "";
 
+  const instagram =
+    (((window.COPY || {}).footer || {}).social || {}).instagram ||
+    "https://instagram.com/salsalastyle";
+
   // Bring-a-friend discount — Beginners class only, so it is offered here and
   // nowhere else. Config lives in _config.yml (friend_discount).
   const fd = window.FRIEND_DISCOUNT || {};
@@ -96,6 +100,14 @@ function BeginnerLanding() {
                 Sign up with a friend — {fd.percent}% off
               </Button>
             )}
+            <Button href={instagram} variant="ghost-light" target="_blank" arrow={false}>
+              <svg className="btn-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" role="img" aria-label="Instagram">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg>
+              Impressions from previous classes
+            </Button>
           </div>
         </div>
       </header>
