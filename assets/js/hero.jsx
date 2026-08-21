@@ -144,7 +144,7 @@ function BeginnerLanding() {
       <section className="beginner-faq" id="faq">
         <div className="beginner-faq-inner">
           <h2 className="beginner-faq-title">Good to know</h2>
-          {(window.FAQ || []).map(function (item, i) {
+          {(window.FAQ || []).filter(function (item) { return !item.hide_on_beginner; }).map(function (item, i) {
             return (
               <details className="beginner-faq-item" key={i}>
                 <summary>{item.q}</summary>
@@ -153,7 +153,7 @@ function BeginnerLanding() {
             );
           })}
           <p className="beginner-faq-more">
-            Still not sure? <a href="/contact">Get in touch</a> — we'll help you pick.
+            Any other questions? <a href="https://ig.me/m/salsalastyle" target="_blank" rel="noreferrer">Message us on Instagram</a> — we're happy to help.
           </p>
         </div>
       </section>

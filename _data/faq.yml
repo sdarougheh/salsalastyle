@@ -13,3 +13,6 @@
   a: "Comfortable clothes you can move in. Clean sneakers are fine — don't go shopping for dance shoes just to try us out. A water bottle is a good idea."
 - q: "Can I try a single class before committing to the season?"
   a: "Yes — drop-in is 100 DKK student / 110 DKK regular for a single Beginners class. Sign up via the registration form for the class you want to try."
+  # Kept off the /beginner landing page so it doesn't undercut season sign-ups
+  # (single-class seekers are routed to ask us via Instagram DM instead).
+  hide_on_beginner: true
