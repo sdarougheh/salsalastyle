@@ -39,6 +39,9 @@ function BeginnerLanding() {
   const instagram =
     (((window.COPY || {}).footer || {}).social || {}).instagram ||
     "https://instagram.com/salsalastyle";
+  // Direct-message deep link derived from the profile handle (ig.me/m/<handle>).
+  const igHandle = instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/\/.*$/, "");
+  const instagramDM = igHandle ? ("https://ig.me/m/" + igHandle) : instagram;
 
   // Bring-a-friend discount — Beginners class only, so it is offered here and
   // nowhere else. Config lives in _config.yml (friend_discount).
@@ -108,6 +111,12 @@ function BeginnerLanding() {
               </svg>
               Impressions from previous classes
             </Button>
+            <Button href={instagramDM} variant="ghost-light" target="_blank" arrow={false}>
+              <svg className="btn-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" role="img" aria-label="Message">
+                <path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1 1 21 11.5z" />
+              </svg>
+              Message us
+            </Button>
           </div>
         </div>
       </header>
@@ -117,19 +126,10 @@ function BeginnerLanding() {
           <div className="beginner-friend-inner">
             <div className="beginner-friend-badge">−{fd.percent}%</div>
             <div className="beginner-friend-body">
-              <h2 className="beginner-friend-title">Sign up with a friend, both save {fd.percent}%</h2>
+              <h2 className="beginner-friend-title">Bring a friend, both save {fd.percent}%</h2>
               <p>
-                Salsa is more fun with friends. Bring a friend, sign up together,
-                and you both get <strong>{fd.percent}% off</strong>.
-              </p>
-              <p>
-                That's <strong>{friendEach} DKK each</strong> instead of {fd.base} DKK —{" "}
-                <strong>{friendTotal} DKK</strong> for the two of you, in one payment.
-                Cheaper than the student price, whatever your age.
-              </p>
-              <p className="beginner-friend-fine">
-                Beginners class only. You don't need to dance with each other in class —
-                we rotate partners anyway.
+                Sign up together for <strong>{friendEach} DKK each</strong> instead of {fd.base} DKK —
+                cheaper than the student price, whatever your age. Beginners class only.
               </p>
               <div className="hero-cta-row">
                 <Button href="/registration_friend" variant="primary">
