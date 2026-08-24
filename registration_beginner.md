@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="form-group">
             <label>
                 <input type="checkbox" id="young" name="young">
-                I am under 30 years old.
+                I am under 30 years old. (for our tax reports)
             </label>
         </div>
 
