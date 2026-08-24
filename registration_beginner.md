@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="form-group">
             <label>
                 <input type="checkbox" id="young" name="young">
-                I'm under 30 (student price — {{ single.student }} instead of {{ single.regular }})
+                I am under 30 years old.
             </label>
         </div>
 
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div class="pair-total">
             <span>Price for the 8-week course</span>
-            <strong>{{ single.regular }}</strong>
+            <strong>{{ single.regular }}<span class="pair-total-alt">{{ single.student }} for students</span></strong>
         </div>
 
         <p>By registering, you accept our <a href="/terms" target="_blank">Terms and Conditions</a>.</p>

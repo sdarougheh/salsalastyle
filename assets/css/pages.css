@@ -576,3 +576,14 @@ button[type="submit"]:disabled {
   line-height: 1.65;
   max-width: var(--teachers-measure);
 }
+
+/* Secondary price under the headline price (e.g. the under-30 student rate),
+   so both are stated without competing with the number people came for. */
+.pair-total-alt {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  opacity: .75;
+  text-align: right;
+  margin-top: 2px;
+}
