@@ -1,0 +1,14 @@
+{
+  "name": "salsalastyle-site",
+  "private": true,
+  "description": "Build tooling for salsalastyle.dk — transpiles the JSX components ahead of time so the browser does not have to load @babel/standalone (3.1 MB) on every page view.",
+  "scripts": {
+    "build:js": "babel assets/js --out-dir assets/js --extensions .jsx --out-file-extension .js --presets @babel/preset-react",
+    "build": "npm run build:js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-react": "^7.23.0"
+  }
+}

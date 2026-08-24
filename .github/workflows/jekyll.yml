@@ -29,6 +29,20 @@ jobs:
           ruby-version: "3.2.3"
           bundler-cache: true   # runs `bundle install` and caches gems
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Transpile JSX
+        # Turns assets/js/*.jsx into the .js the layouts load. Doing it here
+        # rather than in the browser keeps @babel/standalone (3.1 MB) off the
+        # page. The compiled .js is also committed, so a failure here degrades
+        # to shipping the last good build rather than a blank page.
+        run: |
+          npm ci
+          npm run build:js
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5

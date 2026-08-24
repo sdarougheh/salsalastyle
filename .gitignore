@@ -3,3 +3,6 @@ _site
 .DS_Store
 _vendor
 .idea/
+
+# Node deps — the compiled assets/js/*.js ARE committed (see package.json)
+node_modules/
