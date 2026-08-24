@@ -29,11 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessage.style.display = 'none';
         emailError.style.display = 'none';
 
+        // Dancing role is deliberately not asked. It is jargon a first-timer does
+        // not have, and we rotate partners in class anyway. The key is still sent
+        // so the payload shape matches the other registration forms.
         const people = [1, 2].map(function (n) {
             return {
                 name:  document.getElementById('name' + n).value.trim(),
                 email: document.getElementById('email' + n).value.trim(),
-                role:  document.getElementById('role' + n).value
+                role:  ''
             };
         });
 
@@ -155,16 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label for="email1">Email *</label>
                 <input type="email" id="email1" name="email1" required>
             </div>
-
-            <div class="form-group">
-                <label for="role1">Dancing role *</label>
-                <select id="role1" name="role1" required>
-                    <option value="">-- Select a role --</option>
-                    <option value="Lead">Lead</option>
-                    <option value="Follow">Follow</option>
-                    <option value="Either">Either role</option>
-                </select>
-            </div>
         </fieldset>
 
         <fieldset class="pair-person">
@@ -179,16 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label for="email2">Email *</label>
                 <input type="email" id="email2" name="email2" required>
                 <div id="emailError" class="field-error">Please give each person their own email address</div>
-            </div>
-
-            <div class="form-group">
-                <label for="role2">Dancing role *</label>
-                <select id="role2" name="role2" required>
-                    <option value="">-- Select a role --</option>
-                    <option value="Lead">Lead</option>
-                    <option value="Follow">Follow</option>
-                    <option value="Either">Either role</option>
-                </select>
             </div>
         </fieldset>
 
