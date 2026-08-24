@@ -7,6 +7,23 @@ import 'https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookiecon
 
 CookieConsent.run({
 
+    guiOptions: {
+        // A bar keeps the consent choice unavoidable while taking a fraction
+        // of the vertical space a box does — on a phone the box sat on top of
+        // the "Register now" button.
+        consentModal: {
+            layout: 'bar inline',
+            position: 'bottom',
+            equalWeightButtons: true,
+            flipButtons: false
+        },
+        preferencesModal: {
+            layout: 'box',
+            equalWeightButtons: true,
+            flipButtons: false
+        }
+    },
+
     categories: {
         necessary: {
             enabled: true,  // this category is enabled by default
@@ -21,7 +38,7 @@ CookieConsent.run({
             en: {
                 consentModal: {
                     title: 'Please accept cookies',
-                    description: 'Cookies help us figure out traffic and serve you better (<a href="/privacy-policy" class="cc-link">privacy policy</a>)',
+                    description: 'We use cookies to measure traffic (<a href="/privacy" class="cc-link">privacy policy</a>).',
                     acceptAllBtn: 'Accept all :)',
                     acceptNecessaryBtn: 'Reject all :(',
                     showPreferencesBtn: 'Manage Individual preferences'
