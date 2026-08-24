@@ -97,7 +97,7 @@ function BeginnerLanding() {
           </ul>
 
           <div className="hero-cta-row">
-            <Button href="/registration" variant="primary">Register now</Button>
+            <Button href="/registration_beginner" variant="primary">Register now</Button>
             {friendOn && (
               <Button href="/registration_friend" variant="ghost-light">
                 Sign up with a friend — {fd.percent}% off
