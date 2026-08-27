@@ -126,11 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="checkbox-list">
   {%- assign NL = "
 " -%}
+  {%- assign today = site.time | date: "%Y-%m-%d" -%}
   {% assign workshops = site.events | where: "type", "workshop" | sort: "date" %}
-  {% for workshop in workshops %}{% unless workshop.hidden %}
+  {% for workshop in workshops %}{%- assign wsdate = workshop.date | date: "%Y-%m-%d" -%}{% unless workshop.hidden %}{% if wsdate >= today %}
                 {%- capture wsdesc -%}{{ workshop.calendar_description | default: workshop.lede }}{%- endcapture -%}
                 {%- assign wsdesc = wsdesc | replace: NL, "[br]" -%}
-                <div class="ws-option">
+                <div class="ws-option" data-ws-date="{{ wsdate }}">
                   <div class="ws-option-head">
                     <span class="ws-option-title">{{ workshop.title }} ({{ workshop.date | date: "%Y-%m-%d" }}){% if workshop.register_url %} — <a href="{{ workshop.url }}">details</a>{% endif %}</span>
                     <button type="button" class="cal-btn ws-cal" data-addcal aria-label="Add {{ workshop.title }} to calendar">
@@ -158,8 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     {% endif %}
                   </div>
                 </div>
-  {% endunless %}{% endfor %}
+  {% endif %}{% endunless %}{% endfor %}
             </div>
+            <p class="ws-empty" hidden>No workshops are on the calendar right now. <a href="{{ '/events/' | relative_url }}">Subscribe to our events</a> and you'll hear about the next one automatically.</p>
             <div id="classError" class="field-error">Please select at least one class</div>
         </div>
         
@@ -188,6 +190,31 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <script>
+// Liquid filters past workshops out at build time, but the site is only
+// rebuilt on push — so re-check against the visitor's own "today" here, the
+// same way the homepage event cards do. Without this a workshop keeps showing
+// up as bookable for every day between its date and the next deploy.
+(function () {
+  const d = new Date();
+  const today = d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+
+  const list = document.querySelector('.checkbox-list');
+  if (!list) return;
+
+  list.querySelectorAll('.ws-option[data-ws-date]').forEach(function (row) {
+    if (row.getAttribute('data-ws-date') < today) row.remove();
+  });
+
+  if (!list.querySelector('.ws-option')) {
+    const empty = document.querySelector('.ws-empty');
+    if (empty) empty.hidden = false;
+    const btn = document.getElementById('submitBtn');
+    if (btn) btn.hidden = true;
+  }
+})();
+
 (function () {
   document.querySelectorAll('.ws-option').forEach(function (row) {
     var btn = row.querySelector('[data-addcal]');

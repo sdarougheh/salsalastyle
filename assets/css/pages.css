@@ -587,3 +587,11 @@ button[type="submit"]:disabled {
   text-align: right;
   margin-top: 2px;
 }
+
+/* Shown when every workshop on file has already happened */
+.ws-empty {
+  margin: 4px 0 0;
+  opacity: .8;
+  font-size: 15px;
+}
+.ws-empty a { text-decoration: underline; }
