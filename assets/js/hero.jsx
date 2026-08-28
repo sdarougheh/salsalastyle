@@ -23,6 +23,12 @@ function HeroFullbleed() {
           <Button href={(c.cta_secondary || {}).href} variant="ghost-light">
             {(c.cta_secondary || {}).label}
           </Button>
+          {/* The nav's Events link is hidden below 900px, so mobile has no way
+              to reach the events section from the hero. Surface it as a
+              full-width second row here; desktop keeps using the nav. */}
+          <Button href="/#events" variant="ghost-light" className="hero-cta-events">
+            Events
+          </Button>
         </div>
       </div>
     </header>

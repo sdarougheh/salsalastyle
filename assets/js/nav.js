@@ -169,10 +169,11 @@ function Button({
   href,
   variant = "primary",
   arrow = true,
-  target
+  target,
+  className
 }) {
   return /*#__PURE__*/React.createElement("a", {
-    className: `btn btn-${variant}`,
+    className: `btn btn-${variant}${className ? " " + className : ""}`,
     href: href,
     target: target,
     rel: target === "_blank" ? "noreferrer" : undefined

@@ -40,7 +40,11 @@ function HeroFullbleed() {
   }, (c.cta_primary || {}).label), /*#__PURE__*/React.createElement(Button, {
     href: (c.cta_secondary || {}).href,
     variant: "ghost-light"
-  }, (c.cta_secondary || {}).label))));
+  }, (c.cta_secondary || {}).label), /*#__PURE__*/React.createElement(Button, {
+    href: "/#events",
+    variant: "ghost-light",
+    className: "hero-cta-events"
+  }, "Events"))));
 }
 
 // Dedicated landing hero for /beginner — same full-bleed look + nav + footer.

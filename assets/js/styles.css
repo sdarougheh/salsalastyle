@@ -273,6 +273,11 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 }
 .hero-cta-center { justify-content: center; }
 
+/* Events CTA — mobile only. Desktop reaches Events through .nav-links, which
+   is hidden below 900px, so the hero carries it there instead. flex-basis
+   puts it on its own second row under the two main CTAs. */
+.hero-cta-events { display: none; }
+
 /* Facts list in the beginner landing hero */
 .hero-facts {
   list-style: none;
@@ -2020,6 +2025,7 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 .mobile-frame-screen .hero-title { font-size: clamp(36px, 12vw, 52px) !important; }
 .mobile-frame-screen .hero-lede { font-size: 15px; }
 .mobile-frame-screen .hero-cta-row { flex-direction: column; align-items: stretch; }
+.mobile-frame-screen .hero-cta-events { display: inline-flex; justify-content: center; }
 .mobile-frame-screen .hero-cta-row .btn { justify-content: center; }
 .mobile-frame-screen .workshop-strip,
 .mobile-frame-screen .schedule,
@@ -2078,6 +2084,7 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  .hero-cta-events { display: inline-flex; flex-basis: 100%; justify-content: center; }
   .workshop-card { grid-template-columns: 1fr; gap: 20px; padding: 28px; }
   .workshop-card-date { justify-self: start; padding: 12px 16px; }
   .workshop-card-day { font-size: 56px; }
