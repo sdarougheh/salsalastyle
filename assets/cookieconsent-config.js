@@ -38,7 +38,7 @@ CookieConsent.run({
             en: {
                 consentModal: {
                     title: 'Please accept cookies',
-                    description: 'We use cookies to measure traffic (<a href="/privacy" class="cc-link">privacy policy</a>).',
+                    description: 'We use cookies to measure traffic (<a href="/privacy" class="cc-link">policy</a>).',
                     acceptAllBtn: 'Accept all :)',
                     acceptNecessaryBtn: 'Reject all :(',
                     showPreferencesBtn: 'Manage Individual preferences'
