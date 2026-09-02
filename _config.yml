@@ -69,10 +69,21 @@ friend_discount:
 # `classes` is used by /payments and the class success page;
 # `workshops` is used by the workshop success page. They can point at the
 # same box (current default) or be split if needed.
+# `social` is the separate "100% Crossbody" box for door entry at the
+# crossbody socials, kept apart from class fees so the two don't mix in
+# the MobilePay statement. It is used by the body of `_events/crossbody-*.md`.
+#
+# CAUTION: the `calendar_description` block in each `_events/*.md` front
+# matter also names the box, and Jekyll does NOT run Liquid in front matter,
+# so that copy cannot read these values. If you change `social` below, also
+# grep `_events/` for the old box code and update those blocks by hand.
 mobilepay:
   classes:
-    box: "7681ZK"
-    url: "https://qr.mobilepay.dk/box/5f19d580-4664-4ff7-bb8a-7b3349d245c0/pay-in"
+    box: "9629ZT"
+    url: "https://qr.mobilepay.dk/box/8d2d6b24-d6ef-4f9d-b34f-3e7262adde95/pay-in"
   workshops:
-    box: "7681ZK"
-    url: "https://qr.mobilepay.dk/box/5f19d580-4664-4ff7-bb8a-7b3349d245c0/pay-in"
+    box: "9629ZT"
+    url: "https://qr.mobilepay.dk/box/8d2d6b24-d6ef-4f9d-b34f-3e7262adde95/pay-in"
+  social:
+    box: "2244AK"
+    url: "https://qr.mobilepay.dk/box/0e87a242-413a-4d41-8b99-0025af193ddc/pay-in"

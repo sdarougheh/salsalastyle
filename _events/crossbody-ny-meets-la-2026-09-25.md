@@ -42,7 +42,7 @@ Held in Studio A of Inflow Studio — centrally located, with a wonderful wooden
 
 ## Entry
 
-**70 DKK**, paid via MobilePay at the door or to box **2244AK** ([pay here](https://qr.mobilepay.dk/box/0e87a242-413a-4d41-8b99-0025af193ddc/pay-in)).
+**70 DKK**, paid via MobilePay at the door or to box **{{ site.mobilepay.social.box }}** ([pay here]({{ site.mobilepay.social.url }})).
 
 ## Good to know
 
