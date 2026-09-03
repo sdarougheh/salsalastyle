@@ -268,7 +268,8 @@ body.page-body {
   margin-top: 6px;
 }
 
-button[type="submit"] {
+button[type="submit"],
+#retryButton {
   padding: 12px 24px;
   background: var(--accent, #E05A2B);
   color: #fff;
@@ -279,7 +280,8 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:disabled {
+button[type="submit"]:disabled,
+#retryButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

@@ -13,35 +13,73 @@ document.addEventListener('DOMContentLoaded', function () {
     const token   = new URLSearchParams(window.location.search).get('t') || '';
     const loading = document.getElementById('loadingState');
     const invalid = document.getElementById('invalidState');
+    const unreach = document.getElementById('unreachableState');
     const form    = document.getElementById('detailsForm');
     const done    = document.getElementById('doneState');
     const errorBox = document.getElementById('errorMessage');
 
     function show(el) {
-        [loading, invalid, form, done].forEach(function (n) { n.style.display = 'none'; });
-        el.style.display = el === form ? 'block' : 'block';
+        [loading, invalid, unreach, form, done].forEach(function (n) {
+            n.style.display = 'none';
+        });
+        el.style.display = 'block';
     }
 
     if (!token) { show(invalid); return; }
 
     // Same transport as the registration forms: a plain POST with no custom
     // headers, so the browser sends no CORS preflight.
-    function call(payload) {
-        return fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+    //
+    // The timeout matters more than it looks. Without it, anything that stops
+    // the request from settling — a content blocker, a captive portal, a phone
+    // dropping off wifi mid-request — leaves the visitor staring at "One
+    // moment…" forever with nothing to act on, and we never hear about it.
+    // A request that cannot finish is treated as unreachable, which is a
+    // different thing from a link that is not valid, and says so.
+    function call(payload, timeoutMs) {
+        var controller = new AbortController();
+        var timer = setTimeout(function () { controller.abort(); }, timeoutMs || 15000);
+        return fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            })
             .then(function (r) { return r.text(); })
-            .then(function (t) { return JSON.parse(t); });
+            .then(function (t) {
+                clearTimeout(timer);
+                try {
+                    return JSON.parse(t);
+                } catch (e) {
+                    // A non-JSON body means we reached something, but not our
+                    // script — a sign-in wall or an error page.
+                    var err = new Error('unexpected response');
+                    err.unreachable = true;
+                    throw err;
+                }
+            })
+            .catch(function (e) {
+                clearTimeout(timer);
+                e.unreachable = true;
+                throw e;
+            });
     }
 
-    call({ action: 'lookup', token: token })
-        .then(function (data) {
-            if (data.result !== 'success') { show(invalid); return; }
-            document.getElementById('personName').textContent = data.name;
-            if (data.completed) {
-                document.getElementById('alreadyNote').style.display = 'block';
-            }
-            show(form);
-        })
-        .catch(function () { show(invalid); });
+    function lookup() {
+        show(loading);
+        call({ action: 'lookup', token: token })
+            .then(function (data) {
+                if (data.result !== 'success') { show(invalid); return; }
+                document.getElementById('personName').textContent = data.name;
+                if (data.completed) {
+                    document.getElementById('alreadyNote').style.display = 'block';
+                }
+                show(form);
+            })
+            .catch(function () { show(unreach); });
+    }
+
+    document.getElementById('retryButton').addEventListener('click', lookup);
+    lookup();
 
     document.getElementById('detailsFormEl').addEventListener('submit', function (e) {
         e.preventDefault();
@@ -75,6 +113,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     <div id="loadingState">
         <p>One moment…</p>
+    </div>
+
+    <div id="unreachableState" style="display:none">
+        <h1>We couldn't load your details</h1>
+        <p>
+            The connection to our system didn't go through. This is usually a
+            temporary network problem, or a browser extension blocking the
+            request — it isn't anything you did wrong.
+        </p>
+        <p>
+            <button type="button" id="retryButton">Try again</button>
+        </p>
+        <p class="details-hint">
+            If it keeps happening, try opening the link in a different browser,
+            or just reply to the email and we'll take your details that way.
+        </p>
+        <div class="back-link"><a href="/">← Back to the website</a></div>
     </div>
 
     <div id="invalidState" style="display:none">
