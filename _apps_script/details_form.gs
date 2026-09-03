@@ -34,7 +34,9 @@ var FORM_DESCRIPTION =
   'an extra we have added on top.\n\n' +
   'We keep this with your class records and do not share it with anyone ' +
   'outside the services we need to run the school. You can ask us to correct ' +
-  'or delete it at any time by emailing salsalastyledk@gmail.com. See ' +
+  'it at any time. We cannot delete it on request while the tax rules require ' +
+  'us to keep it, which is five years; after that we delete it. Email ' +
+  'salsalastyledk@gmail.com. See ' +
   'https://www.salsalastyle.dk/privacy for the full detail, including how long ' +
   'we keep it and how to complain.';
 

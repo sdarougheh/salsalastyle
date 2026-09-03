@@ -195,7 +195,8 @@ document.addEventListener('DOMContentLoaded', function () {
         <p class="details-hint">
             We keep this with your class records and don't share it with anyone
             outside the services we need to run the school. You can ask us to correct
-            or delete it at any time by emailing
+            it at any time. We can't delete it on request while the tax rules require
+            us to keep it — five years — and we delete it after that. Email
             <a href="mailto:salsalastyledk@gmail.com">salsalastyledk@gmail.com</a>.
             See our <a href="/privacy" target="_blank">privacy policy</a> for the full
             detail, including how long we keep it and how to complain.
