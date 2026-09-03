@@ -3,7 +3,7 @@ layout: page
 title: Privacy Policy
 ---
 
-**Last updated: December 14, 2024**
+**Last updated: September 3, 2026**
 
 ## 1. Data Controller
 
@@ -16,8 +16,23 @@ CVR: 46104986
 
 ## 2. What Data We Collect
 
-When you register for our classes, we collect your Name, email address, age, and student status, to contact you, 
-calculate correct VAT and prices. 
+When you register for our classes, we collect your name, email address, age bracket, and student status, so we can
+contact you and calculate the correct VAT and price.
+
+We also ask registered students, by email, for two further details:
+
+- **Date of birth.** Danish VAT rules exempt dance teaching for participants under 30. To apply that exemption we
+  have to be able to document each participant's age, so we record a date of birth rather than only the "under 30"
+  answer given at registration.
+- **Postal address.** This is not required by the tax rules. We use it to understand which parts of the Copenhagen
+  area our students travel from, so that we can choose venues and class times sensibly. Because we rely on our
+  legitimate interests rather than a legal duty here, you can object to it or ask us to delete it at any time, and
+  we will - it makes no difference to your place in a class.
+
+We store the street address separately from the rest of our records, and our own class statistics are produced from a
+copy that contains no names, email addresses, street addresses or dates of birth — only a reference number, a year of
+birth and a postcode.
+
 
 We also automatically collect certain technical information when you visit our website through cookies and analytics tools. See Section 6 for details.
 
@@ -26,7 +41,9 @@ We also automatically collect certain technical information when you visit our w
 We use your personal data for the following purposes:
 
 - **Class registration and management** - to register you for classes and maintain attendance records
+- **VAT documentation** - to evidence the under-30 exemption we apply to dance teaching
 - **Payment processing** - to facilitate payment for class fees
+- **Planning our classes** - to see, in aggregate, where our students travel from and how classes are taken up
 - **Class communications** - to send you important information about your registered classes, including confirmations, schedule changes, or cancellations
 - **Legal compliance** - to meet our tax and accounting obligations
 
@@ -37,15 +54,23 @@ We do not use your data for marketing purposes or share it with third parties fo
 We process your personal data based on the following legal grounds:
 
 - **Contract performance** (GDPR Article 6(1)(b)) - Processing is necessary to fulfill our contract with you (providing dance classes)
-- **Legal obligation** (GDPR Article 6(1)(c)) - Processing is necessary to comply with Danish tax and accounting laws
+- **Legal obligation** (GDPR Article 6(1)(c)) - Processing is necessary to comply with Danish tax and accounting
+  laws. This is the basis on which we hold dates of birth: without them we cannot document the under-30 VAT exemption
+- **Legitimate interests** (GDPR Article 6(1)(f)) - Understanding, in aggregate, where our students come from, so we
+  can choose venues and times. This is the basis for the postal address, and you can object to it at any time under
+  Section 8 without giving a reason
 - **Consent** (GDPR Article 6(1)(a)) - For cookies and analytics tools, as managed through our cookie consent banner
 
 ## 5. Data Retention
 
 We retain your personal data for as long as necessary to provide our services and comply with legal obligations:
 
-- **Class registration data** - Retained indefinitely to maintain class records and enable future registrations
-- **Payment records** - Retained for 5 years in accordance with Danish bookkeeping requirements
+- **Payment records, and the data needed to document VAT** - Retained for 5 years in accordance with Danish
+  bookkeeping requirements
+- **Names, email addresses and postal addresses** - Retained for 3 years after your most recent class, then deleted.
+  After that we keep only anonymous records - a reference number, year of birth, postcode and which classes were
+  taken - which are no longer personal data and are used for statistics
+- **Postal address** - Deleted as soon as you ask us to, since we do not need it for any legal purpose
 - **Website analytics data** - Retained according to our analytics service providers' standard retention periods
 
 You have the right to request deletion of your data at any time (see Section 8).

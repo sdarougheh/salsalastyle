@@ -83,6 +83,19 @@ CREATE TABLE IF NOT EXISTS consent (
   PRIMARY KEY (person_id, kind)
 );
 
+-- One personalised link per person for the /details page, which collects the
+-- date of birth needed to document the under-30 VAT exemption. The token is
+-- the only thing protecting that page, so it is generated with secrets.
+-- `Responses` in the Google Sheet joins back to here on the token alone,
+-- which is why the response export carries no names.
+CREATE TABLE IF NOT EXISTS invite (
+  person_id      INTEGER PRIMARY KEY REFERENCES person(person_id) ON DELETE CASCADE,
+  token          TEXT NOT NULL UNIQUE,
+  created_at     TEXT NOT NULL DEFAULT (datetime('now')),
+  sent_at        TEXT,
+  completed_at   TEXT
+);
+
 -- ---------------------------------------------------------------------------
 -- what we sell
 -- ---------------------------------------------------------------------------
@@ -394,6 +407,19 @@ SELECT registration_id, pseudonym, season_code, course_label,
        END AS verdict
 FROM v_registration
 WHERE status <> 'cancelled';
+
+-- How the details collection is going. No names — just how many people are
+-- still missing the date of birth the VAT exemption rests on.
+DROP VIEW IF EXISTS v_details_progress;
+CREATE VIEW v_details_progress AS
+SELECT COUNT(*)                                                  AS people,
+       SUM(i.token IS NOT NULL)                                  AS invited,
+       SUM(i.sent_at IS NOT NULL)                                AS emailed,
+       SUM(i.completed_at IS NOT NULL)                           AS answered,
+       SUM(p.birth_year IS NOT NULL)                             AS have_birth_year,
+       SUM(p.postcode IS NOT NULL)                               AS have_postcode
+FROM person p LEFT JOIN invite i ON i.person_id = p.person_id
+WHERE p.erased_on IS NULL;
 
 -- --- PII views: your own admin, never exported --------------------------
 

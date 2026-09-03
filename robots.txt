@@ -3,6 +3,8 @@
 
 User-agent: *
 Allow: /
+# Personalised details page — reachable only with a token, never worth crawling.
+Disallow: /details
 
 # AI answer engines (explicitly allowed so we can be cited/recommended)
 User-agent: GPTBot

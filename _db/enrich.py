@@ -11,7 +11,9 @@ the pseudonym, if you are working from an export), and it fills in the gaps.
     anna@example.com,1994-03-17,Nørrebrogade 12 2.th,2200,København N,+4512345678
 
 Recognised columns (all optional except the key):
-    email | pseudonym        which person this row is about
+    token | email | pseudonym   which person this row is about. `token` is what
+                             the /details response export uses, and it means
+                             that file contains no name and no email at all.
     full_name                corrects a misspelling from the sheet
     date_of_birth            YYYY-MM-DD, DD/MM/YYYY or DD.MM.YYYY
     phone, street            stored in person_identity (never exported)
@@ -41,6 +43,7 @@ from import_sheet import norm_header, norm_text, parse_bool  # noqa: E402
 FIELD_SYNONYMS = {
     "email":         ["email", "e-mail", "mail"],
     "pseudonym":     ["pseudonym", "id", "person id", "person_id"],
+    "token":         ["token", "invite token"],
     "full_name":     ["full name", "name", "navn"],
     "date_of_birth": ["date of birth", "dob", "birthday", "birth date", "fodselsdag", "født"],
     "phone":         ["phone", "mobile", "telefon", "tlf"],
@@ -75,6 +78,13 @@ def parse_dob(v):
 
 
 def find_person(conn, rec):
+    # Token first: a response export from the /details sheet carries the token
+    # and no name or email at all, which is the point of it.
+    if rec.get("token"):
+        row = conn.execute("SELECT person_id FROM invite WHERE token = ?",
+                           (rec["token"],)).fetchone()
+        if row:
+            return row[0]
     if rec.get("email"):
         row = conn.execute("SELECT person_id FROM person_email WHERE email = ?",
                            (rec["email"].lower(),)).fetchone()
@@ -109,8 +119,8 @@ def main(argv=None):
             canon = LOOKUP.get(norm_header(col))
             if canon and canon not in cols:
                 cols[canon] = col
-        if "email" not in cols and "pseudonym" not in cols:
-            raise SystemExit("need an 'email' or 'pseudonym' column to match on.\n"
+        if not ({"email", "pseudonym", "token"} & set(cols)):
+            raise SystemExit("need a 'token', 'email' or 'pseudonym' column to match on.\n"
                              "Headers seen: %s" % reader.fieldnames)
         rows = list(reader)
 
@@ -119,19 +129,22 @@ def main(argv=None):
         rec = {k: norm_text(row.get(v)) for k, v in cols.items()}
         person_id = find_person(conn, rec)
         if not person_id:
-            unmatched.append(rec.get("email") or rec.get("pseudonym") or "(blank)")
+            unmatched.append(rec.get("token") or rec.get("email")
+                             or rec.get("pseudonym") or "(blank)")
             continue
         if conn.execute("SELECT erased_on FROM person WHERE person_id = ?",
                         (person_id,)).fetchone()[0]:
             unmatched.append("%s — erased under the right to be forgotten, skipped"
-                             % (rec.get("email") or rec.get("pseudonym")))
+                             % (rec.get("token") or rec.get("email")
+                                or rec.get("pseudonym")))
             continue
 
         if rec.get("date_of_birth"):
             dob = parse_dob(rec["date_of_birth"])
             if dob is None:
                 print("  ! could not read date of birth %r for %s"
-                      % (rec["date_of_birth"], rec.get("email") or rec.get("pseudonym")))
+                      % (rec["date_of_birth"], rec.get("token") or rec.get("email")
+                         or rec.get("pseudonym")))
             rec["date_of_birth"] = dob
 
         touched = False
@@ -180,6 +193,9 @@ def main(argv=None):
 
         conn.execute("UPDATE person SET updated_at = datetime('now') WHERE person_id = ?",
                      (person_id,))
+        if rec.get("token") and touched:
+            conn.execute("UPDATE invite SET completed_at = COALESCE(completed_at,"
+                         " datetime('now')) WHERE person_id = ?", (person_id,))
         if touched:
             updated += 1
         else:
