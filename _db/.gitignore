@@ -1,0 +1,11 @@
+# Never commit data. The repo behind this site is published; the database is not.
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.csv
+*.tsv
+*.xlsx
+data/
+exports/
