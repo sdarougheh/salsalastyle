@@ -150,11 +150,14 @@ CREATE TABLE IF NOT EXISTS registration (
   registered_at   TEXT NOT NULL,            -- ISO 8601
   role            TEXT CHECK (role IS NULL OR role IN ('lead','follow','either')),
   is_young        INTEGER,                  -- under 30 / student rate; NULL = not asked
-  form            TEXT,                     -- 'season' | 'beginner' | 'friend' | 'workshop' | 'manual'
+  form            TEXT CHECK (form IS NULL OR form IN
+                    ('season','beginner','friend','workshop','dropin','manual')),
   referral        TEXT,                     -- campaign tag from window.SLSReferral
   pair_id         INTEGER REFERENCES pair(pair_id),
   discount_label  TEXT,
   amount_due_dkk  REAL,
+  marked_paid     INTEGER,                  -- what the sheet's "Paid?" cell said,
+                                            -- kept apart from the payment rows
   status          TEXT NOT NULL DEFAULT 'registered'
                     CHECK (status IN ('registered','cancelled','waitlist','noshow')),
   comments        TEXT,                     -- PII RISK: free text, often names people
@@ -280,6 +283,7 @@ SELECT r.registration_id,
        r.discount_label,
        r.amount_due_dkk,
        r.status,
+       r.marked_paid,
        CASE WHEN p.birth_year IS NULL THEN NULL
             ELSE CAST(strftime('%Y', COALESCE(s.starts_on, r.registered_at)) AS INTEGER) - p.birth_year
        END                                           AS age_at_season,
@@ -378,9 +382,10 @@ GROUP BY season_code, referral;
 DROP VIEW IF EXISTS v_payment_check;
 CREATE VIEW v_payment_check AS
 SELECT registration_id, pseudonym, season_code, course_label,
-       amount_due_dkk, list_price_dkk, paid_dkk, outstanding_dkk,
+       amount_due_dkk, list_price_dkk, paid_dkk, outstanding_dkk, marked_paid,
        CASE
-         WHEN paid_dkk = 0 AND COALESCE(amount_due_dkk, 0) = 0 THEN 'nothing recorded'
+         WHEN paid_dkk = 0 AND marked_paid = 1             THEN 'marked paid, but the money sits on another of their rows'
+         WHEN paid_dkk = 0 AND COALESCE(amount_due_dkk, 0) = 0 THEN 'unpaid'
          WHEN paid_dkk = 0                                THEN 'unpaid'
          WHEN amount_due_dkk IS NULL                      THEN 'paid, no amount due on the sheet'
          WHEN abs(outstanding_dkk) < 0.01                 THEN 'settled'

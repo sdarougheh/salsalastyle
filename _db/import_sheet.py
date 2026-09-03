@@ -212,12 +212,19 @@ class Importer(object):
         self.conn = conn
         self.args = args
         self.warnings = []
+        self.sensitive = []
         self.new_aliases = []      # (alias, course_code) suggested for seed.sql
         self.stats = {"rows": 0, "inserted": 0, "skipped": 0,
                       "people_created": 0, "courses_created": 0, "payments": 0}
 
-    def warn(self, msg):
-        self.warnings.append(msg)
+    def warn(self, msg, sensitive=False):
+        """Warnings that quote a name go to a log file next to the database
+        rather than to the terminal, so an import can be run in front of
+        someone who is not supposed to see the names."""
+        if sensitive:
+            self.sensitive.append(msg)
+        else:
+            self.warnings.append(msg)
 
     # -- people ------------------------------------------------------------
     def resolve_person(self, name, email, seen_on):
@@ -239,7 +246,8 @@ class Importer(object):
             ).fetchall():
                 if norm_name_key(full) == norm_name_key(name):
                     person_id = pid
-                    self.warn("matched '%s' to an existing person by name (no email on the row)" % name)
+                    self.warn("matched '%s' to an existing person by name "
+                              "(no email on the row)" % name, sensitive=True)
                     break
 
         if person_id is None:
@@ -266,7 +274,7 @@ class Importer(object):
             ).fetchone()
             if name and existing and norm_name_key(existing[0]) != norm_name_key(name):
                 self.warn("'%s' also registered as '%s' — kept the first spelling (person %d)"
-                          % (existing[0], name, person_id))
+                          % (existing[0], name, person_id), sensitive=True)
 
         if email:
             cur.execute(
@@ -418,11 +426,16 @@ def parse_row(raw, cols, order):
         "discount": norm_text(get("discount")) or None,
         "amount_due": parse_money(get("amount_due")),
         "paid": parse_bool(get("paid")) if cols.get("paid") else None,
+        # The "Paid?" cell doubles as a status marker: a single-class drop-in
+        # gets "Drop-in" written into it rather than Yes.
+        "paid_note": norm_text(get("paid")) or None,
         "payment_amount": parse_money(get("payment_amount")),
     }
 
 
 def infer_form(rec):
+    if (rec.get("paid_note") or "").lower().startswith("drop"):
+        return "dropin"
     if rec["pair_ref"]:
         return "friend"
     if not rec["email"] and not rec["registered_at"]:
@@ -501,11 +514,11 @@ def import_file(imp, path, source_label):
             cur.execute(
                 "INSERT INTO registration (person_id, course_id, registered_at, role,"
                 " is_young, form, referral, pair_id, discount_label, amount_due_dkk,"
-                " comments, dedupe_key, raw_row_id)"
-                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                " marked_paid, comments, dedupe_key, raw_row_id)"
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (person_id, course_id, rec["registered_at"], rec["role"], rec["young"],
                  form, rec["referral"], pair_id, rec["discount"], due,
-                 rec["comments"], dedupe_key, raw_row_id))
+                 rec["paid"], rec["comments"], dedupe_key, raw_row_id))
             reg_id = cur.lastrowid
             inserted += 1
 
@@ -519,12 +532,71 @@ def import_file(imp, path, source_label):
                                    rec["registered_at"], rec["pair_ref"])
 
     settle_pairs(imp, pair_rows)
+    spread_bundle_payments(imp)
 
     conn.execute("UPDATE import_batch SET n_inserted = ?, n_skipped = ? WHERE batch_id = ?",
                  (inserted, skipped, batch_id))
     imp.stats["inserted"] += inserted
     imp.stats["skipped"] += skipped
     return inserted, skipped
+
+
+def spread_bundle_payments(imp):
+    """Two classes is two rows but one transfer. The sheet carries the whole
+    amount on one row and writes 0 on the other, which would otherwise credit
+    the entire 1440 to whichever class they happened to type it into. Where a
+    person has several registrations in one season, all marked paid, and
+    exactly one payment between them, spread that payment evenly across them.
+
+    Only when every course in the group is the same kind. A season class and a
+    crash course in the same season are not a bundle — they are two different
+    prices, and splitting 1000 DKK evenly across them would move 400 DKK of
+    class income onto a workshop. Those are left exactly as the sheet had
+    them, and show up in v_payment_check."""
+    cur = imp.conn.cursor()
+    groups = cur.execute(
+        "SELECT r.person_id, c.season_id, GROUP_CONCAT(r.registration_id),"
+        "       COUNT(DISTINCT c.kind)"
+        "  FROM registration r JOIN course c ON c.course_id = r.course_id"
+        " WHERE r.marked_paid = 1 AND r.pair_id IS NULL"
+        " GROUP BY r.person_id, c.season_id HAVING COUNT(*) > 1").fetchall()
+    spread, mixed = 0, 0
+    for _person_id, _season_id, ids, n_kinds in groups:
+        reg_ids = [int(x) for x in ids.split(",")]
+        if n_kinds > 1:
+            mixed += 1
+            continue
+        allocated = dict((r, cur.execute(
+            "SELECT COALESCE(SUM(amount_dkk), 0) FROM payment_allocation"
+            " WHERE registration_id = ?", (r,)).fetchone()[0]) for r in reg_ids)
+        if all(v > 0 for v in allocated.values()):
+            continue                                   # each row paid separately
+        payments = [row[0] for row in cur.execute(
+            "SELECT DISTINCT payment_id FROM payment_allocation WHERE registration_id IN (%s)"
+            % ",".join("?" * len(reg_ids)), reg_ids).fetchall()]
+        if len(payments) != 1:
+            if payments:
+                imp.warn("%d registrations in one season share %d payments — left as "
+                         "imported, check them in v_payment_check"
+                         % (len(reg_ids), len(payments)))
+            continue
+        payment_id = payments[0]
+        amount = cur.execute("SELECT amount_dkk FROM payment WHERE payment_id = ?",
+                             (payment_id,)).fetchone()[0]
+        share = round(amount / float(len(reg_ids)), 2)
+        cur.execute("DELETE FROM payment_allocation WHERE payment_id = ?", (payment_id,))
+        for r in reg_ids:
+            cur.execute("INSERT INTO payment_allocation (payment_id, registration_id,"
+                        " amount_dkk) VALUES (?, ?, ?)", (payment_id, r, share))
+        spread += 1
+    if spread:
+        imp.warn("spread %d bundle payment(s) across the classes they actually cover, "
+                 "so per-course revenue is not credited to one class alone" % spread)
+    if mixed:
+        imp.warn("left %d payment(s) alone that cover both a class and a workshop in "
+                 "one season — the split between them is not evenly divided and the "
+                 "sheet does not say what it was. Per-course revenue for those is "
+                 "credited wherever the amount was typed; see v_payment_check." % mixed)
 
 
 def record_payment(imp, allocations, person_id, paid_on, reference):
@@ -613,6 +685,18 @@ def main(argv=None):
         print("\nwarnings (%d):" % len(imp.warnings))
         for w in imp.warnings:
             print("  - %s" % w)
+
+    if imp.sensitive:
+        log = os.path.join(os.path.dirname(os.path.abspath(args.db)), "import-warnings.log")
+        with open(log, "a", encoding="utf-8") as fh:
+            fh.write("# %s  %s\n" % (datetime.now().isoformat(timespec="seconds"),
+                                     ", ".join(os.path.basename(f) for f in args.csv_files)))
+            for w in imp.sensitive:
+                fh.write("  - %s\n" % w)
+        print("\n%d warning(s) quote a person by name and were written to\n  %s\n"
+              "  (read it yourself — these are the rows where two spellings of a name,\n"
+              "   or a row with no email, may have been merged into one person)."
+              % (len(imp.sensitive), log))
 
     if imp.new_aliases:
         print("\nPaste into the alias block of seed.sql once you have decided which\n"
