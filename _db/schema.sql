@@ -15,7 +15,12 @@
 -- Apply with:  sqlite3 registrations.sqlite < schema.sql
 
 PRAGMA foreign_keys = ON;
-PRAGMA journal_mode = WAL;
+-- Deliberately NOT WAL. WAL is faster, but it leaves -wal and -shm files
+-- beside the database, and a sync client that uploads the .sqlite without its
+-- matching -wal uploads a corrupt copy. In rollback-journal mode a cleanly
+-- closed database is one self-contained file, which is what you want in
+-- Google Drive. At this size the speed difference is unmeasurable.
+PRAGMA journal_mode = DELETE;
 
 -- ---------------------------------------------------------------------------
 -- meta

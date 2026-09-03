@@ -256,21 +256,41 @@ once the five-year bookkeeping window has passed.
 
 ## Where to keep the file
 
-Not in this repository. `~/salsa/registrations.sqlite` or similar, and let
-Google Drive or Dropbox hold a **snapshot**, not the live file. SQLite plus a
-syncing folder is a known way to corrupt a database: the sync client copies the
-file mid-write, or two machines write to it at once, and the WAL and the
-database disagree.
+Not in this repository — `.gitignore` blocks it, but keep it somewhere else
+entirely so the question never comes up.
 
-The safe pattern is a one-line backup that produces a clean, self-contained
-copy:
+Google Drive is fine. The database is a single file and the schema is set up to
+keep it that way: `journal_mode = DELETE` rather than WAL, so a cleanly closed
+database has no `-wal` or `-shm` files beside it that a sync client could
+upload out of step with the database itself.
+
+Two rules, and neither of them touches the Sheet:
+
+**Do not run a script while Drive is mid-upload of that file, and never write
+to it from two machines at once.** SQLite modifies the file in place. A sync
+client that grabs it halfway through an import uploads a half-written database,
+and two machines editing the same synced file will eventually produce a
+conflicted copy that is silently broken rather than obviously broken. In
+practice: run your imports, let Drive finish its upload, then walk away.
+
+**Keep dated snapshots.** One line, run after every import:
 
 ```bash
-sqlite3 ~/salsa/registrations.sqlite "VACUUM INTO '~/Google Drive/salsa/registrations-$(date +%F).sqlite'"
+sqlite3 ~/salsa/registrations.sqlite "VACUUM INTO '$HOME/Google Drive/salsa/registrations-$(date +%F).sqlite'"
 ```
 
-Run it after every import. Drive gets an ordinary file that is never open, you
-keep versioned copies for free, and nothing is ever half-written.
+`VACUUM INTO` writes a fresh, complete, self-contained copy — not a byte-level
+duplicate of whatever state the file happens to be in. Drive gets an ordinary
+file that nothing has open, and you get free versioning for the day an import
+goes wrong.
+
+If you would rather not think about any of this, keep the working copy in
+`~/salsa/` and let Drive hold only the snapshots. Same commands, one less thing
+that can go wrong.
+
+(If you created a database before this note existed and `sqlite3 file.sqlite
+"PRAGMA journal_mode"` says `wal`, switch it with `PRAGMA journal_mode=DELETE;`
+and delete the leftover `-wal`/`-shm` files.)
 
 ---
 
