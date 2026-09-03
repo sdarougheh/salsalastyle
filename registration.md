@@ -134,6 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label><input type="checkbox" name="class" value="Intermediate 1 Autumn"> Intermediate 1 - Wednesday 20:00</label>
                 <label><input type="checkbox" name="class" value="Intermediate 2 Autumn"> Intermediate 2 - Wednesday 21:00</label>
             </div>
+            <div class="role-notice">
+                Please note:
+                <ul>
+                    <li><strong>Beginners</strong> — no more slots as <strong>leader</strong> (follow slots still available).</li>
+                    <li><strong>Intermediate 1</strong> — no more slots as <strong>follow</strong> (leader slots still available).</li>
+                </ul>
+            </div>
             <div id="classError" class="field-error">Please select at least one class</div>
         </div>
         

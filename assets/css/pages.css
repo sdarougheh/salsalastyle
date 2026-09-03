@@ -268,6 +268,18 @@ body.page-body {
   margin-top: 6px;
 }
 
+.role-notice {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--accent, #E05A2B);
+  background: rgba(224, 90, 43, 0.08);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.role-notice ul { margin: 6px 0 0; padding-left: 20px; }
+
 button[type="submit"],
 #retryButton {
   padding: 12px 24px;
