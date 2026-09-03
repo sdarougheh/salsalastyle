@@ -98,7 +98,7 @@ def map_headers(fieldnames):
 # --------------------------------------------------------------------------
 
 TRUE_WORDS = {"yes", "y", "true", "1", "x", "ja", "paid", "betalt", "✓", "✔", "ok"}
-FALSE_WORDS = {"no", "n", "false", "0", "nej", "", "-", "unpaid"}
+FALSE_WORDS = {"no", "n", "false", "0", "nej", "-", "unpaid"}
 
 DATE_FORMATS_DMY = [
     "%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d",
@@ -114,7 +114,12 @@ DATE_FORMATS_MDY = [
 
 
 def parse_bool(v):
+    """None means the question was not answered, which is not the same as No.
+    The pair form never asks about the student rate, so those cells are blank
+    and must not be counted as "not under 30"."""
     s = norm_text(v).lower()
+    if not s:
+        return None
     if s in TRUE_WORDS:
         return 1
     if s in FALSE_WORDS:
