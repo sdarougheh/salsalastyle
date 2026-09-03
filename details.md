@@ -8,7 +8,7 @@ description: "Confirm your details for Salsa LA-Style."
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Paste the /exec URL of the "Details collection" Apps Script deployment here.
-    const SCRIPT_URL = 'PASTE_DETAILS_SCRIPT_URL_HERE';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPU7vTAG_CEWclooKkGLJu8uw1tHvtLpVxRW6ik-EZa1d6UkoaNT5aqNCfHk4cV7uK/exec';
 
     const token   = new URLSearchParams(window.location.search).get('t') || '';
     const loading = document.getElementById('loadingState');
