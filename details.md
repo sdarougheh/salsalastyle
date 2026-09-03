@@ -187,11 +187,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         <p class="details-hint">
             <strong>Why we're asking.</strong> Danish VAT rules exempt dance teaching
-            for participants under 30, and to apply that exemption we have to be able
-            to document each participant's age — that's what the date of birth is for.
-            The address is not required by the tax rules; we use it to work out which
-            parts of Copenhagen our students travel from, so we can choose venues and
-            class times sensibly.
+            for participants under 30. To apply that exemption, the Danish Tax Agency
+            requires us to be able to document each participant's full name, address
+            and date of birth — so all three are part of the record we have to keep,
+            and the address is not an extra we've added on top.
         </p>
         <p class="details-hint">
             We keep this with your class records and don't share it with anyone

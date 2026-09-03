@@ -28,11 +28,10 @@ var FORM_TITLE = 'Salsa LA-Style — your details';
 var FORM_DESCRIPTION =
   'To comply with Danish tax law, we need the following information from you.\n\n' +
   'Why we are asking. Danish VAT rules exempt dance teaching for participants ' +
-  'under 30, and to apply that exemption we have to be able to document each ' +
-  "participant's age — that is what the date of birth is for. The address is " +
-  'not required by the tax rules; we use it to work out which parts of ' +
-  'Copenhagen our students travel from, so we can choose venues and class ' +
-  'times sensibly.\n\n' +
+  'under 30. To apply that exemption, the Danish Tax Agency requires us to be ' +
+  "able to document each participant's full name, address and date of birth — " +
+  'so all three are part of the record we have to keep, and the address is not ' +
+  'an extra we have added on top.\n\n' +
   'We keep this with your class records and do not share it with anyone ' +
   'outside the services we need to run the school. You can ask us to correct ' +
   'or delete it at any time by emailing salsalastyledk@gmail.com. See ' +
@@ -63,15 +62,17 @@ function createDetailsForm() {
   // the links for any People rows added since.
   if (existingId) {
     var existing = FormApp.openById(existingId);
-    Logger.log('Form already exists — reusing it.');
+    // Re-apply the wording every run, so this file stays the source of truth
+    // for what the form says and a correction here reaches the live form.
+    applyFormCopy_(existing);
+    Logger.log('Form already exists — reusing it, and refreshed its wording.');
     Logger.log('Published: ' + existing.getPublishedUrl());
     Logger.log('Links written: ' + makeFormLinks());
     return existing.getPublishedUrl();
   }
 
   var form = FormApp.create(FORM_TITLE);
-  form.setDescription(FORM_DESCRIPTION);
-  form.setConfirmationMessage(CONFIRMATION);
+  applyFormCopy_(form);
   form.setShowLinkToRespondAgain(false);
   form.setProgressBar(false);
   form.setCollectEmail(false);
@@ -112,6 +113,17 @@ function createDetailsForm() {
   Logger.log('Published: ' + form.getPublishedUrl());
   Logger.log('Links written: ' + makeFormLinks());
   return form.getPublishedUrl();
+}
+
+
+/**
+ * The wording lives in this file rather than in the form, so it can be
+ * reviewed, corrected and version-controlled like anything else.
+ */
+function applyFormCopy_(form) {
+  form.setTitle(FORM_TITLE);
+  form.setDescription(FORM_DESCRIPTION);
+  form.setConfirmationMessage(CONFIRMATION);
 }
 
 

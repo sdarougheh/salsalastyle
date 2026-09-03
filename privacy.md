@@ -23,11 +23,13 @@ We also ask registered students, by email, for two further details:
 
 - **Date of birth.** Danish VAT rules exempt dance teaching for participants under 30. To apply that exemption we
   have to be able to document each participant's age, so we record a date of birth rather than only the "under 30"
-  answer given at registration.
-- **Postal address.** This is not required by the tax rules. We use it to understand which parts of the Copenhagen
-  area our students travel from, so that we can choose venues and class times sensibly. Because we rely on our
-  legitimate interests rather than a legal duty here, you can object to it or ask us to delete it at any time, and
-  we will - it makes no difference to your place in a class.
+  answer given at registration. The Danish Tax Agency requires this documentation to contain the participant's full
+  name, address and date of birth, and to be stored securely.
+- **Postal address.** This is required by the same rules. To apply the under-30 exemption, the Danish Tax Agency
+  requires us to be able to document each participant's date of birth together with their full name and address, so
+  all three are part of the record we are obliged to keep. Separately, and only in aggregate, we also look at which
+  parts of the Copenhagen area our students travel from so that we can choose venues and class times sensibly; that
+  use relies on our legitimate interests and you can object to it without affecting the record we must keep.
 
 We store the street address separately from the rest of our records, and our own class statistics are produced from a
 copy that contains no names, email addresses, street addresses or dates of birth — only a reference number, a year of
@@ -55,10 +57,12 @@ We process your personal data based on the following legal grounds:
 
 - **Contract performance** (GDPR Article 6(1)(b)) - Processing is necessary to fulfill our contract with you (providing dance classes)
 - **Legal obligation** (GDPR Article 6(1)(c)) - Processing is necessary to comply with Danish tax and accounting
-  laws. This is the basis on which we hold dates of birth: without them we cannot document the under-30 VAT exemption
+  laws. This is the basis on which we hold names, addresses and dates of birth: the Danish Tax Agency requires all
+  three to document the under-30 VAT exemption we apply to dance teaching
 - **Legitimate interests** (GDPR Article 6(1)(f)) - Understanding, in aggregate, where our students come from, so we
-  can choose venues and times. This is the basis for the postal address, and you can object to it at any time under
-  Section 8 without giving a reason
+  can choose venues and times. This is a secondary use of information we already hold, and you can object to that use
+  at any time under Section 8 without giving a reason. Objecting does not remove the underlying record, which we are
+  required to keep
 - **Consent** (GDPR Article 6(1)(a)) - For cookies and analytics tools, as managed through our cookie consent banner
 
 ## 5. Data Retention
@@ -67,10 +71,10 @@ We retain your personal data for as long as necessary to provide our services an
 
 - **Payment records, and the data needed to document VAT** - Retained for 5 years in accordance with Danish
   bookkeeping requirements
-- **Names, email addresses and postal addresses** - Retained for 3 years after your most recent class, then deleted.
-  After that we keep only anonymous records - a reference number, year of birth, postcode and which classes were
-  taken - which are no longer personal data and are used for statistics
-- **Postal address** - Deleted as soon as you ask us to, since we do not need it for any legal purpose
+- **Names, addresses and dates of birth** - Retained for 5 years as part of the documentation we must keep for the
+  VAT exemption, then deleted. After that we keep only anonymous records - a reference number, year of birth,
+  postcode and which classes were taken - which are no longer personal data and are used for statistics
+- **Email addresses** - Retained for 3 years after your most recent class, then deleted
 - **Website analytics data** - Retained according to our analytics service providers' standard retention periods
 
 You have the right to request deletion of your data at any time (see Section 8).
