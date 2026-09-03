@@ -2,10 +2,10 @@
  * Details collection — Google Apps Script side.
  *
  * NOT part of the built site (Jekyll ignores _-prefixed folders). This is the
- * code for a SEPARATE Apps Script project, bound to a SEPARATE spreadsheet
- * from the registrations one. Keep it separate: this holds home addresses and
- * dates of birth, and redeploying it must never be able to break the live
- * registration form that takes money.
+ * code for a SEPARATE, STANDALONE Apps Script project pointed at a SEPARATE
+ * spreadsheet from the registrations one. Keep it separate: this holds home
+ * addresses and dates of birth, and redeploying it must never be able to break
+ * the live registration form that takes money.
  *
  * Spreadsheet layout — two tabs:
  *
@@ -20,6 +20,12 @@
  * a plain POST and no custom headers, so the browser sends no CORS preflight —
  * the same transport the registration forms already use.
  *
+ * The invitation mail-merge deliberately lives in a separate file,
+ * details_invites.gs, and is NOT part of this project. Apps Script decides
+ * which permissions to request by scanning for API usage, so keeping GmailApp
+ * out of here means the deployed web app is authorised for spreadsheets only
+ * and is incapable of sending mail.
+ *
  * DEPLOY: Deploy → New deployment → Web app →
  *   Execute as: Me
  *   Who has access: Anyone            ← required; the visitor is not logged in
@@ -33,8 +39,17 @@
  * Keep it that way when you edit this file.
  */
 
+// The details-collection spreadsheet. This is a STANDALONE script that opens
+// the sheet by id rather than a bound one, so the target is explicit and the
+// project is reachable at script.google.com even if the sheet is moved.
+var SPREADSHEET_ID = '1s0HQmLsDmioK57JKVLdqmWSgjeU_Xim-EM3ONd1uv4k';
+
 var PEOPLE_SHEET    = 'People';
 var RESPONSES_SHEET = 'Responses';
+
+function ss_() {
+  return SpreadsheetApp.openById(SPREADSHEET_ID);
+}
 
 var PEOPLE_HEADERS    = ['Token', 'Name', 'Email', 'Sent at', 'Completed at'];
 var RESPONSES_HEADERS = ['Token', 'Submitted at', 'Date of birth', 'Street', 'Postcode', 'City'];
@@ -97,7 +112,7 @@ function json(obj) {
  * it avoids keeping a second index that could drift out of step.
  */
 function findPersonRow_(token) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(PEOPLE_SHEET);
+  var sheet = ss_().getSheetByName(PEOPLE_SHEET);
   if (!sheet || sheet.getLastRow() < 2) return null;
 
   var values = sheet.getRange(2, 1, sheet.getLastRow() - 1, PEOPLE_HEADERS.length).getValues();
@@ -120,7 +135,7 @@ function findPersonRow_(token) {
  * so a correction does not become a second conflicting record.
  */
 function saveResponse_(person, data) {
-  var ss    = SpreadsheetApp.getActiveSpreadsheet();
+  var ss    = ss_();
   var sheet = ss.getSheetByName(RESPONSES_SHEET) || ss.insertSheet(RESPONSES_SHEET);
   ensureHeaders_(sheet, RESPONSES_HEADERS);
 
@@ -149,10 +164,7 @@ function saveResponse_(person, data) {
   }
 
   // Stamp the People tab so reminders can skip whoever has already answered.
-  SpreadsheetApp.getActiveSpreadsheet()
-    .getSheetByName(PEOPLE_SHEET)
-    .getRange(person.rowNumber, 5)
-    .setValue(now);
+  ss_().getSheetByName(PEOPLE_SHEET).getRange(person.rowNumber, 5).setValue(now);
 }
 
 
@@ -172,51 +184,9 @@ function ensureHeaders_(sheet, headers) {
  * Run once from the editor to lay out a fresh spreadsheet.
  */
 function setUpSheets() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = ss_();
   var people = ss.getSheetByName(PEOPLE_SHEET) || ss.insertSheet(PEOPLE_SHEET);
   ensureHeaders_(people, PEOPLE_HEADERS);
   var responses = ss.getSheetByName(RESPONSES_SHEET) || ss.insertSheet(RESPONSES_SHEET);
   ensureHeaders_(responses, RESPONSES_HEADERS);
-}
-
-
-/**
- * Mail-merge the invitations. NOT WIRED UP YET — the email text is still to be
- * written, and nothing here should run until it is.
- *
- * When it is ready: fill in SUBJECT and the body, then run sendInvites() from
- * the editor. It skips anyone already stamped in "Sent at", so re-running it
- * after adding people to the tab sends only to the new ones. Change the filter
- * to `completedAt` instead to chase non-responders.
- *
- * Gmail's daily quota on a free account is 100 recipients, which is above the
- * current list — but check GmailApp.getRemainingDailyQuota() before a bigger run.
- */
-function sendInvites() {
-  throw new Error('sendInvites() is not ready: write SUBJECT and BODY_TEMPLATE first, ' +
-                  'then delete this line.');
-
-  /* eslint-disable no-unreachable */
-  var SUBJECT = '';                 // ← to be written
-  var BODY_TEMPLATE = '';           // ← to be written; use {{name}} and {{link}}
-
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(PEOPLE_SHEET);
-  var rows  = sheet.getRange(2, 1, sheet.getLastRow() - 1, PEOPLE_HEADERS.length).getValues();
-  var sent  = 0;
-
-  for (var i = 0; i < rows.length; i++) {
-    var token = String(rows[i][0]).trim();
-    var name  = String(rows[i][1]);
-    var email = String(rows[i][2]).trim();
-    var sentAt = rows[i][3];
-    if (!token || !email || sentAt) continue;
-
-    var link = 'https://www.salsalastyle.dk/details?t=' + encodeURIComponent(token);
-    var body = BODY_TEMPLATE.replace(/\{\{name\}\}/g, name).replace(/\{\{link\}\}/g, link);
-
-    GmailApp.sendEmail(email, SUBJECT, body);
-    sheet.getRange(i + 2, 4).setValue(new Date());
-    sent++;
-  }
-  Logger.log('sent ' + sent + ' invitation(s)');
 }
