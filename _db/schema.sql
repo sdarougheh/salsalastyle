@@ -46,6 +46,12 @@ CREATE TABLE IF NOT EXISTS person (
   postcode       TEXT,                      -- 4-digit DK postcode, no street
   city           TEXT,
   country        TEXT,
+  -- When the address was given, not when they lived there. SKAT wants an
+  -- address to identify the participant, not the one they had during the
+  -- class, so we ask once and stamp it — which keeps the catchment analysis
+  -- honest about what it is measuring, and lets a history accumulate from
+  -- here without anyone being asked to remember where they used to live.
+  address_recorded_on TEXT,
   first_seen_on  TEXT,                      -- date of earliest registration
   erased_on      TEXT,                      -- set by forget.py; identity is gone
   created_at     TEXT NOT NULL DEFAULT (datetime('now')),
@@ -266,6 +272,7 @@ SELECT p.person_id,
        p.postcode,
        p.city,
        p.country,
+       p.address_recorded_on,
        p.first_seen_on,
        (p.erased_on IS NOT NULL) AS is_erased
 FROM person p;

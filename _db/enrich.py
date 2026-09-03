@@ -170,6 +170,13 @@ def main(argv=None):
                                % (field, clause), (value, person_id))
             touched = touched or cur.rowcount > 0
 
+        # Stamp when the address was given. It is not the address they had
+        # during the class, and the data should not pretend otherwise.
+        if any(rec.get(f) for f in ("street", "postcode", "city")):
+            conn.execute(
+                "UPDATE person SET address_recorded_on = COALESCE(address_recorded_on,"
+                " date('now')) WHERE person_id = ?", (person_id,))
+
         # birth_year is the coarse copy that analysis actually uses
         dob = conn.execute("SELECT date_of_birth FROM person_identity WHERE person_id = ?",
                            (person_id,)).fetchone()[0]
