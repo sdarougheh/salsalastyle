@@ -159,12 +159,14 @@ function applyFormLabels() {
   // silently throw away someone's wording. Only the two prefilled questions
   // are managed from code, because their labels have to stay in step with
   // what enrich.py matches on.
-  form.getItemById(Number(props.getProperty(PROP_TOKEN_ITEM)))
-      .setTitle(TOKEN_TITLE).setHelpText(TOKEN_HELP);
-  form.getItemById(Number(props.getProperty(PROP_NAME_ITEM)))
-      .setTitle(NAME_TITLE).setHelpText(NAME_HELP);
+  // Titles only. A question's TITLE becomes its column header in the
+  // responses sheet, and enrich.py matches that header by name — so the two
+  // have to agree or the column is silently dropped on import. Help text has
+  // no such constraint and is edited by hand, so it is left alone.
+  form.getItemById(Number(props.getProperty(PROP_TOKEN_ITEM))).setTitle(TOKEN_TITLE);
+  form.getItemById(Number(props.getProperty(PROP_NAME_ITEM))).setTitle(NAME_TITLE);
 
-  Logger.log('Question labels applied. Title and description left alone.');
+  Logger.log('Question titles applied. Help text, description and title left alone.');
   Logger.log(form.getPublishedUrl());
 }
 
