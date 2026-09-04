@@ -82,10 +82,10 @@ function createDetailsForm() {
   // the links for any People rows added since.
   if (existingId) {
     var existing = FormApp.openById(existingId);
-    // Re-apply the wording every run, so this file stays the source of truth
-    // for what the form says and a correction here reaches the live form.
-    applyFormCopy_(existing);
-    Logger.log('Form already exists — reusing it, and refreshed its wording.');
+    // The wording is NOT re-applied. The title and description are edited by
+    // hand in the Forms UI, so the live form is the authority on them —
+    // re-running this to top up the links must not cost someone their copy.
+    Logger.log('Form already exists — reusing it. Wording left untouched.');
     Logger.log('Published: ' + existing.getPublishedUrl());
     Logger.log('Links written: ' + makeFormLinks());
     return existing.getPublishedUrl();
