@@ -15,6 +15,8 @@ Recognised columns (all optional except the key):
                              the /details response export uses, and it means
                              that file contains no name and no email at all.
     full_name                corrects a misspelling from the sheet
+    legal_name               the name confirmed on the details form; stored
+                             alongside full_name, never over it
     date_of_birth            YYYY-MM-DD, DD/MM/YYYY or DD.MM.YYYY
     phone, street            stored in person_identity (never exported)
     postcode, city, country  stored on person (coarse, safe to export)
@@ -43,11 +45,20 @@ from import_sheet import norm_header, norm_text, parse_bool  # noqa: E402
 FIELD_SYNONYMS = {
     "email":         ["email", "e-mail", "mail"],
     "pseudonym":     ["pseudonym", "id", "person id", "person_id"],
-    "token":         ["token", "invite token"],
+    # "reference" is what the details form calls the token — see TOKEN_TITLE in
+    # _apps_script/details_form.gs. Keep the two in step.
+    "token":         ["token", "invite token", "reference"],
     "full_name":     ["full name", "name", "navn"],
+    # The details form asks people to correct their own name, so what comes
+    # back is the legal one. It is stored ALONGSIDE the registration name, not
+    # over it: you still need to find them in a class list by the name they
+    # signed up with.
+    "legal_name":    ["legal name", "your legal name", "full legal name",
+                      "your legal name (please correct if incomplete)"],
     "date_of_birth": ["date of birth", "dob", "birthday", "birth date", "fodselsdag", "født"],
     "phone":         ["phone", "mobile", "telefon", "tlf"],
-    "street":        ["street", "address", "adresse", "street address", "vej"],
+    "street":        ["street", "address", "adresse", "street address", "vej",
+                      "street and number"],
     "postcode":      ["postcode", "post code", "zip", "postnummer", "postnr"],
     "city":          ["city", "town", "by"],
     "country":       ["country", "land"],
@@ -60,7 +71,7 @@ for _c, _ss in FIELD_SYNONYMS.items():
     for _s in _ss:
         LOOKUP[_s] = _c
 
-IDENTITY_FIELDS = ("full_name", "date_of_birth", "phone", "street", "notes")
+IDENTITY_FIELDS = ("full_name", "legal_name", "date_of_birth", "phone", "street", "notes")
 PERSON_FIELDS = ("postcode", "city", "country")
 DOB_FORMATS = ["%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y", "%Y/%m/%d"]
 

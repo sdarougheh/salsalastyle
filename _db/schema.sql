@@ -61,7 +61,14 @@ CREATE TABLE IF NOT EXISTS person (
 -- The identifying half. NEVER exported, never shown to an analyst.
 CREATE TABLE IF NOT EXISTS person_identity (
   person_id      INTEGER PRIMARY KEY REFERENCES person(person_id) ON DELETE CASCADE,
+  -- Two names, deliberately. `full_name` is what they typed when they signed
+  -- up and what you know them as — "anders", "Vale", whatever was in the box.
+  -- `legal_name` is what they confirmed or corrected on the details form, and
+  -- it is the one SKAT's documentation requirement means. Neither replaces the
+  -- other: the first is how you find them in a class list, the second is what
+  -- proves who they are.
   full_name      TEXT NOT NULL,
+  legal_name     TEXT,
   date_of_birth  TEXT,                      -- 'YYYY-MM-DD'
   phone          TEXT,
   street         TEXT,                      -- street + number only; postcode lives on `person`
@@ -433,7 +440,7 @@ WHERE p.erased_on IS NULL;
 DROP VIEW IF EXISTS pii_roster;
 CREATE VIEW pii_roster AS
 SELECT s.code AS season_code, c.label AS course_label,
-       i.full_name, e.email, r.role, r.is_young,
+       i.full_name, i.legal_name, e.email, r.role, r.is_young,
        r.amount_due_dkk, r.status, r.comments
 FROM registration r
 JOIN person_identity i ON i.person_id = r.person_id

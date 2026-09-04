@@ -42,6 +42,20 @@ var FORM_DESCRIPTION =
 
 var CONFIRMATION = 'Thank you so much for helping us';
 
+// Item labels live here so applyFormLabels() can push a wording change onto a
+// form that already exists. Renaming an item does NOT change its entry id, so
+// prefilled links already sitting in people's inboxes keep working.
+var TOKEN_TITLE = 'Reference';
+var TOKEN_HELP  = 'Already filled in from your email link — please leave it as it is.';
+
+var NAME_TITLE = 'Your legal name (please correct if incomplete)';
+var NAME_HELP  = 'We have filled in the name you signed up with. If it is short of ' +
+                 'your full legal name, please correct it — the tax rules need the ' +
+                 'full one.';
+
+var DOB_TITLE = 'Date of birth';
+var DOB_HELP  = 'This is the part the tax rules require.';
+
 // Script Properties keys — so makeFormLinks() can find the form and its fields
 // again without anything being hard-coded to one particular form.
 var PROP_FORM_ID = 'DETAILS_FORM_ID';
@@ -84,21 +98,14 @@ function createDetailsForm() {
   try { form.setRequireLogin(false); } catch (e) {}
 
   var token = form.addTextItem()
-    .setTitle('Reference')
-    .setHelpText('Already filled in from your email link — please leave it as it is.')
-    .setRequired(true);
+    .setTitle(TOKEN_TITLE).setHelpText(TOKEN_HELP).setRequired(true);
 
   var name = form.addTextItem()
-    .setTitle('This is you')
-    .setHelpText("Already filled in. If this isn't your name, don't fill in the " +
-                 'form — reply to the email instead.')
-    .setRequired(true);
+    .setTitle(NAME_TITLE).setHelpText(NAME_HELP).setRequired(true);
 
   form.addDateItem()
-    .setTitle('Date of birth')
-    .setHelpText('This is the part the tax rules require.')
-    .setIncludesYear(true)
-    .setRequired(true);
+    .setTitle(DOB_TITLE).setHelpText(DOB_HELP)
+    .setIncludesYear(true).setRequired(true);
 
   form.addTextItem().setTitle('Street and number').setRequired(true);
   form.addTextItem().setTitle('Postcode').setRequired(true);
@@ -126,6 +133,28 @@ function applyFormCopy_(form) {
   form.setTitle(FORM_TITLE);
   form.setDescription(FORM_DESCRIPTION);
   form.setConfirmationMessage(CONFIRMATION);
+}
+
+
+/**
+ * Push a wording change onto the form that already exists. Safe to re-run, and
+ * safe after links have been sent: entry ids survive a rename.
+ */
+function applyFormLabels() {
+  var props = PropertiesService.getScriptProperties();
+  var formId = props.getProperty(PROP_FORM_ID);
+  if (!formId) throw new Error('No form yet — run createDetailsForm() first.');
+  var form = FormApp.openById(formId);
+
+  form.setDescription(FORM_DESCRIPTION);
+  form.setConfirmationMessage(CONFIRMATION);
+
+  form.getItemById(Number(props.getProperty(PROP_TOKEN_ITEM)))
+      .setTitle(TOKEN_TITLE).setHelpText(TOKEN_HELP);
+  form.getItemById(Number(props.getProperty(PROP_NAME_ITEM)))
+      .setTitle(NAME_TITLE).setHelpText(NAME_HELP);
+
+  Logger.log('Labels applied to ' + form.getPublishedUrl());
 }
 
 
