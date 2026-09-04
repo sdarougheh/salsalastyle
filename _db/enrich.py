@@ -88,6 +88,36 @@ def parse_dob(v):
     return None
 
 
+def dob_is_ambiguous(v):
+    """True when a date could be read either day-first or month-first.
+
+    The form stores dates unambiguously, but the spreadsheet re-formats them
+    for export using ITS locale, and 03/09/1994 is 3 September in Denmark and
+    9 March in the United States. We read day-first. When both readings are
+    possible the value is flagged rather than silently trusted, because a
+    wrong birthday quietly moves someone across the under-30 line that the VAT
+    exemption turns on.
+
+    Set the column to yyyy-mm-dd in the sheet and this never fires.
+    """
+    s = norm_text(v)
+    m = re.match(r"^(\d{1,2})[/.\-](\d{1,2})[/.\-]\d{4}$", s)
+    return bool(m) and int(m.group(1)) <= 12 and int(m.group(2)) <= 12
+
+
+def implausible_age(iso, today=None):
+    """Returns the age if it is outside what a dance class plausibly contains."""
+    if not iso:
+        return None
+    try:
+        born = datetime.strptime(iso, "%Y-%m-%d").date()
+    except ValueError:
+        return None
+    today = today or datetime.now().date()
+    age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    return age if age < 10 or age > 100 else None
+
+
 def find_person(conn, rec):
     # Token first: a response export from the /details sheet carries the token
     # and no name or email at all, which is the point of it.
@@ -136,6 +166,7 @@ def main(argv=None):
         rows = list(reader)
 
     updated, unmatched, unchanged = 0, [], 0
+    ambiguous, odd_ages = [], []
     for row in rows:
         rec = {k: norm_text(row.get(v)) for k, v in cols.items()}
         person_id = find_person(conn, rec)
@@ -151,12 +182,20 @@ def main(argv=None):
             continue
 
         if rec.get("date_of_birth"):
+            raw_dob = rec["date_of_birth"]
+            if dob_is_ambiguous(raw_dob):
+                ambiguous.append("%s: %r could be day-first or month-first"
+                                 % (rec.get("token") or rec.get("email"), raw_dob))
             dob = parse_dob(rec["date_of_birth"])
             if dob is None:
                 print("  ! could not read date of birth %r for %s"
                       % (rec["date_of_birth"], rec.get("token") or rec.get("email")
                          or rec.get("pseudonym")))
             rec["date_of_birth"] = dob
+            age = implausible_age(dob)
+            if age is not None:
+                odd_ages.append("%s: born %s, which makes them %d"
+                                % (rec.get("token") or rec.get("email"), dob, age))
 
         touched = False
         for field in IDENTITY_FIELDS:
@@ -223,6 +262,18 @@ def main(argv=None):
         conn.rollback()
     else:
         conn.commit()
+
+    if ambiguous:
+        print("\n!! %d date(s) could be read two ways — CHECK THESE:" % len(ambiguous))
+        for a in ambiguous:
+            print("   %s" % a)
+        print("   They were read day-first. Format the column as yyyy-mm-dd in\n"
+              "   the sheet and re-run to remove the doubt.")
+
+    if odd_ages:
+        print("\n!! %d implausible age(s):" % len(odd_ages))
+        for a in odd_ages:
+            print("   %s" % a)
 
     if unmatched:
         print("no match for %d row(s):" % len(unmatched))
