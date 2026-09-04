@@ -23,6 +23,10 @@
  * first, or use `enrich.py --key token`, which ignores it.
  */
 
+// CREATION ONLY. The live form's title, description and confirmation message
+// are edited by hand in the Forms UI, and that copy is the real one — these
+// constants are just what a brand-new form starts life with. Nothing pushes
+// them onto an existing form; see applyFormLabels().
 var FORM_TITLE = 'Salsa LA-Style — your details';
 
 var FORM_DESCRIPTION =
@@ -126,8 +130,11 @@ function createDetailsForm() {
 
 
 /**
- * The wording lives in this file rather than in the form, so it can be
- * reviewed, corrected and version-controlled like anything else.
+ * Called ONLY from createDetailsForm(), to give a brand-new form its starting
+ * copy. It is not for updating a form that already exists: the title and
+ * description are edited by hand in the Forms UI, and that hand-edited version
+ * is the one people actually read. Calling this on a live form would replace
+ * their wording with whatever this file happens to say.
  */
 function applyFormCopy_(form) {
   form.setTitle(FORM_TITLE);
@@ -146,15 +153,19 @@ function applyFormLabels() {
   if (!formId) throw new Error('No form yet — run createDetailsForm() first.');
   var form = FormApp.openById(formId);
 
-  form.setDescription(FORM_DESCRIPTION);
-  form.setConfirmationMessage(CONFIRMATION);
-
+  // Deliberately does NOT touch the title, description or confirmation
+  // message. Those are edited by hand in the Forms UI and the live form is
+  // the authority on them — setting them from the constants below would
+  // silently throw away someone's wording. Only the two prefilled questions
+  // are managed from code, because their labels have to stay in step with
+  // what enrich.py matches on.
   form.getItemById(Number(props.getProperty(PROP_TOKEN_ITEM)))
       .setTitle(TOKEN_TITLE).setHelpText(TOKEN_HELP);
   form.getItemById(Number(props.getProperty(PROP_NAME_ITEM)))
       .setTitle(NAME_TITLE).setHelpText(NAME_HELP);
 
-  Logger.log('Labels applied to ' + form.getPublishedUrl());
+  Logger.log('Question labels applied. Title and description left alone.');
+  Logger.log(form.getPublishedUrl());
 }
 
 
