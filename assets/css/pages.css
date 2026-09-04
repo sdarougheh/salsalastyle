@@ -244,22 +244,6 @@ body.page-body {
   font-weight: 400;
 }
 
-/* /details — the name we already hold, shown as text so it cannot be edited. */
-.details-name {
-  margin: 0;
-  padding: 10px 12px;
-  border: 1px solid var(--line, #D9D3C4);
-  border-radius: 6px;
-  background: var(--surface-muted, #F3F0E9);
-  font-weight: 600;
-}
-
-.details-hint {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--muted, #6B6459);
-}
-
 .error,
 .field-error {
   display: none;
