@@ -201,6 +201,22 @@ function makeFormLinks() {
 
 
 /**
+ * Zero-argument, so the editor's Run button can use it: logs the first link
+ * sitting in People!F. That is the one to open when checking the form.
+ */
+function logFirstLink() {
+  var sheet = ss_().getSheetByName(PEOPLE_SHEET);
+  if (!sheet || sheet.getLastRow() < 2) throw new Error('No rows in ' + PEOPLE_SHEET);
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, LINK_COLUMN).getValues();
+  for (var i = 0; i < rows.length; i++) {
+    var link = String(rows[i][LINK_COLUMN - 1]).trim();
+    if (link) { Logger.log(link); return link; }
+  }
+  throw new Error('No links in ' + PEOPLE_SHEET + '!F — run makeFormLinks() first.');
+}
+
+
+/**
  * Convenience for testing: the prefilled link for one token, logged rather
  * than written to the sheet.
  */
