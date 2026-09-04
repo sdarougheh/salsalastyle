@@ -1,48 +1,146 @@
 /**
- * Invitation mail-merge — deliberately NOT part of the deployed script.
+ * Invitation mail-merge — deliberately NOT part of the deployed web app.
  *
  * Apps Script decides which permissions to request by scanning the code for
- * API usage, so the mere presence of GmailApp anywhere in the project makes
- * Google ask for permission to send mail as you. Keeping this in a separate
- * file means the deployed web app is authorised for spreadsheets only and is
- * incapable of sending an email, which is a better place to be while the
- * invitation text is still unwritten.
+ * API usage, so the mere presence of GmailApp in a project makes Google ask
+ * for permission to send mail as you. Keeping this out of the deployed script
+ * means the web app cannot send an email even if it wanted to.
  *
- * When the text is ready: add a file to the Apps Script project, paste this
- * in, fill in SUBJECT and BODY_TEMPLATE, save, and run sendInvites() from the
- * editor. Google will then ask for the Gmail permission, once.
+ * To use it: add a file to the Apps Script project (Files → + → Script), paste
+ * this in, save, and run sendInvites() from the editor. Google asks for the
+ * Gmail permission once, at that point — not before.
+ *
+ * PREREQUISITE: every person must already have a personal form link in
+ * People!F. That is what makeFormLinks() in Form.gs writes. Without it there
+ * is nothing to send, and sendInvites() will refuse rather than send someone
+ * a blank or generic link.
  *
  * It skips anyone already stamped in "Sent at", so re-running after adding
- * people to the tab sends only to the new ones. Change the filter to
- * "Completed at" instead to chase non-responders.
+ * people sends only to the new ones. Set REMINDER_MODE to chase the people who
+ * have not answered instead.
  *
- * Gmail's daily cap on a free account is 100 recipients; check
- * GmailApp.getRemainingDailyQuota() before a bigger run.
+ * Gmail's daily cap on a free account is 100 recipients — above the current
+ * list, but check GmailApp.getRemainingDailyQuota() before a bigger run.
+ */
+
+var SUBJECT = 'A minute of your time — Salsa LA-Style needs two details';
+
+// {{name}} and {{link}} are filled in per person. {{link}} MUST be the personal
+// prefilled link from People!F: it carries the reference that ties the answer
+// back to the right person. The plain form address would arrive with nothing
+// filled in and no way to tell whose reply is whose.
+var BODY_TEMPLATE = [
+  'Dear {{name}},',
+  '',
+  "We're really happy that the school is growing -- and so is the need to keep records!",
+  '',
+  'To comply with Danish law, we need from you your birthday and your current address.',
+  'Please fill them in the form below, it takes only a minute. Please reach out if you',
+  'have any questions.',
+  '',
+  'Link to the form: {{link}}',
+  '',
+  'Thank you so much for your help!',
+  'Saman and the team of Salsa LA-Style'
+].join('\n');
+
+// false: send to everyone not yet emailed.  true: re-send only to people who
+// were emailed but have not answered.
+var REMINDER_MODE = false;
+
+var LINK_COLUMN_ = 6;         // People!F, written by makeFormLinks()
+var SENT_COLUMN_ = 4;         // People!D
+
+
+/**
+ * Sends the invitation. Run sendInvitesDryRun() first — it logs exactly who
+ * would be written to and what the first message looks like, and sends nothing.
  */
 function sendInvites() {
-  throw new Error('sendInvites() is not ready: write SUBJECT and BODY_TEMPLATE first, ' +
-                  'then delete this line.');
+  return sendInvites_(false);
+}
 
-  var SUBJECT = '';                 // ← to be written
-  var BODY_TEMPLATE = '';           // ← to be written; use {{name}} and {{link}}
+function sendInvitesDryRun() {
+  return sendInvites_(true);
+}
 
+
+function sendInvites_(dryRun) {
   var sheet = ss_().getSheetByName(PEOPLE_SHEET);
-  var rows  = sheet.getRange(2, 1, sheet.getLastRow() - 1, PEOPLE_HEADERS.length).getValues();
-  var sent  = 0;
+  if (!sheet || sheet.getLastRow() < 2) throw new Error('No rows in ' + PEOPLE_SHEET);
+
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, LINK_COLUMN_).getValues();
+  var queue = [], skipped = [];
 
   for (var i = 0; i < rows.length; i++) {
     var token = String(rows[i][0]).trim();
-    var name  = String(rows[i][1]);
+    var name  = String(rows[i][1]).trim();
     var email = String(rows[i][2]).trim();
     var sentAt = rows[i][3];
-    if (!token || !email || sentAt) continue;
+    var completedAt = rows[i][4];
+    var link  = String(rows[i][5]).trim();
 
-    var link = 'https://www.salsalastyle.dk/details?t=' + encodeURIComponent(token);
-    var body = BODY_TEMPLATE.replace(/\{\{name\}\}/g, name).replace(/\{\{link\}\}/g, link);
+    if (!token && !email) continue;                       // blank row
+    if (!email)  { skipped.push(token + ': no email'); continue; }
+    if (!link)   { skipped.push(token + ': no link in column F — run makeFormLinks()'); continue; }
+    if (link.indexOf('viewform') === -1 || link.indexOf('entry.') === -1) {
+      skipped.push(token + ': column F is not a prefilled link'); continue;
+    }
+    if (REMINDER_MODE) {
+      if (!sentAt || completedAt) continue;               // only the unanswered
+    } else {
+      if (sentAt) continue;                               // only the not-yet-sent
+    }
+    queue.push({ row: i + 2, name: name, email: email, link: link });
+  }
 
-    GmailApp.sendEmail(email, SUBJECT, body);
-    sheet.getRange(i + 2, 4).setValue(new Date());
+  if (skipped.length) {
+    Logger.log('SKIPPED ' + skipped.length + ':');
+    skipped.forEach(function (s) { Logger.log('  ' + s); });
+  }
+
+  if (!queue.length) {
+    Logger.log('Nothing to send.');
+    return 0;
+  }
+
+  var quota = GmailApp.getRemainingDailyQuota();
+  Logger.log((dryRun ? 'DRY RUN — ' : '') + 'would send ' + queue.length +
+             ' message(s); Gmail quota remaining today: ' + quota);
+  Logger.log('--- first message ---');
+  Logger.log('To: ' + queue[0].email);
+  Logger.log('Subject: ' + SUBJECT);
+  Logger.log(render_(queue[0]));
+  Logger.log('---------------------');
+
+  if (dryRun) return queue.length;
+
+  if (queue.length > quota) {
+    throw new Error('Need ' + queue.length + ' sends but only ' + quota +
+                    ' left today. Wait for the quota to reset rather than ' +
+                    'sending half the list.');
+  }
+
+  var sent = 0;
+  for (var j = 0; j < queue.length; j++) {
+    GmailApp.sendEmail(queue[j].email, SUBJECT, render_(queue[j]));
+    sheet.getRange(queue[j].row, SENT_COLUMN_).setValue(new Date());
     sent++;
   }
-  Logger.log('sent ' + sent + ' invitation(s)');
+  Logger.log('Sent ' + sent + ' invitation(s).');
+  return sent;
+}
+
+
+function render_(entry) {
+  return BODY_TEMPLATE
+    .replace(/\{\{name\}\}/g, firstName_(entry.name))
+    .replace(/\{\{link\}\}/g, entry.link);
+}
+
+
+/** "Helena Sørensen Møller" → "Helena". The greeting is a first name. */
+function firstName_(full) {
+  var parts = String(full).trim().split(/\s+/);
+  return parts.length ? parts[0] : full;
 }
