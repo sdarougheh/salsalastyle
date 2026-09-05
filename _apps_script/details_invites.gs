@@ -175,6 +175,43 @@ function sendInvites_(dryRun) {
 }
 
 
+/**
+ * Sends ONE message to a test address so the HTML can be seen in a real mail
+ * client rather than trusted from a log.
+ *
+ * It borrows the DUMMY row's link, never a real person's: a test message
+ * carrying a student's link could be clicked and submitted as them, which
+ * would write a birthday against the wrong name. And it stamps nothing, so
+ * the real run still goes to all 35.
+ */
+function sendTestToSelf() {
+  var TEST_TO = 's.darougheh@gmail.com';
+  var TEST_TOKEN = 'TEST-TRY-ME-0003';
+
+  var sheet = ss_().getSheetByName(PEOPLE_SHEET);
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, LINK_COLUMN_).getValues();
+
+  var entry = null;
+  for (var i = 0; i < rows.length; i++) {
+    if (String(rows[i][0]).trim() === TEST_TOKEN) {
+      entry = { name: String(rows[i][1]).trim(), email: TEST_TO,
+                link: String(rows[i][LINK_COLUMN_ - 1]).trim() };
+      break;
+    }
+  }
+  if (!entry) throw new Error('No row with token ' + TEST_TOKEN + ' — refusing to ' +
+                              "borrow a real student's link for a test.");
+  if (!entry.link) throw new Error('The test row has no link in column F.');
+
+  var opts = { name: SEND_AS_NAME, htmlBody: renderHtml_(entry) };
+  if (SEND_AS) { opts.from = SEND_AS; opts.replyTo = SEND_AS; }
+
+  GmailApp.sendEmail(TEST_TO, SUBJECT, render_(entry), opts);
+  Logger.log('Test sent to ' + TEST_TO + ' as ' + (SEND_AS || 'this account'));
+  Logger.log('Used the dummy row. Nothing stamped; the real run is unaffected.');
+}
+
+
 function render_(entry) {
   return BODY_TEMPLATE
     .replace(/\{\{name\}\}/g, firstName_(entry.name))
