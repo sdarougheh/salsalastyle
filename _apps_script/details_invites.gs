@@ -20,7 +20,7 @@
  * have not answered instead.
  *
  * Gmail's daily cap on a free account is 100 recipients — above the current
- * list, but check GmailApp.getRemainingDailyQuota() before a bigger run.
+ * list, but check MailApp.getRemainingDailyQuota() before a bigger run.
  */
 
 // Send as the school, not as whoever happens to own the script. This only
@@ -129,7 +129,9 @@ function sendInvites_(dryRun) {
     sendOptions.replyTo = SEND_AS;
   }
 
-  var quota = GmailApp.getRemainingDailyQuota();
+  // MailApp, not GmailApp — GmailApp has no quota method, and the two share
+  // the same daily allowance anyway.
+  var quota = MailApp.getRemainingDailyQuota();
   Logger.log((dryRun ? 'DRY RUN — ' : '') + 'would send ' + queue.length +
              ' message(s); Gmail quota remaining today: ' + quota);
   Logger.log('--- first message ---');
