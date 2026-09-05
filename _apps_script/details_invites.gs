@@ -35,7 +35,7 @@
 var SEND_AS = 'salsalastyledk@gmail.com';
 var SEND_AS_NAME = 'Salsa LA-Style';
 
-var SUBJECT = 'To comply with Danish tax law, we need the following information from you';
+var SUBJECT = 'Salsa LA-Style: We need your help';
 
 // {{name}} and {{link}} are filled in per person. {{link}} MUST be the personal
 // prefilled link from People!F: it carries the reference that ties the answer
