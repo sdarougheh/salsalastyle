@@ -19,8 +19,10 @@
  * people sends only to the new ones. Set REMINDER_MODE to chase the people who
  * have not answered instead.
  *
- * Gmail's daily cap on a free account is 100 recipients — above the current
- * list, but check MailApp.getRemainingDailyQuota() before a bigger run.
+ * Gmail's daily cap on a free account is 100 recipients, above the current
+ * list. It is not read from the API — that needs an extra permission — so a
+ * bigger list should be sent across two days; the "Sent at" stamps make the
+ * second run resume rather than repeat.
  */
 
 // Send as the school, not as whoever happens to own the script. This only
@@ -57,6 +59,10 @@ var BODY_TEMPLATE = [
 // false: send to everyone not yet emailed.  true: re-send only to people who
 // were emailed but have not answered.
 var REMINDER_MODE = false;
+
+// Gmail's daily recipient cap on a free account. Not read from the API: doing
+// so needs a send-mail permission we would rather the project did not hold.
+var ASSUMED_DAILY_CAP = 100;
 
 var LINK_COLUMN_ = 6;         // People!F, written by makeFormLinks()
 var SENT_COLUMN_ = 4;         // People!D
@@ -129,11 +135,13 @@ function sendInvites_(dryRun) {
     sendOptions.replyTo = SEND_AS;
   }
 
-  // MailApp, not GmailApp — GmailApp has no quota method, and the two share
-  // the same daily allowance anyway.
-  var quota = MailApp.getRemainingDailyQuota();
+  // The real remaining quota is only readable through MailApp, which needs a
+  // permission this project deliberately does not hold. A fixed cap is enough:
+  // if a run does stop early, every message already sent is stamped in
+  // "Sent at", so re-running resumes rather than double-sending. That stamp,
+  // not this check, is what actually keeps anyone from being emailed twice.
   Logger.log((dryRun ? 'DRY RUN — ' : '') + 'would send ' + queue.length +
-             ' message(s); Gmail quota remaining today: ' + quota);
+             ' message(s); assumed daily cap ' + ASSUMED_DAILY_CAP);
   Logger.log('--- first message ---');
   Logger.log('From: ' + (SEND_AS || '(this account)') + ' as "' + SEND_AS_NAME + '"');
   Logger.log('To: ' + queue[0].email);
@@ -143,10 +151,11 @@ function sendInvites_(dryRun) {
 
   if (dryRun) return queue.length;
 
-  if (queue.length > quota) {
-    throw new Error('Need ' + queue.length + ' sends but only ' + quota +
-                    ' left today. Wait for the quota to reset rather than ' +
-                    'sending half the list.');
+  if (queue.length > ASSUMED_DAILY_CAP) {
+    throw new Error('Need ' + queue.length + ' sends but the daily cap is about ' +
+                    ASSUMED_DAILY_CAP + '. Send in batches across two days — ' +
+                    'the "Sent at" stamps mean the second run picks up where ' +
+                    'the first stopped.');
   }
 
   var sent = 0;
