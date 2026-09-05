@@ -35,7 +35,7 @@
 var SEND_AS = 'salsalastyledk@gmail.com';
 var SEND_AS_NAME = 'Salsa LA-Style';
 
-var SUBJECT = 'A minute of your time — Salsa LA-Style needs two details';
+var SUBJECT = 'To comply with Danish tax law, we need the following information from you';
 
 // {{name}} and {{link}} are filled in per person. {{link}} MUST be the personal
 // prefilled link from People!F: it carries the reference that ties the answer
@@ -46,9 +46,10 @@ var BODY_TEMPLATE = [
   '',
   "We're really happy that the school is growing -- and so is the need to keep records!",
   '',
-  'To comply with Danish law, we need from you your birthday and your current address.',
-  'Please fill them in the form below, it takes only a minute. Please reach out if you',
-  'have any questions.',
+  // One line per paragraph, deliberately: renderHtml_ turns every newline into
+  // a <br>, so a line wrapped for source-code width would become a forced
+  // break in the middle of a sentence.
+  'To comply with Danish law, we need from you your birthday and your current address. Please fill them in the form below, it takes only a minute. Please reach out if you have any questions.',
   '',
   'Link to the form: {{link}}',
   '',
@@ -147,6 +148,8 @@ function sendInvites_(dryRun) {
   Logger.log('To: ' + queue[0].email);
   Logger.log('Subject: ' + SUBJECT);
   Logger.log(render_(queue[0]));
+  Logger.log('--- as HTML (the link is an anchor) ---');
+  Logger.log(renderHtml_(queue[0]));
   Logger.log('---------------------');
 
   if (dryRun) return queue.length;
@@ -160,7 +163,10 @@ function sendInvites_(dryRun) {
 
   var sent = 0;
   for (var j = 0; j < queue.length; j++) {
-    GmailApp.sendEmail(queue[j].email, SUBJECT, render_(queue[j]), sendOptions);
+    var opts = { name: sendOptions.name, htmlBody: renderHtml_(queue[j]) };
+    if (sendOptions.from)    opts.from = sendOptions.from;
+    if (sendOptions.replyTo) opts.replyTo = sendOptions.replyTo;
+    GmailApp.sendEmail(queue[j].email, SUBJECT, render_(queue[j]), opts);
     sheet.getRange(queue[j].row, SENT_COLUMN_).setValue(new Date());
     sent++;
   }
@@ -173,6 +179,28 @@ function render_(entry) {
   return BODY_TEMPLATE
     .replace(/\{\{name\}\}/g, firstName_(entry.name))
     .replace(/\{\{link\}\}/g, entry.link);
+}
+
+
+/**
+ * The same message as HTML, so the form link is clickable. Built from the
+ * plain-text version rather than kept as a second template: one source of
+ * wording means the two can never say different things.
+ *
+ * The link keeps the URL as its own text. A friendlier label would hide where
+ * the link goes, and a personal link asking for a birthday and a home address
+ * is exactly the kind of thing people should be able to see before clicking.
+ */
+function renderHtml_(entry) {
+  var text = render_(entry);
+  var esc = function (t) {
+    return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  };
+  var escapedUrl = esc(entry.link);
+  return esc(text)
+    .split(escapedUrl)
+    .join('<a href="' + escapedUrl + '">' + escapedUrl + '</a>')
+    .replace(/\n/g, '<br>');
 }
 
 
