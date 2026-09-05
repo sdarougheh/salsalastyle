@@ -23,6 +23,16 @@
  * list, but check GmailApp.getRemainingDailyQuota() before a bigger run.
  */
 
+// Send as the school, not as whoever happens to own the script. This only
+// works if the address is a VERIFIED send-as alias on the account running the
+// script (Gmail → Settings → Accounts and Import → Send mail as). It is not a
+// spoof: Gmail will refuse an address it has not verified, and sendInvites_()
+// checks up front rather than discovering it 40 messages in.
+//
+// Set to '' to send from the account's own address.
+var SEND_AS = 'salsalastyledk@gmail.com';
+var SEND_AS_NAME = 'Salsa LA-Style';
+
 var SUBJECT = 'A minute of your time — Salsa LA-Style needs two details';
 
 // {{name}} and {{link}} are filled in per person. {{link}} MUST be the personal
@@ -104,10 +114,26 @@ function sendInvites_(dryRun) {
     return 0;
   }
 
+  var sendOptions = { name: SEND_AS_NAME };
+  if (SEND_AS) {
+    var aliases = GmailApp.getAliases();
+    if (aliases.indexOf(SEND_AS) === -1) {
+      throw new Error(
+        'Cannot send as ' + SEND_AS + ': it is not a verified send-as alias on ' +
+        'this account. Available: ' + (aliases.length ? aliases.join(', ') : '(none)') +
+        '. Add it in Gmail → Settings → Accounts and Import → "Send mail as" ' +
+        '(Google emails a confirmation link to that address), or set SEND_AS to ' +
+        "'' to send from the account's own address.");
+    }
+    sendOptions.from = SEND_AS;
+    sendOptions.replyTo = SEND_AS;
+  }
+
   var quota = GmailApp.getRemainingDailyQuota();
   Logger.log((dryRun ? 'DRY RUN — ' : '') + 'would send ' + queue.length +
              ' message(s); Gmail quota remaining today: ' + quota);
   Logger.log('--- first message ---');
+  Logger.log('From: ' + (SEND_AS || '(this account)') + ' as "' + SEND_AS_NAME + '"');
   Logger.log('To: ' + queue[0].email);
   Logger.log('Subject: ' + SUBJECT);
   Logger.log(render_(queue[0]));
@@ -123,7 +149,7 @@ function sendInvites_(dryRun) {
 
   var sent = 0;
   for (var j = 0; j < queue.length; j++) {
-    GmailApp.sendEmail(queue[j].email, SUBJECT, render_(queue[j]));
+    GmailApp.sendEmail(queue[j].email, SUBJECT, render_(queue[j]), sendOptions);
     sheet.getRange(queue[j].row, SENT_COLUMN_).setValue(new Date());
     sent++;
   }
