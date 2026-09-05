@@ -39,6 +39,11 @@ def main(argv=None):
                     help="write only people who did not already have a token")
     ap.add_argument("--include-erased", action="store_true",
                     help="include people erased under the right to be forgotten (don't)")
+    ap.add_argument("--vat-relevant", action="store_true",
+                    help="only people whose age you actually have to document: anyone "
+                         "who ever ticked under-30, plus anyone who was never asked. "
+                         "People who answered 'no' every time were never claimed as "
+                         "exempt, so there is nothing to evidence for them.")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
 
@@ -46,7 +51,15 @@ def main(argv=None):
     conn.execute("PRAGMA foreign_keys = ON")
     cur = conn.cursor()
 
-    where = "" if args.include_erased else " WHERE p.erased_on IS NULL"
+    conds = [] if args.include_erased else ["p.erased_on IS NULL"]
+    if args.vat_relevant:
+        # Include on a missing answer as well as a yes: the pair form never asks,
+        # so those rows are unknown rather than "no", and an unknown age is
+        # exactly what the documentation has to resolve.
+        conds.append("EXISTS (SELECT 1 FROM registration r"
+                     " WHERE r.person_id = p.person_id"
+                     "   AND (r.is_young IS NULL OR r.is_young = 1))")
+    where = (" WHERE " + " AND ".join(conds)) if conds else ""
     people = cur.execute(
         "SELECT p.person_id, i.token IS NOT NULL FROM person p"
         " LEFT JOIN invite i ON i.person_id = p.person_id" + where +
@@ -68,7 +81,7 @@ def main(argv=None):
         "  JOIN person p         ON p.person_id = i.person_id"
         "  JOIN person_identity d ON d.person_id = i.person_id"
         "  LEFT JOIN person_email e ON e.person_id = i.person_id AND e.is_primary = 1"
-        + (" WHERE p.erased_on IS NULL" if not args.include_erased else "") +
+        + where.replace("p.erased_on", "p.erased_on") +
         " ORDER BY i.person_id").fetchall()
 
     if args.only_missing:
