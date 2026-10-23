@@ -3,7 +3,19 @@
  *
  * NOT part of the built site (Jekyll ignores _-prefixed folders). This is the
  * code for the Apps Script project behind SCRIPT_URL in registration_friend.md
- * (Sheet → Extensions → Apps Script). Nothing on /registration_friend works
+ * (Sheet → Extensions → Apps Script).
+ *
+ * WHICH project: five of them are called "salsalastyle" in the Apps Script
+ * dashboard and only one is deployed. The live one is project
+ * 1PjuYSuxG9GpjVKgrwC3RUvDFK9xWO1xGRmUX_KU5bA8WecdUFCwY65pL, bound to the
+ * spreadsheet "Classes 2025" (the name is historical; it is the current
+ * season's intake). Check Deploy → Manage deployments and match the
+ * deployment id against SCRIPT_URL before editing anything - the others look
+ * identical and changing them does nothing.
+ *
+ * The code here spans two files in that project: doPost and
+ * sendConfirmationEmail live in Code.gs, the pair helpers in
+ * pair_registration.gs. Paste each part into the file it came from. Nothing on /registration_friend works
  * until this is pasted in AND re-deployed as a NEW VERSION of the EXISTING
  * deployment (Deploy → Manage deployments → pencil → Version: New version).
  *
@@ -209,9 +221,25 @@ function handlePairRegistration_(data, sheet, timestamp) {
   return pairId;
 }
 
-/** Labels columns I–L, the pair columns. */
+/**
+ * Labels columns I–L in the header row, once. Skipped entirely if row 1 holds
+ * data rather than headers (a real registration always starts with a Date in
+ * column A), so an unlabelled sheet is never corrupted.
+ */
 function ensurePairHeaders_(sheet) {
-  ensureHeaderLabels_(sheet, 9, ['Pair ID', 'Pair Partner', 'Discount', 'Amount Due']);
+  var labels = ['Pair ID', 'Pair Partner', 'Discount', 'Amount Due'];
+
+  if (sheet.getLastRow() === 0) return;
+  if (sheet.getRange(1, 1).getValue() instanceof Date) return;   // row 1 is data
+
+  var range = sheet.getRange(1, 9, 1, labels.length);
+  var current = range.getValues()[0];
+  var needsLabels = current.some(function(v, i) {
+    return String(v).trim() !== labels[i];
+  });
+  if (needsLabels) {
+    range.setValues([labels]);
+  }
 }
 
 /** Labels columns M–P, the under-30 details. */
@@ -222,7 +250,8 @@ function ensureDetailsHeaders_(sheet) {
 /**
  * Writes `labels` into row 1 from `startCol` on, once. Skipped entirely if row
  * 1 holds data rather than headers (a real registration always starts with a
- * Date in column A), so an unlabelled sheet is never corrupted.
+ * Date in column A), so an unlabelled sheet is never corrupted. Shared with
+ * ensurePairHeaders_ above, which labels I–L the same way.
  */
 function ensureHeaderLabels_(sheet, startCol, labels) {
   if (sheet.getLastRow() === 0) return;
