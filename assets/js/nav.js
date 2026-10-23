@@ -32,7 +32,10 @@ function Nav() {
     href: "/payments"
   }, "Payments"), /*#__PURE__*/React.createElement("a", {
     href: "/about"
-  }, "About")), /*#__PURE__*/React.createElement("div", {
+  }, "About"), /*#__PURE__*/React.createElement("a", {
+    href: "/registration",
+    className: "nav-link-register"
+  }, "Register")), /*#__PURE__*/React.createElement("div", {
     className: "nav-socials"
   }, /*#__PURE__*/React.createElement("a", {
     className: "nav-soc",

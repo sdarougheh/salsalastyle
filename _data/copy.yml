@@ -12,6 +12,9 @@ hero:
   cta_primary:
     label: "See the classes"
     href: "#schedule"
+  cta_secondary:
+    label: "Register"
+    href: "/registration"
 
 wednesday_classes:
   eyebrow: "Schedule"
@@ -39,6 +42,8 @@ events:
 location:
   label: "All classes at"
   address: "Inflow Studio · Heimdalsgade 35, 2nd Floor, 2200 Copenhagen"
+  cta_label: "Register for the season"
+  cta_href: "/registration"
 
 classes_intro:
   title: "Which class is for you?"
@@ -55,11 +60,11 @@ register:
   kicker: "Ready when you are"
   title_line_1: "Come"
   title_line_2: "dance with us."
-  lede: "Registration is closed at the moment — questions? Message us on Instagram."
+  lede: "Pick a class, and we'll see you on Wednesday."
   photo: "assets/images/photo-class-1.png"
   cta_primary:
-    label: "Message us"
-    href: "https://ig.me/m/salsalastyle"
+    label: "Register now"
+    href: "/registration"
   cta_secondary:
     label: "Payments"
     href: "/payments"
@@ -76,6 +81,7 @@ footer:
       links:
         - { label: "Schedule", href: "#schedule" }
         - { label: "Pricing",  href: "#pricing"  }
+        - { label: "Register", href: "/registration" }
     - title: "Info"
       links:
         - { label: "About",    href: "/about"    }

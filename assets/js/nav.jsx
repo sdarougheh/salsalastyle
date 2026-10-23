@@ -18,6 +18,7 @@ function Nav() {
         <a href="/faq">FAQ</a>
         <a href="/payments">Payments</a>
         <a href="/about">About</a>
+        <a href="/registration" className="nav-link-register">Register</a>
       </div>
       <div className="nav-socials">
         <a className="nav-soc" href="https://instagram.com/salsalastyle" aria-label="Instagram" title="Instagram" target="_blank" rel="noreferrer">
