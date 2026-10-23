@@ -47,7 +47,7 @@
     },
     "areaServed": "Copenhagen, Denmark",
     "knowsLanguage": ["en", "da"],
-    "priceRange": "100–1440 DKK",
+    "priceRange": "{{ site.data.pricing | where_exp: "p", "p.pkg contains 'Drop'" | first | map: "student" | first | remove: " DKK" }}–{{ site.data.pricing | where_exp: "p", "p.pkg contains 'Two'" | first | map: "regular" | first }}",
     "sameAs": [
       "{{ site.data.copy.footer.social.instagram }}",
       "{{ site.data.copy.footer.social.facebook }}"
@@ -99,7 +99,7 @@
       },
       "offers": {
         "@type": "Offer",
-        "price": "800",
+        "price": "{{ site.data.pricing | where_exp: "p", "p.pkg contains 'Single'" | first | map: "regular" | first | remove: " DKK" }}",
         "priceCurrency": "DKK",
         "url": "{{ '/registration' | prepend: site.url }}",
         "availability": "https://schema.org/InStock"

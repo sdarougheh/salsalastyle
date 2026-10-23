@@ -62,7 +62,7 @@ season:
 friend_discount:
   enabled: false               # not offered in Winter 2026
   percent: 20
-  base: 800                    # DKK per person, before the discount
+  base: 600                    # DKK per person, before the discount
   class: "Beginners Winter"    # value written to the registrations sheet
 
 # MobilePay payment boxes. Edit here whenever the box changes.

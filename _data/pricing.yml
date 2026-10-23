@@ -5,12 +5,12 @@
   student: "100 DKK"
 - pkg: "Single Class"
   meta: "6 weeks · 1 hour/wk"
-  regular: "800 DKK"
-  student: "680 DKK"
+  regular: "600 DKK"
+  student: "510 DKK"
 - pkg: "Two Classes"
   meta: "6 weeks · 2 hours/wk"
-  regular: "1440 DKK"
-  student: "1224 DKK"
+  regular: "1080 DKK"
+  student: "918 DKK"
   save_regular: "18%"
   save_student: "24%"
 # "Bring a friend" pair price — Beginners class only. `flat` rows show a single
@@ -21,10 +21,10 @@
   # Hidden unless friend_discount.enabled is true in _config.yml.
   pair: true
   meta: "Beginners only · 6 weeks · two people"
-  flat: "1280 DKK"
+  flat: "960 DKK"
   flat_label: "Two people"
-  flat_meta: "640 DKK each"
+  flat_meta: "480 DKK each"
   save_flat: "20%"
   note: >
     <strong>Beginners class only.</strong> You and your friend sign up together
-    in one go and pay 1280 DKK in a single payment — <a href="/registration_friend">register as a pair</a>.
+    in one go and pay 960 DKK in a single payment — <a href="/registration_friend">register as a pair</a>.
