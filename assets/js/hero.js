@@ -37,10 +37,10 @@ function HeroFullbleed() {
   }, /*#__PURE__*/React.createElement(Button, {
     href: (c.cta_primary || {}).href,
     variant: "primary"
-  }, (c.cta_primary || {}).label), /*#__PURE__*/React.createElement(Button, {
-    href: (c.cta_secondary || {}).href,
+  }, (c.cta_primary || {}).label), c.cta_secondary && /*#__PURE__*/React.createElement(Button, {
+    href: c.cta_secondary.href,
     variant: "ghost-light"
-  }, (c.cta_secondary || {}).label), /*#__PURE__*/React.createElement(Button, {
+  }, c.cta_secondary.label), /*#__PURE__*/React.createElement(Button, {
     href: "/#events",
     variant: "ghost-light",
     className: "hero-cta-events"
@@ -118,10 +118,7 @@ function BeginnerLanding() {
     className: "hero-facts-label"
   }, "With a friend"), /*#__PURE__*/React.createElement("span", null, friendEach, " DKK each \u2014 ", fd.percent, "% off when two of you sign up together"))), /*#__PURE__*/React.createElement("div", {
     className: "hero-cta-row"
-  }, /*#__PURE__*/React.createElement(Button, {
-    href: "/registration_beginner",
-    variant: "primary"
-  }, "Register now"), friendOn && /*#__PURE__*/React.createElement(Button, {
+  }, friendOn && /*#__PURE__*/React.createElement(Button, {
     href: "/registration_friend",
     variant: "ghost-light"
   }, "Sign up with a friend \u2014 ", fd.percent, "% off"), /*#__PURE__*/React.createElement(Button, {

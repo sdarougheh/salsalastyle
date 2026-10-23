@@ -160,11 +160,8 @@ document.addEventListener('DOMContentLoaded', function() {
              its own: that is what lets the plain `hidden` attribute hide it. -->
         <div id="youngDetails" class="young-details" hidden>
             <p class="role-notice">
-                Danish VAT rules exempt dance teaching for participants under 30. To apply
-                that exemption we have to be able to document it, and the Danish Tax Agency
-                requires your full name, address and date of birth. We keep these for five
-                years and use them for nothing else - see our
-                <a href="/privacy" target="_blank">privacy policy</a>.
+                Danish VAT rules exempt dance teaching for participants under 30. To apply that
+                exemption we need to document your birthday and current living address.
             </p>
 
             <div class="form-group">

@@ -101,7 +101,7 @@
         "@type": "Offer",
         "price": "{{ site.data.pricing | where_exp: "p", "p.pkg contains 'Single'" | first | map: "regular" | first | remove: " DKK" }}",
         "priceCurrency": "DKK",
-        "url": "{{ '/registration' | prepend: site.url }}",
+        "url": "{{ '/#schedule' | prepend: site.url }}",
         "availability": "https://schema.org/InStock"
       }
     }

@@ -20,9 +20,11 @@ function HeroFullbleed() {
           <Button href={(c.cta_primary   || {}).href} variant="primary">
             {(c.cta_primary   || {}).label}
           </Button>
-          <Button href={(c.cta_secondary || {}).href} variant="ghost-light">
-            {(c.cta_secondary || {}).label}
-          </Button>
+          {c.cta_secondary && (
+            <Button href={c.cta_secondary.href} variant="ghost-light">
+              {c.cta_secondary.label}
+            </Button>
+          )}
           {/* The nav's Events link is hidden below 900px, so mobile has no way
               to reach the events section from the hero. Surface it as a
               full-width second row here; desktop keeps using the nav. */}
@@ -123,7 +125,6 @@ function BeginnerLanding() {
           </ul>
 
           <div className="hero-cta-row">
-            <Button href="/registration_beginner" variant="primary">Register now</Button>
             {friendOn && (
               <Button href="/registration_friend" variant="ghost-light">
                 Sign up with a friend — {fd.percent}% off

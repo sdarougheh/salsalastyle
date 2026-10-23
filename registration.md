@@ -166,11 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
              its own: that is what lets the plain `hidden` attribute hide it. -->
         <div id="youngDetails" class="young-details" hidden>
             <p class="role-notice">
-                Danish VAT rules exempt dance teaching for participants under 30. To apply
-                that exemption we have to be able to document it, and the Danish Tax Agency
-                requires your full name, address and date of birth. We keep these for five
-                years and use them for nothing else - see our
-                <a href="/privacy" target="_blank">privacy policy</a>.
+                Danish VAT rules exempt dance teaching for participants under 30. To apply that
+                exemption we need to document your birthday and current living address.
             </p>
 
             <div class="form-group">
@@ -203,9 +200,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="form-group">
             <label>Which classes? (you can select multiple, but don't need to register again for classes you already registered for earlier.) *</label>
             <div class="checkbox-list">
-                <label><input type="checkbox" name="class" value="Beginners Winter"> Beginners - Wednesday 19:00</label>
+                <label><input type="checkbox" name="class" value="Improver Winter"> Improver - Wednesday 19:00</label>
                 <label><input type="checkbox" name="class" value="Intermediate 1 Winter"> Intermediate 1 - Wednesday 20:00</label>
-                <label><input type="checkbox" name="class" value="Intermediate 2 Winter"> Intermediate 2 - Wednesday 21:00</label>
             </div>
             <div id="classError" class="field-error">Please select at least one class</div>
         </div>

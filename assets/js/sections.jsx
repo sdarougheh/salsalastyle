@@ -211,9 +211,9 @@ function Location() {
           <span className="schedule-loc-label">{c.label || "Classes at"}</span>
           <span className="schedule-loc-addr">{c.address}</span>
         </div>
-        <Button href={c.cta_href || "/registration"}>
-          {c.cta_label || "Register for the season"}
-        </Button>
+        {c.cta_href && (
+          <Button href={c.cta_href}>{c.cta_label}</Button>
+        )}
       </div>
     </section>
   );

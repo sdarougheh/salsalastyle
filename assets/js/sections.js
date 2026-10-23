@@ -217,9 +217,9 @@ function Location() {
     className: "schedule-loc-label"
   }, c.label || "Classes at"), /*#__PURE__*/React.createElement("span", {
     className: "schedule-loc-addr"
-  }, c.address)), /*#__PURE__*/React.createElement(Button, {
-    href: c.cta_href || "/registration"
-  }, c.cta_label || "Register for the season")));
+  }, c.address)), c.cta_href && /*#__PURE__*/React.createElement(Button, {
+    href: c.cta_href
+  }, c.cta_label)));
 }
 
 // ---------- Levels strip ----------

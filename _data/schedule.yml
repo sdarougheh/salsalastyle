@@ -8,11 +8,11 @@
   slots:
     - time: "19:00"
       end: "20:00"
-      name: "Beginners"
+      name: "Improver"
       where: "Inflow Studio"
       level: ""
-      kind: "beginner"
-      blurb: "For complete beginners — no dance background needed, come alone or with a partner. We start from the very basics: rhythm, timing, the basic step, and the partner connection."
+      kind: "improver"
+      blurb: "For dancers with 3–6 months of salsa. You're comfortable with the beat and basic lead/follow turns — now we build on that with new patterns, cleaner technique and better connection."
     - time: "20:00"
       end: "21:00"
       name: "Intermediate 1"
@@ -20,13 +20,6 @@
       level: ""
       kind: "inter1"
       blurb: "Inside and outside turns, 360s, intermediate concepts. Connection and technique so followers don't predict — straight to the social floor."
-    - time: "21:00"
-      end: "22:00"
-      name: "Intermediate 2"
-      where: "Inflow Studio"
-      level: ""
-      kind: "inter2"
-      blurb: "Builds on Int 1 — double turns, more combinations, more technique and body positioning so everything works at faster tempos."
 - day: Thursday
   slots: []
 - day: Friday
