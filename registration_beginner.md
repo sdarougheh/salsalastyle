@@ -9,6 +9,7 @@ lede: "Register for our Copenhagen beginners salsa class — no experience and n
 {%- assign keep = 100 | minus: fd.percent -%}
 {%- assign per_person = fd.base | times: keep | divided_by: 100 -%}
 {%- assign total = per_person | times: 2 -%}
+{%- assign taught = site.season.weeks | minus: site.season.exdates.size -%}
 {%- assign single = site.data.pricing | where_exp: "p", "p.pkg contains 'Single'" | first -%}
 
 <script>
@@ -24,6 +25,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // sort roles out in class anyway. The field is still sent so the payload
     // shape matches the normal registration form and the sheet stays aligned.
     const ROLE = '';
+
+    // The under-30 box is both a price claim and a tax-documentation trigger:
+    // SKAT requires a full name, address and date of birth to evidence the
+    // exemption, so those fields appear exactly when the box is ticked. They
+    // are required while visible and cleared when hidden, so an untick never
+    // leaves behind a date of birth someone typed and then thought better of
+    // - and a hidden field is never `required`, which browsers refuse to
+    // validate because they cannot focus it.
+    // A date input always hands back YYYY-MM-DD in `.value`, whatever the
+    // browser shows the person (dd/mm/yyyy here, mm/dd/yyyy for an American
+    // visitor), so what we post is never ambiguous. The cap is set here rather
+    // than in the markup so it is today's date, not the date of the last build.
+    const dobField = document.getElementById('dob');
+    dobField.max = new Date().toISOString().slice(0, 10);
+
+    const youngBox = document.getElementById('young');
+    const youngDetails = document.getElementById('youngDetails');
+    const youngFields = ['dob', 'street', 'postcode', 'city'].map(function(id) {
+        return document.getElementById(id);
+    });
+
+    function syncYoungDetails() {
+        const wanted = youngBox.checked;
+        youngDetails.hidden = !wanted;
+        youngFields.forEach(function(field) {
+            field.required = wanted;
+            if (!wanted) field.value = '';
+        });
+    }
+
+    youngBox.addEventListener('change', syncYoungDetails);
+    syncYoungDetails();
 
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -47,6 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     role: ROLE,
                     comments: document.getElementById('comments').value,
                     referral: window.SLSReferral || '',
+                    dob: document.getElementById('dob').value,
+                    street: document.getElementById('street').value,
+                    postcode: document.getElementById('postcode').value,
+                    city: document.getElementById('city').value,
                     recaptchaToken: token
                 };
 
@@ -135,13 +172,50 @@ document.addEventListener('DOMContentLoaded', function() {
             </label>
         </div>
 
+        <!-- Under-30 details. Danish VAT rules exempt dance teaching for
+             participants under 30, and SKAT requires a full name, address and
+             date of birth to evidence the exemption - so these fields appear
+             only for the people the exemption applies to, and only once they
+             say so. The container deliberately carries no `display` rule of
+             its own: that is what lets the plain `hidden` attribute hide it. -->
+        <div id="youngDetails" class="young-details" hidden>
+            <p class="role-notice">
+                Danish VAT rules exempt dance teaching for participants under 30. To apply
+                that exemption we have to be able to document it, and the Danish Tax Agency
+                requires your full name, address and date of birth. We keep these for five
+                years and use them for nothing else - see our
+                <a href="/privacy" target="_blank">privacy policy</a>.
+            </p>
+
+            <div class="form-group">
+                <label for="dob">Date of birth *</label>
+                <input type="date" id="dob" name="dob" min="1900-01-01" autocomplete="bday">
+            </div>
+
+            <div class="form-group">
+                <label for="street">Street and number *</label>
+                <input type="text" id="street" name="street" autocomplete="street-address">
+            </div>
+
+            <div class="form-group field-row">
+                <div>
+                    <label for="postcode">Postcode *</label>
+                    <input type="text" id="postcode" name="postcode" inputmode="numeric" autocomplete="postal-code">
+                </div>
+                <div>
+                    <label for="city">City *</label>
+                    <input type="text" id="city" name="city" autocomplete="address-level2">
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="comments">Comments or questions</label>
             <textarea id="comments" name="comments"></textarea>
         </div>
 
         <div class="pair-total">
-            <span>Price for the 8-week course</span>
+            <span>Price for the {{ taught }}-week course</span>
             <strong>{{ single.regular }}<span class="pair-total-alt">{{ single.student }} for students</span></strong>
         </div>
 
@@ -150,11 +224,13 @@ document.addEventListener('DOMContentLoaded', function() {
         <button type="submit" id="submitBtn">Register for the beginners class</button>
     </form>
 
+    {% if fd.enabled %}
     <p class="pair-intro">
         Coming with someone? Sign up together on the
         <a href="/registration_friend">with-a-friend form</a> and you both pay
         {{ per_person }} DKK instead of {{ fd.base }}.
     </p>
+    {% endif %}
 
     <div class="back-link">
         <a href="/beginner/">← Back to the beginners class</a>

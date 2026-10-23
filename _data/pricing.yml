@@ -4,11 +4,11 @@
   regular: "110 DKK"
   student: "100 DKK"
 - pkg: "Single Class"
-  meta: "8 weeks · 1 hour/wk"
+  meta: "6 weeks · 1 hour/wk"
   regular: "800 DKK"
   student: "680 DKK"
 - pkg: "Two Classes"
-  meta: "8 weeks · 2 hours/wk"
+  meta: "6 weeks · 2 hours/wk"
   regular: "1440 DKK"
   student: "1224 DKK"
   save_regular: "18%"
@@ -18,7 +18,9 @@
 # everyone, and is lower than the student price). Keep these numbers in sync
 # with `friend_discount` in _config.yml.
 - pkg: "With a Friend"
-  meta: "Beginners only · 8 weeks · two people"
+  # Hidden unless friend_discount.enabled is true in _config.yml.
+  pair: true
+  meta: "Beginners only · 6 weeks · two people"
   flat: "1280 DKK"
   flat_label: "Two people"
   flat_meta: "640 DKK each"

@@ -3,7 +3,7 @@ layout: page
 title: Privacy Policy
 ---
 
-**Last updated: September 3, 2026**
+**Last updated: October 23, 2026**
 
 ## 1. Data Controller
 
@@ -19,7 +19,9 @@ CVR: 46104986
 When you register for our classes, we collect your name, email address, age bracket, and student status, so we can
 contact you and calculate the correct VAT and price.
 
-We also ask registered students, by email, for two further details:
+If you tell us at registration that you are under 30, the registration form asks you for two
+further details there and then, because that is the point at which the exemption below starts to
+apply to you. Where we do not already have them, we ask for the same two by email instead:
 
 - **Date of birth.** Danish VAT rules exempt dance teaching for participants under 30. To apply that exemption we
   have to be able to document each participant's age, so we record a date of birth rather than only the "under 30"

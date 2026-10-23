@@ -19,7 +19,7 @@ hero:
 wednesday_classes:
   eyebrow: "Schedule"
   title: "Wednesday classes"
-  subtitle: "Season runs September 2 – October 28 — 8 Wednesdays. No class in week 42 (autumn holidays)."
+  subtitle: "Season runs November 4 – December 16 — 6 Wednesdays. No class on December 2."
 
 # Header for the combined Events section (workshops + socials).
 # When there are no events in _data/workshops.yml or _data/socials.yml,
@@ -52,7 +52,7 @@ classes_intro:
     <a href="/contact">Reach out to us</a> — we'll help you pick.
 
 pricing:
-  title: "Autumn 2026 pricing."
+  title: "Winter 2026 pricing."
   dropin_callout: >
     Drop in for a single class — 100 DKK student / 110 DKK regular.
 

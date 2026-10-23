@@ -13,7 +13,13 @@ const CLASSES = {{ site.data.classes | jsonify }};
 
 // Normalize pricing rows into the shape the React component expects
 // (saveR / saveS = "Save N%" strings, so the existing template string works).
-const PRICING = ({{ site.data.pricing | jsonify }}).map(function (p) {
+const PRICING = ({{ site.data.pricing | jsonify }}).filter(function (p) {
+  // Pair rows belong to the bring-a-friend offer. When a season does not run
+  // it, friend_discount.enabled is false and the row is dropped here, so the
+  // homepage price table matches _includes/class_prices.html without either
+  // of them needing the row edited out of _data/pricing.yml by hand.
+  return !p.pair || {{ site.friend_discount.enabled | jsonify }};
+}).map(function (p) {
   return {
     pkg:     p.pkg,
     meta:    p.meta,

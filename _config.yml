@@ -45,14 +45,14 @@ defaults:
 
 # Season info (edit in one place)
 season:
-  name: "Autumn 2026"
-  dates: "September 2 – October 28"
+  name: "Winter 2026"
+  dates: "November 4 – December 16"
   # early_bird_until: "April 19th"   # uncomment to show early bird banner
   # --- used to generate the recurring "Add to calendar" invites for classes ---
-  first_class: "2026-09-02"          # date of the first Wednesday (ISO)
-  weeks: 9                           # total occurrences including any holiday
+  first_class: "2026-11-04"          # date of the first Wednesday (ISO)
+  weeks: 7                           # total occurrences including any holiday
   exdates:                           # dates to skip (no class)
-    - "2026-10-14"                   # week 42, autumn holidays
+    - "2026-12-02"                   # break week
 
 # "Bring a friend" discount — Beginners class only.
 # Shown as an option on /beginner and used by /registration_friend.html.
@@ -60,10 +60,10 @@ season:
 # two in sync if pricing changes. Set `enabled: false` to hide the option
 # everywhere (the page keeps working for anyone holding a direct link).
 friend_discount:
-  enabled: true
+  enabled: false               # not offered in Winter 2026
   percent: 20
   base: 800                    # DKK per person, before the discount
-  class: "Beginners Autumn"    # value written to the registrations sheet
+  class: "Beginners Winter"    # value written to the registrations sheet
 
 # MobilePay payment boxes. Edit here whenever the box changes.
 # `classes` is used by /payments and the class success page;

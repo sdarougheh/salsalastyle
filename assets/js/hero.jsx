@@ -49,6 +49,26 @@ function BeginnerLanding() {
   const igHandle = instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/\/.*$/, "");
   const instagramDM = igHandle ? ("https://ig.me/m/" + igHandle) : instagram;
 
+  // The dates line, derived rather than typed. `weeks` counts every occurrence
+  // including the breaks, so what is taught is what is left once the exdates
+  // come out - the same arithmetic _config.yml documents. One fewer sentence
+  // to remember to rewrite in November.
+  const season = window.SEASON || {};
+  const exdates = season.exdates || [];
+  const taught = (season.weeks || 0) - exdates.length;
+  const prettyDate = function (iso) {
+    const d = new Date(iso + "T00:00:00");
+    return isNaN(d.getTime())
+      ? iso
+      : d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+  };
+  const datesText = [
+    taught && season.first_class
+      ? taught + " weeks from " + prettyDate(season.first_class)
+      : season.dates,
+    exdates.length ? "no class on " + exdates.map(prettyDate).join(" and ") : null,
+  ].filter(Boolean).join(" — ");
+
   // Bring-a-friend discount — Beginners class only, so it is offered here and
   // nowhere else. Config lives in _config.yml (friend_discount).
   const fd = window.FRIEND_DISCOUNT || {};
@@ -86,7 +106,7 @@ function BeginnerLanding() {
             </li>
             <li>
               <span className="hero-facts-label">Dates</span>
-              <span>8 weeks from September 2nd — with a holiday break in week 42</span>
+              <span>{datesText}</span>
             </li>
             <li>
               <span className="hero-facts-label">Price</span>

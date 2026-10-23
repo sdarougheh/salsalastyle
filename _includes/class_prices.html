@@ -21,6 +21,13 @@ Reach out to us if you want to sign up for all three classes.</p>
     </thead>
     <tbody>
       {% for p in site.data.pricing %}
+      {%- comment -%}
+      Pair rows belong to the bring-a-friend offer, which is a per-season
+      decision. Skipping here (rather than deleting the row from the data each
+      autumn) is what makes friend_discount.enabled the single switch its
+      comment in _config.yml promises it is. `continue` skips the note too.
+      {%- endcomment -%}
+      {%- if p.pair and site.friend_discount.enabled != true %}{% continue %}{% endif -%}
       <tr{% if p.save_regular or p.save_student or p.save_flat %} class="highlight"{% endif %}>
         <td><strong>{{ p.pkg }}</strong><br><small>{{ p.meta }}</small></td>
         {% if p.flat %}

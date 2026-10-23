@@ -29,6 +29,28 @@
  *
  * The Pair ID is returned to the browser and shown on the success page as the
  * MobilePay reference, so one incoming payment can be matched to both rows.
+ *
+ * ---
+ *
+ * An ORDINARY registration writes the same 8 columns, plus four more for
+ * anyone who ticks "I am under 30 years old" on the form:
+ *
+ *   M  Date of birth  YYYY-MM-DD, straight from a date input
+ *   N  Street         street and number
+ *   O  Postcode
+ *   P  City
+ *
+ * Columns I-L are padded empty on those rows, so both layouts stay aligned and
+ * an address can never land under "Pair ID". The four labels are the ones
+ * _db/enrich.py already recognises, so a CSV of these columns imports with no
+ * renaming.
+ *
+ * Why here and not on the details form: SKAT wants a name, address and date of
+ * birth to evidence the under-30 VAT exemption, and asking the people who
+ * claim it, at the moment they claim it, beats chasing them by email later.
+ * The fields are `required` in the browser while they are visible; this script
+ * deliberately does not reject a row for missing details, because losing a
+ * registration is worse than filing an incomplete one.
  */
 
 /**
@@ -93,6 +115,8 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    ensureDetailsHeaders_(sheet);
+
     data.classes.forEach(function(className) {
       sheet.appendRow([
         timestamp,
@@ -102,8 +126,20 @@ function doPost(e) {
         className,
         data.role,
         data.comments,
-        data.referral || ''          // ← postcard/campaign referral
+        data.referral || '',         // ← postcard/campaign referral
+        '', '', '', '',              // I-L — the pair columns, empty here
+        data.dob || '',              // M — under-30 details, blank otherwise
+        data.street || '',           // N
+        data.postcode || '',         // O
+        data.city || ''              // P
       ]);
+
+      // The form posts YYYY-MM-DD, but a spreadsheet renders a date in its own
+      // locale once it decides the cell is one - and a CSV export then carries
+      // that rendering, which is exactly the DD/MM vs MM/DD ambiguity
+      // _db/enrich.py has to guess at. Pinning the format keeps it ISO on
+      // screen and in every export.
+      sheet.getRange(sheet.getLastRow(), 13).setNumberFormat('yyyy-mm-dd');
     });
 
     // Try to send email, but don't let it break registration if it fails
@@ -173,18 +209,26 @@ function handlePairRegistration_(data, sheet, timestamp) {
   return pairId;
 }
 
-/**
- * Labels columns I–L in the header row, once. Skipped entirely if row 1 holds
- * data rather than headers (a real registration always starts with a Date in
- * column A), so an unlabelled sheet is never corrupted.
- */
+/** Labels columns I–L, the pair columns. */
 function ensurePairHeaders_(sheet) {
-  var labels = ['Pair ID', 'Pair Partner', 'Discount', 'Amount Due'];
+  ensureHeaderLabels_(sheet, 9, ['Pair ID', 'Pair Partner', 'Discount', 'Amount Due']);
+}
 
+/** Labels columns M–P, the under-30 details. */
+function ensureDetailsHeaders_(sheet) {
+  ensureHeaderLabels_(sheet, 13, ['Date of birth', 'Street', 'Postcode', 'City']);
+}
+
+/**
+ * Writes `labels` into row 1 from `startCol` on, once. Skipped entirely if row
+ * 1 holds data rather than headers (a real registration always starts with a
+ * Date in column A), so an unlabelled sheet is never corrupted.
+ */
+function ensureHeaderLabels_(sheet, startCol, labels) {
   if (sheet.getLastRow() === 0) return;
   if (sheet.getRange(1, 1).getValue() instanceof Date) return;   // row 1 is data
 
-  var range = sheet.getRange(1, 9, 1, labels.length);
+  var range = sheet.getRange(1, startCol, 1, labels.length);
   var current = range.getValues()[0];
   var needsLabels = current.some(function(v, i) {
     return String(v).trim() !== labels[i];
