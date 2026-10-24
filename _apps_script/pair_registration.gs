@@ -73,16 +73,27 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
 
-    // Verify reCAPTCHA. The secret is read from Script Properties rather than
+    // Verify reCAPTCHA. The secrets are read from Script Properties rather than
     // written here: this file lives in a public repository, and the key that
     // used to sit on the next line was readable by anyone for as long as it
-    // did. Set it in the editor under Project Settings -> Script properties,
-    // as RECAPTCHA_SECRET.
-    var recaptchaSecret = PropertiesService.getScriptProperties()
-                            .getProperty('RECAPTCHA_SECRET');
+    // did. Set them in the editor under Project Settings -> Script properties.
+    //
+    //   RECAPTCHA_SECRET      the current key's secret
+    //   RECAPTCHA_SECRET_OLD  optional, and only during a key rotation
+    //
+    // A token is minted for ONE site key, and a secret only verifies tokens
+    // from its own pair - so during a rotation the pages and the script would
+    // otherwise have to change in the same instant. Trying both secrets in
+    // turn removes that: tokens from either key pair verify, in whichever
+    // order the two deploys happen to land. Delete RECAPTCHA_SECRET_OLD once
+    // the new key is confirmed working, so there is one live key again.
+    var props = PropertiesService.getScriptProperties();
+    var secrets = [props.getProperty('RECAPTCHA_SECRET'),
+                   props.getProperty('RECAPTCHA_SECRET_OLD')]
+                  .filter(function(secret) { return !!secret; });
 
-    // Fail closed. A missing secret must not mean "let everyone through".
-    if (!recaptchaSecret) {
+    // Fail closed. No secret must not mean "let everyone through".
+    if (!secrets.length) {
       return ContentService
         .createTextOutput(JSON.stringify({'result': 'error',
           'error': 'Server misconfigured: RECAPTCHA_SECRET is not set'}))
@@ -90,20 +101,23 @@ function doPost(e) {
     }
 
     var recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
-    var payload = {
-      'secret': recaptchaSecret,
-      'response': data.recaptchaToken
-    };
+    var verified = false;
 
-    var options = {
-      'method': 'post',
-      'payload': payload
-    };
+    for (var i = 0; i < secrets.length && !verified; i++) {
+      var options = {
+        'method': 'post',
+        'payload': {
+          'secret': secrets[i],
+          'response': data.recaptchaToken
+        }
+      };
 
-    var response = UrlFetchApp.fetch(recaptchaUrl, options);
-    var result = JSON.parse(response.getContentText());
+      var response = UrlFetchApp.fetch(recaptchaUrl, options);
+      var result = JSON.parse(response.getContentText());
+      verified = !!result.success && result.score >= 0.3;
+    }
 
-    if (!result.success || result.score < 0.3) {
+    if (!verified) {
       return ContentService
         .createTextOutput(JSON.stringify({'result': 'error', 'error': 'Spam detected'}))
         .setMimeType(ContentService.MimeType.JSON);
