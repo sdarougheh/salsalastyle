@@ -73,10 +73,25 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
 
-    // Verify reCAPTCHA
+    // Verify reCAPTCHA. The secret is read from Script Properties rather than
+    // written here: this file lives in a public repository, and the key that
+    // used to sit on the next line was readable by anyone for as long as it
+    // did. Set it in the editor under Project Settings -> Script properties,
+    // as RECAPTCHA_SECRET.
+    var recaptchaSecret = PropertiesService.getScriptProperties()
+                            .getProperty('RECAPTCHA_SECRET');
+
+    // Fail closed. A missing secret must not mean "let everyone through".
+    if (!recaptchaSecret) {
+      return ContentService
+        .createTextOutput(JSON.stringify({'result': 'error',
+          'error': 'Server misconfigured: RECAPTCHA_SECRET is not set'}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     var recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
     var payload = {
-      'secret': '6Ld7gCcsAAAAAFdodJCNQo4CTqE0zMFioeD-Wi1J',
+      'secret': recaptchaSecret,
       'response': data.recaptchaToken
     };
 
