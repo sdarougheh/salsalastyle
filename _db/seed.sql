@@ -12,7 +12,11 @@
 INSERT INTO season (code, label, starts_on, ends_on, n_weeks) VALUES
   ('spring-2026', 'Spring 2026', '2026-02-18', '2026-04-15', 9),
   ('summer-2026', 'Summer 2026', '2026-05-04', '2026-06-26', 8),
-  ('autumn-2026', 'Autumn 2026', '2026-09-02', '2026-10-28', 8)
+  ('autumn-2026', 'Autumn 2026', '2026-09-02', '2026-10-28', 8),
+  -- Seven Wednesdays from 4 November, with 2 December off: six taught, which
+  -- is what n_weeks counts here (autumn is 8 the same way, its ninth Wednesday
+  -- being the week 42 holiday).
+  ('winter-2026', 'Winter 2026', '2026-11-04', '2026-12-16', 6)
 ON CONFLICT(code) DO UPDATE SET
   label = excluded.label, starts_on = excluded.starts_on,
   ends_on = excluded.ends_on, n_weeks = excluded.n_weeks;
@@ -45,6 +49,11 @@ JOIN (
   UNION ALL SELECT 'autumn-2026', 'autumn-2026-crash',       'LA-Style Salsa Crash Course',        'workshop', 'beginner', NULL, NULL, NULL, NULL, NULL
   UNION ALL SELECT 'autumn-2026', 'autumn-2026-afternoon-2', 'LA-Style Afternoon (two workshops)', 'workshop', 'open',     NULL, NULL, NULL, NULL, NULL
   UNION ALL SELECT 'autumn-2026', 'autumn-2026-afternoon-1', 'LA-Style Afternoon (one workshop)',  'workshop', 'open',     NULL, NULL, NULL, NULL, NULL
+
+  -- Winter runs two classes, no beginners: the 19:00 slot is an improver
+  -- class this season. Prices are the six-week ones from _data/pricing.yml.
+  UNION ALL SELECT 'winter-2026', 'winter-2026-improver', 'Improver Winter',       'class', 'improver', 'Wednesday', '19:00', 'Inflow Studio', 600, 510
+  UNION ALL SELECT 'winter-2026', 'winter-2026-inter1',   'Intermediate 1 Winter', 'class', 'inter1',   'Wednesday', '20:00', 'Inflow Studio', 600, 510
 ) v ON v.season_code = s.code
 ON CONFLICT(code) DO UPDATE SET
   season_id = excluded.season_id, label = excluded.label, kind = excluded.kind,
@@ -84,5 +93,12 @@ JOIN (
   UNION ALL SELECT 'la-style salsa crash course',          'autumn-2026-crash'
   UNION ALL SELECT 'la-style afternoon (two workshops)',   'autumn-2026-afternoon-2'
   UNION ALL SELECT 'la-style afternoon (one workshop)',    'autumn-2026-afternoon-1'
+
+  -- Two spellings each, as for autumn: the value the form posts, and the
+  -- label a human might paste in from the page.
+  UNION ALL SELECT 'improver winter',                      'winter-2026-improver'
+  UNION ALL SELECT 'improver - wednesday 19:00',           'winter-2026-improver'
+  UNION ALL SELECT 'intermediate 1 winter',                'winter-2026-inter1'
+  UNION ALL SELECT 'intermediate 1 - wednesday 20:00',     'winter-2026-inter1'
 ) v ON v.code = c.code
 ON CONFLICT(alias, course_id) DO NOTHING;
