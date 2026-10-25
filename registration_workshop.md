@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Execute reCAPTCHA
         grecaptcha.ready(function() {
-            grecaptcha.execute('6Ld7gCcsAAAAAFgmvwijHhrD3avqOOSuAwjVn_A3', {action: 'submit'}).then(function(token) {
+            grecaptcha.execute('6LcOef4tAAAAAAgmxguJSyuVZx1XLUriNqRkBkE4', {action: 'submit'}).then(function(token) {
                 
                 // Get form data
                 const formData = {
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld7gCcsAAAAAFgmvwijHhrD3avqOOSuAwjVn_A3"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LcOef4tAAAAAAgmxguJSyuVZx1XLUriNqRkBkE4"></script>
 
 <div class="registration-container">
     <h1>Workshop Registration</h1>
