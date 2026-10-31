@@ -25,8 +25,6 @@ function Nav() {
   }, "Classes"), /*#__PURE__*/React.createElement("a", {
     href: "/#events"
   }, "Events"), /*#__PURE__*/React.createElement("a", {
-    href: "/teachers"
-  }, "Teachers"), /*#__PURE__*/React.createElement("a", {
     href: "/faq"
   }, "FAQ"), /*#__PURE__*/React.createElement("a", {
     href: "/payments"
