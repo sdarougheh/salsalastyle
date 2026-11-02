@@ -202,6 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="checkbox-list">
                 <label><input type="checkbox" name="class" value="Improver Winter"> Improver - Wednesday 19:00</label>
                 <label><input type="checkbox" name="class" value="Intermediate 1 Winter"> Intermediate 1 - Wednesday 20:00</label>
+                <p class="class-full-notice">No more slots for followers in Intermediate 1. If you're interested in waitlisting, please register but do not pay yet -- we will reach out if there is more space.</p>
             </div>
             <div id="classError" class="field-error">Please select at least one class</div>
         </div>

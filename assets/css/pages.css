@@ -252,6 +252,14 @@ body.page-body {
   margin-top: 6px;
 }
 
+/* A "this class is full for one role" warning under its checkbox. */
+.class-full-notice {
+  margin: -4px 0 0 26px;
+  color: #c0392b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .role-notice {
   margin: 10px 0 0;
   padding: 10px 12px;
