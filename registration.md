@@ -201,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <label>Which classes? (you can select multiple, but don't need to register again for classes you already registered for earlier.) *</label>
             <div class="checkbox-list">
                 <label><input type="checkbox" name="class" value="Improver Winter"> Improver - Wednesday 19:00</label>
+                <p class="class-full-notice">No more slots for leaders in Improver. If you're interested in waitlisting, please register but do not pay yet -- we will reach out if there is more space.</p>
                 <label><input type="checkbox" name="class" value="Intermediate 1 Winter"> Intermediate 1 - Wednesday 20:00</label>
                 <p class="class-full-notice">No more slots for followers in Intermediate 1. If you're interested in waitlisting, please register but do not pay yet -- we will reach out if there is more space.</p>
             </div>
