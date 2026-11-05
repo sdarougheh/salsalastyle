@@ -2084,6 +2084,29 @@ button { font: inherit; cursor: pointer; border: 0; background: transparent; col
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  /* .nav-links is gone here, so the compact row takes over: Payments, About
+     and the social icons, which is why .nav-socials would be a duplicate. */
+  .nav-socials { display: none; }
+  .nav { flex-wrap: wrap; row-gap: 12px; }
+  .nav-mobile-links {
+    display: flex;
+    flex-basis: 100%;
+    gap: 16px;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .nav-mobile-soc { display: inline-flex; align-items: center; }
+  .nav-mobile-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: inherit;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
+  }
   .hero-cta-events { display: inline-flex; flex-basis: 100%; justify-content: center; }
   .workshop-card { grid-template-columns: 1fr; gap: 20px; padding: 28px; }
   .workshop-card-date { justify-self: start; padding: 12px 16px; }
